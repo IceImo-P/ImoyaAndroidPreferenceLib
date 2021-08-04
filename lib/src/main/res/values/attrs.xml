@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="PreferenceView">
+        <attr name="android:layout" />
+        <attr name="android:title" />
+        <attr name="android:summary" />
+        <attr name="note" format="string" />
+        <attr name="android:dependency" />
+        <attr name="android:key" />
+        <attr name="android:defaultValue" />
+        <attr name="android:drawablePadding" />
+        <attr name="titleIcon" format="reference" />
+        <attr name="summaryIcon" format="reference" />
+        <attr name="noteIcon" format="reference" />
+        <attr name="valueForNull" format="string|reference" />
+        <attr name="unit" format="string" />
+        <attr name="android:entries" />
+        <attr name="android:entryValues" />
+        <attr name="android:maxLength" />
+        <attr name="minValue" format="integer" />
+        <attr name="maxValue" format="integer" />
+        <attr name="is24HourView" format="boolean" />
+    </declare-styleable>
+    <declare-styleable name="PreferenceCategoryView">
+        <attr name="android:layout" />
+        <attr name="android:title" />
+        <attr name="android:summary" />
+        <attr name="note" />
+        <attr name="android:dependency" />
+        <attr name="android:key" />
+        <attr name="android:defaultValue" />
+        <attr name="android:drawablePadding" />
+        <attr name="titleIcon" />
+        <attr name="summaryIcon" />
+        <attr name="noteIcon" />
+        <attr name="valueForNull" />
+        <attr name="unit" />
+        <attr name="android:entries" />
+        <attr name="android:entryValues" />
+        <attr name="android:maxLength" />
+        <attr name="minValue" />
+        <attr name="maxValue" />
+        <attr name="is24HourView" />
+    </declare-styleable>
+</resources>
