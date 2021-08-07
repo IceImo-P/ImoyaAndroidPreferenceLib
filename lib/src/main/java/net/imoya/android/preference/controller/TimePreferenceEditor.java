@@ -98,7 +98,7 @@ public class TimePreferenceEditor extends DialogPreferenceEditor {
     protected void setupState(@NonNull SingleValuePreferenceView view) {
         super.setupState(view);
         ((State) this.state).time = this.getTime(this.preferences, this.state.key);
-        this.show24Hour = ((TimePreferenceView) view).is24HourView();
+        this.show24Hour = ((TimePreferenceView) view).is24hourView();
     }
 
     private Time getTime(SharedPreferences sharedPreferences, String key) {

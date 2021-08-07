@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment;
 import net.imoya.android.dialog.DialogBase;
 import net.imoya.android.dialog.TimeInputDialog;
 import net.imoya.android.preference.R;
+import net.imoya.android.preference.model.Time;
 import net.imoya.android.preference.model.TimePeriod;
 import net.imoya.android.preference.view.SingleValuePreferenceView;
 import net.imoya.android.preference.view.TimePeriodPreferenceView;
@@ -119,7 +120,7 @@ public class TimePeriodPreferenceEditorOld extends DialogPreferenceEditor {
         super.setupState(view);
 
         ((State) this.state).timePeriod = this.getTimePeriod(this.preferences, this.state.key);
-        this.show24Hour = ((TimePeriodPreferenceView) view).is24HourView();
+        this.show24Hour = ((TimePeriodPreferenceView) view).is24hourView();
     }
 
     private TimePeriod getTimePeriod(SharedPreferences sharedPreferences, String key) {
@@ -138,8 +139,8 @@ public class TimePeriodPreferenceEditorOld extends DialogPreferenceEditor {
 
     private void showStartTimeInputDialog() {
         this.showInputDialog(
-                ((State) this.state).timePeriod.getStartHour(),
-                ((State) this.state).timePeriod.getStartMinute(),
+                ((State) this.state).timePeriod.getStart().getHour(),
+                ((State) this.state).timePeriod.getStart().getMinute(),
                 this.requestCode,
                 this.context.getString(R.string.preference_time_period_edit_start_title),
                 this.context.getString(R.string.preference_dialog_next),
@@ -148,8 +149,8 @@ public class TimePeriodPreferenceEditorOld extends DialogPreferenceEditor {
 
     private void showEndTimeInputDialog() {
         this.showInputDialog(
-                ((State) this.state).timePeriod.getEndHour(),
-                ((State) this.state).timePeriod.getEndMinute(),
+                ((State) this.state).timePeriod.getEnd().getHour(),
+                ((State) this.state).timePeriod.getEnd().getMinute(),
                 this.requestCodeEnd,
                 this.context.getString(R.string.preference_time_period_edit_end_title),
                 this.context.getString(android.R.string.ok),
@@ -177,10 +178,13 @@ public class TimePeriodPreferenceEditorOld extends DialogPreferenceEditor {
         if (requestCode == this.requestCode) {
             if (resultCode == Activity.RESULT_OK && data != null) {
                 // 入力値を保存する
-                ((State) this.state).timePeriod.setStartHour(
-                        data.getIntExtra(TimeInputDialog.EXTRA_KEY_HOUR, 0));
-                ((State) this.state).timePeriod.setStartMinute(
-                        data.getIntExtra(TimeInputDialog.EXTRA_KEY_MINUTE, 0));
+                ((State) this.state).timePeriod.setStart(
+                        new Time(
+                                data.getIntExtra(TimeInputDialog.EXTRA_KEY_HOUR, 0),
+                                data.getIntExtra(TimeInputDialog.EXTRA_KEY_MINUTE, 0),
+                                0
+                        )
+                );
                 // 終了時入力ダイアログを表示する
                 this.showEndTimeInputDialog();
             }
@@ -188,10 +192,13 @@ public class TimePeriodPreferenceEditorOld extends DialogPreferenceEditor {
         } else if (requestCode == this.requestCodeEnd) {
             if (resultCode == Activity.RESULT_OK && data != null) {
                 // 入力値を保存する
-                ((State) this.state).timePeriod.setEndHour(
-                        data.getIntExtra(TimeInputDialog.EXTRA_KEY_HOUR, 0));
-                ((State) this.state).timePeriod.setEndMinute(
-                        data.getIntExtra(TimeInputDialog.EXTRA_KEY_MINUTE, 0));
+                ((State) this.state).timePeriod.setEnd(
+                        new Time(
+                                data.getIntExtra(TimeInputDialog.EXTRA_KEY_HOUR, 0),
+                                data.getIntExtra(TimeInputDialog.EXTRA_KEY_MINUTE, 0),
+                                0
+                        )
+                );
                 this.saveInput(resultCode, data);
             } else {
                 // 開始時入力ダイアログを表示する

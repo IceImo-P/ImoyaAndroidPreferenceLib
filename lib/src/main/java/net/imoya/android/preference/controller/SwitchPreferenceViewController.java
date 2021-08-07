@@ -2,6 +2,9 @@ package net.imoya.android.preference.controller;
 
 import android.content.SharedPreferences;
 
+import androidx.annotation.NonNull;
+
+import net.imoya.android.preference.view.OnPreferenceChangeListener;
 import net.imoya.android.preference.view.PreferenceView;
 import net.imoya.android.preference.view.SwitchPreferenceView;
 
@@ -12,8 +15,7 @@ import net.imoya.android.preference.view.SwitchPreferenceView;
  * <li>{@link SharedPreferences} へ、スイッチの状態を保存します。</li>
  * </ul>
  */
-public class SwitchPreferenceViewController
-        implements SwitchPreferenceView.OnPreferenceChangeListener {
+public class SwitchPreferenceViewController implements OnPreferenceChangeListener {
     private final SharedPreferences preferences;
 
     public SwitchPreferenceViewController(SharedPreferences preferences) {
@@ -25,7 +27,7 @@ public class SwitchPreferenceViewController
     }
 
     @Override
-    public void onPreferenceChange(PreferenceView view) {
+    public void onPreferenceChange(@NonNull PreferenceView view) {
         if (view instanceof SwitchPreferenceView) {
             final SwitchPreferenceView switchView = (SwitchPreferenceView) view;
             this.preferences.edit()

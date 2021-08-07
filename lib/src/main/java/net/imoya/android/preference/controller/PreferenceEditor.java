@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import net.imoya.android.dialog.DialogBase;
+import net.imoya.android.preference.view.OnPreferenceViewClickListener;
 import net.imoya.android.preference.view.PreferenceView;
 import net.imoya.android.preference.view.SingleValuePreferenceView;
 
@@ -18,7 +19,7 @@ import net.imoya.android.preference.view.SingleValuePreferenceView;
  * 設定値編集コントローラ共通部分を実装します。
  */
 public abstract class PreferenceEditor
-        implements PreferenceView.OnPreferenceClickListener {
+        implements OnPreferenceViewClickListener {
     /**
      * 状態オブジェクト
      */
@@ -101,7 +102,7 @@ public abstract class PreferenceEditor
      * @param view 設定項目ビュー
      */
     public void attach(@NonNull SingleValuePreferenceView view) {
-        view.setOnPreferenceClickListener(this);
+        view.setOnPreferenceViewClickListener(this);
     }
 
     /**
@@ -129,7 +130,7 @@ public abstract class PreferenceEditor
      * @param view タップされた項目設定ビュー
      */
     @Override
-    public void onPreferenceClick(@NonNull PreferenceView view) {
+    public void onPreferenceViewClick(@NonNull PreferenceView view) {
         final SingleValuePreferenceView prefView = (SingleValuePreferenceView) view;
 
         // SingleValuePreferenceView より、設定情報を取得する

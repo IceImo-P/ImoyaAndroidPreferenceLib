@@ -22,6 +22,7 @@ import net.imoya.android.util.Log;
  * <p/>
  * {@link TimePeriodPreferenceView} と組み合わせて使用することを想定しています。
  */
+@SuppressWarnings("unused")
 public class TimePeriodPreferenceEditor extends PreferenceEditor {
     public interface Listener {
         void onEdit(TimePeriodPreferenceEditor editor);
@@ -63,7 +64,7 @@ public class TimePeriodPreferenceEditor extends PreferenceEditor {
     protected void setupState(@NonNull SingleValuePreferenceView view) {
         super.setupState(view);
 
-        this.show24Hour = ((TimePeriodPreferenceView) view).is24HourView();
+        this.show24Hour = ((TimePeriodPreferenceView) view).is24hourView();
     }
 
     private TimePeriod getTimePeriod(SharedPreferences sharedPreferences, String key) {

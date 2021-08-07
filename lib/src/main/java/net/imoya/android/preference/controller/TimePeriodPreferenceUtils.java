@@ -39,6 +39,6 @@ public class TimePeriodPreferenceUtils {
     public static boolean isInPeriod(
             SharedPreferences sharedPreferences, String key, int hourOfDay, int minute) {
         TimePeriod value = getTimePeriod(sharedPreferences, key);
-        return value.isInPeriod(hourOfDay, minute);
+        return value.isInPeriod(hourOfDay, minute, 0);
     }
 }

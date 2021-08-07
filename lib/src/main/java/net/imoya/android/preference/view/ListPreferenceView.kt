@@ -1,207 +1,193 @@
-package net.imoya.android.preference.view;
+package net.imoya.android.preference.view
 
-import android.annotation.TargetApi;
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.content.res.TypedArray;
-import android.os.Build;
-import android.os.Parcel;
-import android.os.Parcelable;
-import android.util.AttributeSet;
-import android.view.View;
-import android.widget.TextView;
-
-import androidx.annotation.LayoutRes;
-
-import net.imoya.android.preference.R;
-import net.imoya.android.util.Log;
-
-import java.util.Arrays;
+import android.annotation.TargetApi
+import android.content.Context
+import android.content.SharedPreferences
+import android.content.res.TypedArray
+import android.os.Build
+import android.os.Parcel
+import android.os.Parcelable
+import android.os.Parcelable.Creator
+import android.util.AttributeSet
+import android.view.View
+import android.widget.TextView
+import androidx.annotation.LayoutRes
+import net.imoya.android.preference.R
+import net.imoya.android.util.Log
+import net.imoya.android.util.LogUtil
 
 /**
  * 固定の選択肢より選択する設定項目ビュー
- * <p>設定項目風の {@link View} です。
- * {@link SharedPreferences} に保存される1個の設定値に対応する文字列を、
- * {@link TextView} へ表示します。</p>
- * <p>Layout XML上で指定可能な attributes は、{@link PreferenceView},
- * {@link SingleValuePreferenceView} に以下を加えたものとなります:<ul>
- * <li>android:entries({@link android.R.attr#entries}) -
- * 各選択肢の表示用文字列が設定された、文字列の配列リソースを指定します。</li>
- * <li>android:entryValues({@link android.R.attr#entryValues}) -
- * 各選択肢の実際の設定値が設定された、配列のリソースを指定します。</li>
- * <li>android:defaultValue({@link android.R.attr#defaultValue}) -
+ *
+ * 設定項目風の [View] です。
+ * [SharedPreferences] に保存される1個の設定値に対応する文字列を、
+ * [TextView] へ表示します。
+ *
+ * Layout XML上で指定可能な attributes は、[PreferenceView],
+ * [SingleValuePreferenceView] に以下を加えたものとなります:
+ *  * android:entries([android.R.attr.entries]) -
+ * 各選択肢の表示用文字列が設定された、文字列の配列リソースを指定します。
+ *  * android:entryValues([android.R.attr.entryValues]) -
+ * 各選択肢の実際の設定値が設定された、配列のリソースを指定します。
+ *  * android:defaultValue([android.R.attr.defaultValue]) -
  * このビューに表示する設定値が未保存の場合に使用する、デフォルト値を指定します。
- * この属性が存在しない場合は、最初の選択肢をデフォルト値とします。</li>
- * </ul></p>
+ * この属性が存在しない場合は、最初の選択肢をデフォルト値とします。
+ *
  * <h2>カスタムレイアウト</h2>
- * <p>レイアウトXMLへ {@link SwitchPreferenceView} を配置する際、 android:layout
- * ({@link android.R.attr#layout})
- * 属性を指定することで、自由に定義されたレイアウトを適用することができます。</p>
- * <p>適用するレイアウトは、 {@link PreferenceView}
- * の説明に記載された規則に加え、最低限次の規則に従ってください:<ul>
- * <li>設定値をユーザへ表示するため、IDが &quot;@android:id/text1&quot;
- * ({@link android.R.id#text1})である {@link TextView} を配置してください。</li>
- * </ul></p>
+ *
+ * レイアウトXMLへ [SwitchPreferenceView] を配置する際、 android:layout
+ * ([android.R.attr.layout])
+ * 属性を指定することで、自由に定義されたレイアウトを適用することができます。
+ *
+ * 適用するレイアウトは、 [PreferenceView]
+ * の説明に記載された規則に加え、最低限次の規則に従ってください:
+ *  * 設定値をユーザへ表示するため、IDが &quot;@android:id/text1&quot;
+ * ([android.R.id.text1])である [TextView] を配置してください。
+ *
  */
-public abstract class ListPreferenceView extends SingleValuePreferenceView {
-    /**
-     * 状態オブジェクト
-     */
-    protected static class State extends SingleValuePreferenceView.State {
-        /**
-         * 選択肢の表示用文字列リスト
-         */
-        protected String[] entries;
-
-        @Override
-        protected void copyFrom(PreferenceView.State source) {
-            super.copyFrom(source);
-
-            if (source instanceof State) {
-                final State state = (State) source;
-                this.entries = state.entries;
-            }
-        }
-
-        @Override
-        protected void readFromParcel(Parcel in) {
-            super.readFromParcel(in);
-
-            this.entries = in.createStringArray();
-        }
-
-        @Override
-        protected void writeToParcel(Parcel out) {
-            super.writeToParcel(out);
-
-            out.writeStringArray(this.entries);
-        }
-    }
-
+abstract class ListPreferenceView : SingleValuePreferenceView {
     /**
      * 再起動時に保存する状態オブジェクト定義
      */
-    protected static class SavedState extends SingleValuePreferenceView.SavedState {
+    protected open class SavedState : SingleValuePreferenceView.SavedState {
+        /**
+         * 選択肢の表示用文字列リスト
+         */
+        var entries: Array<String>
+
         /**
          * コンストラクタ
          *
-         * @param superState {@link View} の状態
-         * @param state 現在の状態が保存されている、状態オブジェクト
+         * @param superState [View] の状態
          */
-        SavedState(Parcelable superState, State state) {
-            super(superState, state);
+        constructor(superState: Parcelable?) : super(superState) {
+            entries = arrayOf()
         }
 
         /**
-         * {@link Parcel} の内容で初期化するコンストラクタ
+         * [Parcel] の内容で初期化するコンストラクタ
          *
-         * @param parcel {@link Parcel}
+         * @param parcel [Parcel]
          */
-        SavedState(Parcel parcel) {
-            super(parcel);
-        }
-
-        @Override
-        protected PreferenceView.State createState() {
-            return new State();
-        }
+        constructor(parcel: Parcel) : this(parcel, null)
 
         /**
-         * {@link Parcelable} 対応用 {@link Creator}
+         * [Parcel] の内容で初期化するコンストラクタ
+         *
+         * @param parcel [Parcel]
+         * @param loader [ClassLoader]
          */
-        public static final Creator<SavedState> CREATOR = new Creator<SavedState>() {
+        constructor(parcel: Parcel, loader: ClassLoader?) : super(parcel, loader) {
+            entries = parcel.createStringArray() ?: arrayOf()
+        }
+
+        override fun writeToParcel(out: Parcel, flags: Int) {
+            super.writeToParcel(out, flags)
+            out.writeStringArray(entries)
+        }
+
+        companion object {
             /**
-             * {@link Parcel} の内容を保持するオブジェクトを生成して返します。
-             *
-             * @param parcel {@link Parcel}
-             * @return {@link Parcel} の内容を保持するオブジェクト
+             * [Parcelable] 対応用 [Creator]
              */
-            @Override
-            public SavedState createFromParcel(Parcel parcel) {
-                return new SavedState(parcel);
+            @JvmField
+            val CREATOR: Creator<SavedState> = object : Creator<SavedState> {
+                /**
+                 * [Parcel] の内容を保持するオブジェクトを生成して返します。
+                 *
+                 * @param parcel [Parcel]
+                 * @return [Parcel] の内容を保持するオブジェクト
+                 */
+                override fun createFromParcel(parcel: Parcel): SavedState {
+                    return SavedState(parcel)
+                }
+
+                /**
+                 * オブジェクトの配列を生成して返します。
+                 *
+                 * @param size 配列のサイズ
+                 * @return 配列
+                 */
+                override fun newArray(size: Int): Array<SavedState?> {
+                    return arrayOfNulls(size)
+                }
             }
-
-            /**
-             * オブジェクトの配列を生成して返します。
-             *
-             * @param size 配列のサイズ
-             * @return 配列
-             */
-            @Override
-            public SavedState[] newArray(int size) {
-                return new SavedState[size];
-            }
-        };
+        }
     }
 
-    private static final String TAG = "ListPreferenceView";
+    /**
+     * 選択肢の表示用文字列リスト
+     */
+    var entries: Array<String> = arrayOf()
+        get() = field.clone()
 
     /**
-     * 選択中の項目を表示する {@link TextView}
+     * 選択中の項目を表示する [TextView]
      */
-    protected TextView selectionView;
+    @Suppress("MemberVisibilityCanBePrivate")
+    protected lateinit var selectionView: TextView
 
     /**
      * コンストラクタ
      *
-     * @param context {@link Context}
+     * @param context [Context]
      */
-    public ListPreferenceView(Context context) {
-        super(context);
-    }
+    constructor(context: Context) : super(context)
 
     /**
      * コンストラクタ
      *
-     * @param context {@link Context}
-     * @param attrs {@link AttributeSet}
+     * @param context [Context]
+     * @param attrs [AttributeSet]
      */
-    public ListPreferenceView(Context context, AttributeSet attrs) {
-        super(context, attrs);
-    }
+    constructor(context: Context, attrs: AttributeSet?) : super(
+        context, attrs
+    )
 
     /**
      * コンストラクタ
      *
-     * @param context {@link Context}
-     * @param attrs {@link AttributeSet}
+     * @param context [Context]
+     * @param attrs [AttributeSet]
      * @param defStyleAttr 適用するスタイル属性値
      */
-    public ListPreferenceView(Context context, AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
-    }
+    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(
+        context, attrs, defStyleAttr
+    )
 
     /**
      * コンストラクタ
      *
-     * @param context {@link Context}
-     * @param attrs {@link AttributeSet}
+     * @param context [Context]
+     * @param attrs [AttributeSet]
      * @param defStyleAttr 適用するスタイル属性値
      * @param defStyleRes 適用するスタイルのリソースID
      */
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public ListPreferenceView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-        super(context, attrs, defStyleAttr, defStyleRes);
-    }
+    constructor(
+        context: Context?,
+        attrs: AttributeSet?,
+        defStyleAttr: Int,
+        defStyleRes: Int
+    ) : super(
+        context!!, attrs, defStyleAttr, defStyleRes
+    )
 
     /**
      * デフォルトのレイアウトリソースIDを返します。
      *
      * @return レイアウトリソースID
      */
-    @LayoutRes
-    protected int getDefaultLayout() {
-        return R.layout.preference_string;
-    }
+    @get:LayoutRes
+    override val defaultLayout: Int
+        get() = R.layout.preference_string
 
     /**
      * 子ビューの生成直後に呼び出されます。
      */
-    @Override
-    protected void onCreateChildViews() {
-        super.onCreateChildViews();
-
-        this.selectionView = this.findViewById(android.R.id.text1);
+    override fun onCreateChildViews() {
+        super.onCreateChildViews()
+        selectionView = findViewById(android.R.id.text1)
     }
 
     /**
@@ -209,90 +195,83 @@ public abstract class ListPreferenceView extends SingleValuePreferenceView {
      *
      * @param values 取得した属性値
      */
-    @Override
-    protected void loadAttributes(TypedArray values) {
-        Log.d(TAG, "loadAttributes: start");
-        super.loadAttributes(values);
-        Log.d(TAG, "loadAttributes: preferenceKey = " + this.getPreferenceKey());
-
-        final State state = (State) this.state;
-        final int entriesId = values.getResourceId(R.styleable.PreferenceView_android_entries, 0);
-        state.entries = (entriesId != 0 ? values.getResources().getStringArray(entriesId) : null);
-
-        Log.d(TAG, "loadAttributes: entries = " + (state.entries != null ? Arrays.asList(state.entries) : "null"));
+    override fun loadAttributes(values: TypedArray) {
+        Log.d(TAG, "loadAttributes: start")
+        super.loadAttributes(values)
+        Log.d(TAG, "loadAttributes: preferenceKey = $preferenceKey")
+        val entriesId = values.getResourceId(R.styleable.PreferenceView_android_entries, 0)
+        entries =
+            if (entriesId != 0) values.resources.getStringArray(entriesId)
+            else throw RuntimeException("entry_values is not defined at layout XML")
+        Log.d(TAG, "loadAttributes: entries = ${LogUtil.logString(entries)}")
     }
 
-    /**
-     * 状態オブジェクトを生成して返します。
-     *
-     * @return 状態オブジェクト
-     */
-    @Override
-    protected PreferenceView.State createState() {
-        return new State();
+    override fun createSavedState(superState: Parcelable?): SavedState {
+        return SavedState(superState)
     }
 
-    /**
-     * 再起動時に一時保存する {@link SavedState} を生成して返します。
-     *
-     * @param superState 親クラスの保存情報
-     * @return {@link SavedState}
-     */
-    @Override
-    protected SavedState createSavedState(Parcelable superState) {
-        return new SavedState(superState, (State) this.state);
+    override fun onSaveInstanceState(savedState: PreferenceView.SavedState) {
+        super.onSaveInstanceState(savedState)
+        if (savedState is SavedState) {
+            savedState.entries = entries
+        }
+    }
+
+    override fun onRestoreState(savedState: PreferenceView.SavedState) {
+        super.onRestoreState(savedState)
+        if (savedState is SavedState) {
+            entries = savedState.entries
+        }
     }
 
     /**
      * 表示を更新します。
      *
-     * @param sharedPreferences {@link SharedPreferences}
+     * @param sharedPreferences [SharedPreferences]
      */
-    @Override
-    public void updateViews(SharedPreferences sharedPreferences) {
-        final String key = this.getPreferenceKey();
-        Log.d(TAG, "updateViews: key = " + key);
-        super.updateViews(sharedPreferences);
-
-        if (key != null && sharedPreferences != null) {
-            final State state = (State) this.state;
-            final int index = this.getSelectedIndex(sharedPreferences);
-            Log.d(TAG, "updateViews: index = " + index);
-            this.selectionView.setText(state.entries[index]);
+    override fun updateViews(sharedPreferences: SharedPreferences?) {
+        val key = preferenceKey
+        Log.d(TAG, "updateViews: key = $key")
+        super.updateViews(sharedPreferences)
+        if (sharedPreferences != null) {
+            val index = getSelectedIndex(sharedPreferences)
+            Log.d(TAG, "updateViews: index = $index")
+            selectionView.text = entries[index]
         }
     }
 
     /**
      * 選択肢リストに於いて、現在選択されている位置を返します。
      *
-     * @param sharedPreferences {@link SharedPreferences}
+     * @param sharedPreferences [SharedPreferences]
      * @return 選択位置を表すインデックス
      */
-    public abstract int getSelectedIndex(SharedPreferences sharedPreferences);
+    abstract fun getSelectedIndex(sharedPreferences: SharedPreferences): Int
 
     /**
-     * 選択肢の表示用文字列リストを返します。
+     * [SharedPreferences] 更新時の処理を行います。
      *
-     * @return 文字列リスト
-     */
-    public String[] getEntries() {
-        return ((State) this.state).entries.clone();
-    }
-
-    /**
-     * {@link SharedPreferences} 更新時の処理を行います。
-     *
-     * @param sharedPreferences 更新された {@link SharedPreferences}
+     * @param sharedPreferences 更新された [SharedPreferences]
      * @param key 更新された項目のキー
      * @return 処理を行った場合は true, そうでない場合は false
      */
-    @Override
-    public boolean onPreferenceChange(SharedPreferences sharedPreferences, String key) {
-        if (!super.onPreferenceChange(sharedPreferences, key)
-                && key != null && key.equals(this.getPreferenceKey())) {
-            this.updateViews(sharedPreferences);
-            return true;
+    override fun onPreferenceChange(
+        sharedPreferences: SharedPreferences, key: String
+    ): Boolean {
+        return if (!super.onPreferenceChange(sharedPreferences, key)
+            && key == preferenceKey
+        ) {
+            updateViews(sharedPreferences)
+            true
+        } else {
+            false
         }
-        return false;
+    }
+
+    companion object {
+        /**
+         * Tag for log
+         */
+        private const val TAG = "ListPreferenceView"
     }
 }

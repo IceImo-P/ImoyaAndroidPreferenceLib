@@ -1,342 +1,297 @@
-package net.imoya.android.preference.view;
+package net.imoya.android.preference.view
 
-import android.annotation.TargetApi;
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.content.res.TypedArray;
-import android.os.Build;
-import android.os.Parcel;
-import android.os.Parcelable;
-import android.util.AttributeSet;
-import android.view.View;
-import android.widget.TextView;
-
-import androidx.annotation.LayoutRes;
-
-import net.imoya.android.preference.R;
-import net.imoya.android.util.Log;
+import android.os.Parcel
+import android.os.Parcelable
+import android.os.Parcelable.Creator
+import android.widget.TextView
+import android.annotation.TargetApi
+import android.content.Context
+import android.os.Build
+import androidx.annotation.LayoutRes
+import net.imoya.android.preference.R
+import android.content.res.TypedArray
+import android.content.SharedPreferences
+import android.util.AttributeSet
+import android.view.View
+import androidx.annotation.CallSuper
+import net.imoya.android.util.Log
+import net.imoya.android.util.ViewUtil
 
 /**
  * 単位付き数値設定項目ビュー
- * <p>設定項目風の {@link View} です。
- * {@link SharedPreferences} に保存される int 型の設定値と、プログラムが指定する単位文字列を、
- * {@link TextView} へ表示します。</p>
- * <p>Layout XML上で指定可能な attributes は、{@link PreferenceView},
- * {@link SingleValuePreferenceView} に以下を加えたものとなります:<ul>
- * <li>android:defaultValue({@link android.R.attr#defaultValue}) -
- * このビューに表示する設定値が未保存の場合に使用する、デフォルト値とする整数値を指定します。</li>
- * <li>app:unit({@link R.attr#unit}) - ビューへ表示する単位文字列を指定します。</li>
- * </ul></p>
+ *
+ * 設定項目風の [View] です。
+ * [SharedPreferences] に保存される int 型の設定値と、プログラムが指定する単位文字列を
+ * [TextView] へ表示します。
+ *
+ * Layout XML上で指定可能な attributes は、[PreferenceView],
+ * [SingleValuePreferenceView] に以下を加えたものとなります:
+ *  * android:defaultValue([android.R.attr.defaultValue]) -
+ * このビューに表示する設定値が未保存の場合に使用する、デフォルト値とする整数値を指定します。
+ *  * app:unit([R.attr.unit]) - ビューへ表示する単位文字列を指定します。
+ *
  * <h2>カスタムレイアウト</h2>
- * <p>レイアウトXMLへ {@link SwitchPreferenceView} を配置する際、 android:layout
- * ({@link android.R.attr#layout})
- * 属性を指定することで、自由に定義されたレイアウトを適用することができます。</p>
- * <p>適用するレイアウトは、 {@link PreferenceView}
- * の説明に記載された規則に加え、最低限次の規則に従ってください:<ul>
- * <li>設定値をユーザへ表示するため、IDが &quot;@android:id/text1&quot;
- * ({@link android.R.id#text1})である {@link TextView} を配置してください。</li>
- * <li>単位をユーザへ表示するため、IDが &quot;@+id/unit&quot;
- * ({@link R.id#unit})である {@link TextView} を配置してください。</li>
- * </ul></p>
+ *
+ * レイアウトXMLへ [SwitchPreferenceView] を配置する際、 android:layout
+ * ([android.R.attr.layout])
+ * 属性を指定することで、自由に定義されたレイアウトを適用することができます。
+ *
+ * 適用するレイアウトは、 [PreferenceView]
+ * の説明に記載された規則に加え、最低限次の規則に従ってください:
+ *  * 設定値をユーザへ表示するため、IDが &quot;@android:id/text1&quot;
+ * ([android.R.id.text1])である [TextView] を配置してください。
+ *  * 単位をユーザへ表示するため、IDが &quot;@+id/unit&quot;
+ * ([R.id.unit])である [TextView] を配置してください。
+ *
  */
-public class NumberAndUnitPreferenceView extends SingleValuePreferenceView {
-    /**
-     * 状態オブジェクト
-     */
-    protected static class State extends SingleValuePreferenceView.State {
-        /**
-         * 現在の設定値
-         */
-        public int value;
-        /**
-         * デフォルト値
-         */
-        public int defaultValue;
-        /**
-         * 設定可能な最小値
-         */
-        public int minValue = Integer.MIN_VALUE;
-        /**
-         * 設定可能な最大値
-         */
-        public int maxValue = Integer.MAX_VALUE;
-        /**
-         * 単位
-         */
-        public String unit;
-
-        @Override
-        protected void copyFrom(PreferenceView.State source) {
-            super.copyFrom(source);
-
-            if (source instanceof State) {
-                final State state = (State) source;
-                this.value = state.value;
-                this.defaultValue = state.defaultValue;
-                this.minValue = state.minValue;
-                this.maxValue = state.maxValue;
-                this.unit = state.unit;
-            }
-        }
-
-        @Override
-        protected void readFromParcel(Parcel in) {
-            super.readFromParcel(in);
-
-            this.value = in.readInt();
-            this.defaultValue = in.readInt();
-            this.minValue = in.readInt();
-            this.maxValue = in.readInt();
-            this.unit = in.readString();
-        }
-
-        @Override
-        protected void writeToParcel(Parcel out) {
-            super.writeToParcel(out);
-
-            out.writeInt(this.value);
-            out.writeInt(this.defaultValue);
-            out.writeInt(this.minValue);
-            out.writeInt(this.maxValue);
-            out.writeString(this.unit);
-        }
-    }
-
+open class NumberAndUnitPreferenceView : SingleValuePreferenceView {
     /**
      * 再起動時に保存する状態オブジェクト定義
      */
-    protected static class SavedState extends SingleValuePreferenceView.SavedState {
+    protected class SavedState : SingleValuePreferenceView.SavedState {
+        /**
+         * 現在の設定値
+         */
+        var currentValue = 0
+
+        /**
+         * デフォルト値
+         */
+        var defaultValue = 0
+
+        /**
+         * 設定可能な最小値
+         */
+        var minValue = Int.MIN_VALUE
+
+        /**
+         * 設定可能な最大値
+         */
+        var maxValue = Int.MAX_VALUE
+
+        /**
+         * 単位
+         */
+        var unit: String? = null
+
         /**
          * コンストラクタ
          *
-         * @param superState {@link View} の状態
-         * @param state 現在の状態が保存されている、状態オブジェクト
+         * @param superState [View] の状態
          */
-        protected SavedState(Parcelable superState, State state) {
-            super(superState, state);
-        }
+        constructor(superState: Parcelable?) : super(superState)
 
         /**
-         * {@link Parcel} の内容で初期化するコンストラクタ
+         * [Parcel] の内容で初期化するコンストラクタ
          *
-         * @param parcel {@link Parcel}
+         * @param parcel [Parcel]
          */
-        protected SavedState(Parcel parcel) {
-            super(parcel);
-        }
-
-        @Override
-        protected PreferenceView.State createState() {
-            return new State();
-        }
+        private constructor(parcel: Parcel) : this(parcel, null)
 
         /**
-         * {@link Parcelable} 対応用 {@link Creator}
+         * [Parcel] の内容で初期化するコンストラクタ
+         *
+         * @param source [Parcel]
+         * @param loader [ClassLoader]
          */
-        public static final Creator<SavedState> CREATOR = new Creator<SavedState>() {
+        private constructor(source: Parcel, loader: ClassLoader?) : super(source, loader) {
+            currentValue = source.readInt()
+            defaultValue = source.readInt()
+            minValue = source.readInt()
+            maxValue = source.readInt()
+            unit = source.readString()
+        }
+
+        override fun writeToParcel(out: Parcel, flags: Int) {
+            super.writeToParcel(out, flags)
+            out.writeInt(currentValue)
+            out.writeInt(defaultValue)
+            out.writeInt(minValue)
+            out.writeInt(maxValue)
+            out.writeString(unit)
+        }
+
+        companion object {
             /**
-             * {@link Parcel} の内容を保持するオブジェクトを生成して返します。
-             *
-             * @param parcel {@link Parcel}
-             * @return {@link Parcel} の内容を保持するオブジェクト
+             * [Parcelable] 対応用 [Creator]
              */
-            @Override
-            public SavedState createFromParcel(Parcel parcel) {
-                return new SavedState(parcel);
+            @JvmField
+            val CREATOR: Creator<SavedState> = object : Creator<SavedState> {
+                /**
+                 * [Parcel] の内容を保持するオブジェクトを生成して返します。
+                 *
+                 * @param parcel [Parcel]
+                 * @return [Parcel] の内容を保持するオブジェクト
+                 */
+                override fun createFromParcel(parcel: Parcel): SavedState {
+                    return SavedState(parcel)
+                }
+
+                /**
+                 * オブジェクトの配列を生成して返します。
+                 *
+                 * @param size 配列のサイズ
+                 * @return 配列
+                 */
+                override fun newArray(size: Int): Array<SavedState?> {
+                    return arrayOfNulls(size)
+                }
             }
-
-            /**
-             * オブジェクトの配列を生成して返します。
-             *
-             * @param size 配列のサイズ
-             * @return 配列
-             */
-            @Override
-            public SavedState[] newArray(int size) {
-                return new SavedState[size];
-            }
-        };
+        }
     }
 
-    private static final String TAG = "NumberAndUnitPreferenceView";
+    /**
+     * 現在の設定値
+     */
+    var currentValue = 0
 
     /**
-     * 値を表示する {@link TextView}
+     * デフォルト値
      */
-    protected TextView valueView;
+    var defaultValue = 0
+
     /**
-     * 単位を表示する {@link TextView}
+     * 設定可能な最小値
      */
-    protected TextView unitView;
+    var minValue = Int.MIN_VALUE
+
+    /**
+     * 設定可能な最大値
+     */
+    var maxValue = Int.MAX_VALUE
+
+    /**
+     * 単位
+     */
+    var unit: String? = null
+        set(unit) {
+            field = unit
+
+            // 表示へ反映する
+            unitView.text = unit
+            ViewUtil.setVisibleOrGone(unitView, unit != null && unit.isNotEmpty())
+        }
+
+    /**
+     * 値を表示する [TextView]
+     */
+    private lateinit var valueView: TextView
+
+    /**
+     * 単位を表示する [TextView]
+     */
+    private lateinit var unitView: TextView
 
     /**
      * コンストラクタ
      *
-     * @param context {@link Context}
+     * @param context [Context]
      */
-    public NumberAndUnitPreferenceView(Context context) {
-        super(context);
-    }
+    constructor(context: Context) : super(context)
 
     /**
      * コンストラクタ
      *
-     * @param context {@link Context}
-     * @param attrs {@link AttributeSet}
+     * @param context [Context]
+     * @param attrs [AttributeSet]
      */
-    public NumberAndUnitPreferenceView(Context context, AttributeSet attrs) {
-        super(context, attrs);
-    }
+    constructor(context: Context, attrs: AttributeSet?) : super(
+        context, attrs
+    )
 
     /**
      * コンストラクタ
      *
-     * @param context {@link Context}
-     * @param attrs {@link AttributeSet}
+     * @param context [Context]
+     * @param attrs [AttributeSet]
      * @param defStyleAttr 適用するスタイル属性値
      */
-    public NumberAndUnitPreferenceView(Context context, AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
-    }
+    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(
+        context, attrs, defStyleAttr
+    )
 
     /**
      * コンストラクタ
      *
-     * @param context {@link Context}
-     * @param attrs {@link AttributeSet}
+     * @param context [Context]
+     * @param attrs [AttributeSet]
      * @param defStyleAttr 適用するスタイル属性値
      * @param defStyleRes 適用するスタイルのリソースID
      */
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public NumberAndUnitPreferenceView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-        super(context, attrs, defStyleAttr, defStyleRes);
+    constructor(
+        context: Context,
+        attrs: AttributeSet?,
+        defStyleAttr: Int,
+        defStyleRes: Int
+    ) : super(
+        context, attrs, defStyleAttr, defStyleRes
+    )
+
+    @get:LayoutRes
+    override val defaultLayout: Int
+        get() = R.layout.preference_number_unit
+
+    override fun onCreateChildViews() {
+        super.onCreateChildViews()
+        valueView = findViewById(android.R.id.text1)
+        unitView = findViewById(R.id.unit)
     }
 
-    @LayoutRes
-    protected int getDefaultLayout() {
-        return R.layout.preference_number_unit;
+    override fun loadAttributes(values: TypedArray) {
+        Log.d(TAG, "loadAttributes: start")
+        super.loadAttributes(values)
+        Log.d(TAG, "loadAttributes: preferenceKey = $preferenceKey")
+        defaultValue = values.getInt(R.styleable.PreferenceView_android_defaultValue, 0)
+        minValue = values.getInt(R.styleable.PreferenceView_minValue, 0)
+        maxValue = values.getInt(R.styleable.PreferenceView_maxValue, 0)
+        unit = values.getString(R.styleable.PreferenceView_unit)
+        Log.d(TAG, "loadAttributes: defaultValue = $defaultValue, unit = $unit")
     }
 
-    @Override
-    protected void onCreateChildViews() {
-        super.onCreateChildViews();
-
-        this.valueView = this.findViewById(android.R.id.text1);
-        this.unitView = this.findViewById(R.id.unit);
+    override fun createSavedState(superState: Parcelable?): SavedState {
+        return SavedState(superState)
     }
 
-    @Override
-    protected void loadAttributes(TypedArray values) {
-        Log.d(TAG, "loadAttributes: start");
-        super.loadAttributes(values);
-        Log.d(TAG, "loadAttributes: preferenceKey = " + this.getPreferenceKey());
-
-        final State state = (State) this.state;
-        state.defaultValue = values.getInt(R.styleable.PreferenceView_android_defaultValue, 0);
-        state.minValue = values.getInt(R.styleable.PreferenceView_minValue, 0);
-        state.maxValue = values.getInt(R.styleable.PreferenceView_maxValue, 0);
-        this.setUnit(values.getString(R.styleable.PreferenceView_unit));
-
-        Log.d(TAG, "loadAttributes: defaultValue = " + state.defaultValue + ", unit = " + state.unit);
-    }
-
-    @Override
-    protected PreferenceView.State createState() {
-        return new State();
-    }
-
-    @Override
-    protected SavedState createSavedState(Parcelable superState) {
-        return new SavedState(superState, (State) this.state);
-    }
-
-    @Override
-    public void updateViews(SharedPreferences sharedPreferences) {
-        final String preferenceKey = this.getPreferenceKey();
-        Log.d(TAG, "updateViews: preferenceKey = " + preferenceKey);
-        super.updateViews(sharedPreferences);
-
-        if (preferenceKey != null && sharedPreferences != null) {
-            final State state = (State) this.state;
-            state.value = sharedPreferences.getInt(preferenceKey, state.defaultValue);
-            Log.d(TAG, "updateViews: value = " + state.value);
-            this.valueView.setText(String.valueOf(state.value));
+    @CallSuper
+    override fun onSaveInstanceState(savedState: PreferenceView.SavedState) {
+        super.onSaveInstanceState(savedState)
+        if (savedState is SavedState) {
+            savedState.currentValue = currentValue
+            savedState.defaultValue = defaultValue
+            savedState.maxValue = maxValue
+            savedState.minValue = minValue
+            savedState.unit = unit
         }
     }
 
-    /**
-     * デフォルト値を返します。
-     *
-     * @return デフォルト値
-     */
-    public int getDefaultValue() {
-        return ((State) this.state).defaultValue;
+    @CallSuper
+    override fun onRestoreState(savedState: PreferenceView.SavedState) {
+        super.onRestoreState(savedState)
+        if (savedState is SavedState) {
+            currentValue = savedState.currentValue
+            defaultValue = savedState.defaultValue
+            maxValue = savedState.maxValue
+            minValue = savedState.minValue
+            unit = savedState.unit
+        }
     }
 
-    /**
-     * デフォルト値を設定します。
-     *
-     * @param defaultValue デフォルト値
-     */
-    public void setDefaultValue(int defaultValue) {
-        ((State) this.state).defaultValue = defaultValue;
+    override fun updateViews(sharedPreferences: SharedPreferences?) {
+        val preferenceKey = preferenceKey
+        Log.d(TAG, "updateViews: preferenceKey = $preferenceKey")
+        super.updateViews(sharedPreferences)
+        if (sharedPreferences != null) {
+            currentValue = sharedPreferences.getInt(preferenceKey, defaultValue)
+            Log.d(TAG, "updateViews: value = $currentValue")
+            valueView.text = currentValue.toString()
+        }
     }
 
-    /**
-     * 設定可能な最小値を取得します。
-     *
-     * @return 設定可能な最小値
-     */
-    public int getMinValue() {
-        return ((State) this.state).minValue;
-    }
-
-    /**
-     * 設定可能な最小値を設定します。
-     *
-     * @param minValue 設定可能な最小値
-     */
-    public void setMinValue(int minValue) {
-        ((State) this.state).minValue = minValue;
-    }
-
-    /**
-     * 設定可能な最大値を取得します。
-     *
-     * @return 設定可能な最大値
-     */
-    public int getMaxValue() {
-        return ((State) this.state).maxValue;
-    }
-
-    /**
-     * 設定可能な最大値を設定します。
-     *
-     * @param maxValue 設定可能な最大値
-     */
-    public void setMaxValue(int maxValue) {
-        ((State) this.state).maxValue = maxValue;
-    }
-
-    /**
-     * 単位を取得します。
-     *
-     * @return 単位を表す文字列
-     */
-    public String getUnit() {
-        return ((State) this.state).unit;
-    }
-
-    /**
-     * 単位を設定します。
-     *
-     * @param unit 単位を表す文字列
-     */
-    public void setUnit(String unit) {
-        ((State) this.state).unit = unit;
-
-        // 表示へ反映する
-        this.unitView.setText(unit);
-        this.unitView.setVisibility((unit != null && unit.length() > 0) ? View.VISIBLE : View.GONE);
+    companion object {
+        /**
+         * Tag for log
+         */
+        private const val TAG = "NumberAndUnitPreferenceView"
     }
 }

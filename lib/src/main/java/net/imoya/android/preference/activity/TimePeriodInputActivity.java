@@ -146,8 +146,8 @@ public class TimePeriodInputActivity extends BaseActivity {
     protected Fragment getFirstFragment() {
         final TimePickerFragment fragment = new TimePickerFragment();
         final Time time = new Time();
-        time.setHour(this.state.timePeriod.getStartHour());
-        time.setMinute(this.state.timePeriod.getStartMinute());
+        time.setHour(this.state.timePeriod.getStart().getHour());
+        time.setMinute(this.state.timePeriod.getStart().getMinute());
         fragment.setTime(time);
         fragment.setIs24HourView(this.is24HourView);
         fragment.setScreenTitle(this.getString(R.string.preference_time_period_edit_start_title));
@@ -163,6 +163,8 @@ public class TimePeriodInputActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         Log.d(TAG, "onCreate: start");
 
+        super.onCreate(savedInstanceState);
+
         if (savedInstanceState == null) {
             this.state = new State();
             final TimePeriod timePeriod = this.getIntent().getParcelableExtra(EXTRA_TIME_PERIOD);
@@ -174,8 +176,6 @@ public class TimePeriodInputActivity extends BaseActivity {
         }
         this.is24HourView = this.getIntent().getBooleanExtra(EXTRA_IS_24_HOUR_VIEW, false);
         Log.d(TAG, "onCreate: timePeriod = " + this.state.timePeriod + ", step = " + this.state.inputStep.name() + ", is24 = " + this.is24HourView);
-
-        super.onCreate(savedInstanceState);
 
         this.setResult(Activity.RESULT_CANCELED);
     }
@@ -214,8 +214,7 @@ public class TimePeriodInputActivity extends BaseActivity {
                 Log.d(TAG, "onOptionsItemSelected: Complete");
 
                 // 終了時刻を保存する
-                this.state.timePeriod.setEndHour(time.getHour());
-                this.state.timePeriod.setEndMinute(time.getMinute());
+                this.state.timePeriod.setEnd(new Time(time.getHour(), time.getMinute(), 0));
 
                 // 呼び出し元画面へ遷移する
                 final Intent data = new Intent();
@@ -226,14 +225,16 @@ public class TimePeriodInputActivity extends BaseActivity {
                 Log.d(TAG, "onOptionsItemSelected: to EndTime");
 
                 // 開始時刻を保存する
-                this.state.timePeriod.setStartHour(time.getHour());
-                this.state.timePeriod.setStartMinute(time.getMinute());
+                this.state.timePeriod.setStart(
+                        new Time(time.getHour(), time.getMinute(), 0));
 
                 // 終了時刻入力画面へ遷移する
                 this.state.inputStep = InputStep.END;
                 final TimePickerFragment fragment = new TimePickerFragment();
                 final Time endTime = new Time(
-                        this.state.timePeriod.getEndHour(), this.state.timePeriod.getEndMinute());
+                        this.state.timePeriod.getEnd().getHour(),
+                        this.state.timePeriod.getEnd().getMinute(),
+                        0);
                 fragment.setTime(endTime);
                 fragment.setIs24HourView(this.is24HourView);
                 fragment.setScreenTitle(
@@ -259,8 +260,7 @@ public class TimePeriodInputActivity extends BaseActivity {
 
                 // 終了時刻入力中の場合は、終了時刻を保存する
                 final Time time = this.getCurrentTime();
-                this.state.timePeriod.setEndHour(time.getHour());
-                this.state.timePeriod.setEndMinute(time.getMinute());
+                this.state.timePeriod.setEnd(new Time(time.getHour(), time.getMinute(), 0));
 
                 // 開始時刻入力画面へ遷移する
                 this.state.inputStep = InputStep.START;
