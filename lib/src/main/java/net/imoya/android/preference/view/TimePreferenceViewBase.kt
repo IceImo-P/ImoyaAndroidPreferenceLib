@@ -20,7 +20,7 @@ abstract class TimePreferenceViewBase : StringPreferenceViewBase {
     /**
      * 再起動時に保存する状態オブジェクト定義
      */
-    protected class SavedState : StringPreferenceViewBase.SavedState {
+    protected open class SavedState : StringPreferenceViewBase.SavedState {
         /**
          * 24時間表示フラグ
          */
@@ -38,14 +38,14 @@ abstract class TimePreferenceViewBase : StringPreferenceViewBase {
          *
          * @param parcel [Parcel]
          */
-        private constructor(parcel: Parcel) : this(parcel, null)
+        protected constructor(parcel: Parcel) : this(parcel, null)
 
         /**
          * [Parcel] の内容で初期化するコンストラクタ
          *
          * @param parcel [Parcel]
          */
-        private constructor(parcel: Parcel, loader: ClassLoader?) : super(parcel, loader) {
+        protected constructor(parcel: Parcel, loader: ClassLoader?) : super(parcel, loader) {
             val flags = parcel.createBooleanArray()
             if (flags == null || flags.isEmpty()) {
                 throw RuntimeException("parcel.createBooleanArray returns null or empty array")
@@ -90,14 +90,24 @@ abstract class TimePreferenceViewBase : StringPreferenceViewBase {
     /**
      * 24時間表示フラグ
      */
-    var is24hourView = false
+    @JvmField
+    protected var mIs24hourView = false
+
+    /**
+     * 24時間表示フラグ
+     */
+    var is24hourView: Boolean
+        get() = mIs24hourView
+        set(value) {
+            mIs24hourView = value
+        }
 
     /**
      * コンストラクタ
      *
      * @param context [Context]
      */
-    constructor(context: Context) : super(context)
+    constructor(context: Context) : this(context, null)
 
     /**
      * コンストラクタ
@@ -105,9 +115,7 @@ abstract class TimePreferenceViewBase : StringPreferenceViewBase {
      * @param context [Context]
      * @param attrs [AttributeSet]
      */
-    constructor(context: Context, attrs: AttributeSet?) : super(
-        context, attrs
-    )
+    constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, 0)
 
     /**
      * コンストラクタ
@@ -116,9 +124,8 @@ abstract class TimePreferenceViewBase : StringPreferenceViewBase {
      * @param attrs [AttributeSet]
      * @param defStyleAttr 適用するスタイル属性値
      */
-    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(
-        context, attrs, defStyleAttr
-    )
+    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int)
+            : super(context, attrs, defStyleAttr)
 
     /**
      * コンストラクタ
@@ -142,7 +149,7 @@ abstract class TimePreferenceViewBase : StringPreferenceViewBase {
         Log.d(TAG, "loadAttributes: start")
         super.loadAttributes(values)
         Log.d(TAG, "loadAttributes: preferenceKey = $preferenceKey")
-        is24hourView = values.getBoolean(R.styleable.PreferenceView_is24HourView, false)
+        mIs24hourView = values.getBoolean(R.styleable.PreferenceView_is24HourView, false)
     }
 
     override fun createSavedState(superState: Parcelable?): SavedState {
@@ -152,14 +159,14 @@ abstract class TimePreferenceViewBase : StringPreferenceViewBase {
     override fun onSaveInstanceState(savedState: PreferenceView.SavedState) {
         super.onSaveInstanceState(savedState)
         if (savedState is SavedState) {
-            savedState.is24HourView = is24hourView
+            savedState.is24HourView = mIs24hourView
         }
     }
 
     override fun onRestoreState(savedState: PreferenceView.SavedState) {
         super.onRestoreState(savedState)
         if (savedState is SavedState) {
-            is24hourView = savedState.is24HourView
+            mIs24hourView = savedState.is24HourView
         }
     }
 

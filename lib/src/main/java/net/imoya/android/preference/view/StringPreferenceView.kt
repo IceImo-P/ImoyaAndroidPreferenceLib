@@ -36,11 +36,11 @@ import net.imoya.android.util.Log
  *  * 設定値をユーザへ表示するため、IDが &quot;@android:id/text1&quot;
  * ([android.R.id.text1])である [TextView] を配置してください。
  */
-class StringPreferenceView : StringPreferenceViewBase {
+open class StringPreferenceView : StringPreferenceViewBase {
     /**
      * 再起動時に保存する状態オブジェクト定義
      */
-    protected class SavedState : StringPreferenceViewBase.SavedState {
+    protected open class SavedState : StringPreferenceViewBase.SavedState {
         /**
          * 最大入力可能文字数
          */
@@ -51,14 +51,14 @@ class StringPreferenceView : StringPreferenceViewBase {
          *
          * @param superState [View] の状態
          */
-        constructor(superState: Parcelable?) : super(superState) {}
+        constructor(superState: Parcelable?) : super(superState)
 
         /**
          * [Parcel] の内容で初期化するコンストラクタ
          *
          * @param parcel [Parcel]
          */
-        private constructor(parcel: Parcel) : this(parcel, null)
+        protected constructor(parcel: Parcel) : this(parcel, null)
 
         /**
          * [Parcel] の内容で初期化するコンストラクタ
@@ -66,7 +66,7 @@ class StringPreferenceView : StringPreferenceViewBase {
          * @param parcel [Parcel]
          * @param loader [ClassLoader]
          */
-        private constructor(parcel: Parcel, loader: ClassLoader?) : super(parcel, loader) {
+        protected constructor(parcel: Parcel, loader: ClassLoader?) : super(parcel, loader) {
             maxLength = parcel.readInt()
         }
 
@@ -102,14 +102,24 @@ class StringPreferenceView : StringPreferenceViewBase {
     /**
      * 最大入力可能文字数
      */
-    var maxLength = 0
+    @JvmField
+    protected var mMaxLength = 0
+
+    /**
+     * 最大入力可能文字数
+     */
+    var maxLength: Int
+        get() = mMaxLength
+        set(value) {
+            mMaxLength = value
+        }
 
     /**
      * コンストラクタ
      *
      * @param context [Context]
      */
-    constructor(context: Context) : super(context)
+    constructor(context: Context) : this(context, null)
 
     /**
      * コンストラクタ
@@ -117,7 +127,7 @@ class StringPreferenceView : StringPreferenceViewBase {
      * @param context [Context]
      * @param attrs [AttributeSet]
      */
-    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
+    constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, 0)
 
     /**
      * コンストラクタ
@@ -126,11 +136,8 @@ class StringPreferenceView : StringPreferenceViewBase {
      * @param attrs [AttributeSet]
      * @param defStyleAttr 適用するスタイル属性値
      */
-    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(
-        context,
-        attrs,
-        defStyleAttr
-    )
+    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int)
+            : super(context, attrs, defStyleAttr)
 
     /**
      * コンストラクタ
@@ -140,6 +147,7 @@ class StringPreferenceView : StringPreferenceViewBase {
      * @param defStyleAttr 適用するスタイル属性値
      * @param defStyleRes 適用するスタイルのリソースID
      */
+    @Suppress("unused")
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     constructor(
         context: Context,
@@ -152,10 +160,10 @@ class StringPreferenceView : StringPreferenceViewBase {
         Log.d(TAG, "loadAttributes: start")
         super.loadAttributes(values)
         Log.d(TAG, "loadAttributes: preferenceKey = $preferenceKey")
-        maxLength = values.getInt(
+        mMaxLength = values.getInt(
             R.styleable.PreferenceView_android_maxLength, Int.MAX_VALUE
         )
-        Log.d(TAG, "loadAttributes: maxLength = $maxLength")
+        Log.d(TAG, "loadAttributes: maxLength = $mMaxLength")
     }
 
     override fun createSavedState(superState: Parcelable?): SavedState {
@@ -165,14 +173,14 @@ class StringPreferenceView : StringPreferenceViewBase {
     override fun onSaveInstanceState(savedState: PreferenceView.SavedState) {
         super.onSaveInstanceState(savedState)
         if (savedState is SavedState) {
-            savedState.maxLength = maxLength
+            savedState.maxLength = mMaxLength
         }
     }
 
     override fun onRestoreState(savedState: PreferenceView.SavedState) {
         super.onRestoreState(savedState)
         if (savedState is SavedState) {
-            maxLength = savedState.maxLength
+            mMaxLength = savedState.maxLength
         }
     }
 

@@ -7,8 +7,7 @@ import android.util.AttributeSet
 import net.imoya.android.preference.model.Time
 import net.imoya.android.preference.model.Time.Companion.parse
 import net.imoya.android.util.Log
-import net.imoya.android.util.TimeUtil.formatTime
-import java.util.*
+import net.imoya.android.util.TimeUtil
 
 /**
  * [Time] を保存する設定項目ビュー
@@ -19,7 +18,7 @@ class TimePreferenceView : TimePreferenceViewBase {
      *
      * @param context [Context]
      */
-    constructor(context: Context) : super(context)
+    constructor(context: Context) : this(context, null)
 
     /**
      * コンストラクタ
@@ -27,9 +26,7 @@ class TimePreferenceView : TimePreferenceViewBase {
      * @param context [Context]
      * @param attrs [AttributeSet]
      */
-    constructor(context: Context, attrs: AttributeSet?) : super(
-        context, attrs
-    )
+    constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, 0)
 
     /**
      * コンストラクタ
@@ -38,9 +35,8 @@ class TimePreferenceView : TimePreferenceViewBase {
      * @param attrs [AttributeSet]
      * @param defStyleAttr 適用するスタイル属性値
      */
-    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(
-        context, attrs, defStyleAttr
-    )
+    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int)
+            : super(context, attrs, defStyleAttr)
 
     /**
      * コンストラクタ
@@ -50,15 +46,10 @@ class TimePreferenceView : TimePreferenceViewBase {
      * @param defStyleAttr 適用するスタイル属性値
      * @param defStyleRes 適用するスタイルのリソースID
      */
+    @Suppress("unused")
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    constructor(
-        context: Context,
-        attrs: AttributeSet?,
-        defStyleAttr: Int,
-        defStyleRes: Int
-    ) : super(
-        context, attrs, defStyleAttr, defStyleRes
-    )
+    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int, defStyleRes: Int)
+            : super(context, attrs, defStyleAttr, defStyleRes)
 
     override val valueViewText: String
         get() {
@@ -81,16 +72,15 @@ class TimePreferenceView : TimePreferenceViewBase {
     }
 
     private fun getTimeText(time: Time): String {
-        return formatTime(
+        return TimeUtil.formatTime(
             this.context, time.hour, time.minute, is24hourView
         )
     }
 
     companion object {
+        /**
+         * Tag for log
+         */
         private const val TAG = "TimePreferenceView"
-        fun getTimeText(format: String, hour: Int, minute: Int): String {
-            return format.replace("#hour#", hour.toString())
-                .replace("#minute#", String.format(Locale.US, "%02d", minute))
-        }
     }
 }

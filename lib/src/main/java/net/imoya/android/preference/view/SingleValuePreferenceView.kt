@@ -101,7 +101,7 @@ abstract class SingleValuePreferenceView : PreferenceView {
      *
      * @param context [Context]
      */
-    constructor(context: Context) : super(context)
+    constructor(context: Context) : this(context, null)
 
     /**
      * コンストラクタ
@@ -109,7 +109,7 @@ abstract class SingleValuePreferenceView : PreferenceView {
      * @param context [Context]
      * @param attrs [AttributeSet]
      */
-    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
+    constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, 0)
 
     /**
      * コンストラクタ
@@ -137,11 +137,11 @@ abstract class SingleValuePreferenceView : PreferenceView {
         context, attrs, defStyleAttr, defStyleRes
     )
 
+    @CallSuper
     override fun loadAttributes(values: TypedArray) {
         super.loadAttributes(values)
-        preferenceKey = values.getString(R.styleable.PreferenceView_android_key)
-            ?: throw RuntimeException("Preference key is not defined at layout XML")
-        Log.d(TAG, "onSaveInstanceState: preferenceKey = $preferenceKey")
+        preferenceKey = values.getString(R.styleable.PreferenceView_android_key) ?: ""
+        Log.d(TAG, "loadAttributes: preferenceKey = $preferenceKey")
     }
 
     override fun createSavedState(superState: Parcelable?): SavedState {

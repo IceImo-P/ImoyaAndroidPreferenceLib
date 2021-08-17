@@ -19,7 +19,7 @@ class TimePeriodPreferenceView : TimePreferenceViewBase {
      *
      * @param context [Context]
      */
-    constructor(context: Context) : super(context)
+    constructor(context: Context) : this(context, null)
 
     /**
      * コンストラクタ
@@ -27,9 +27,7 @@ class TimePeriodPreferenceView : TimePreferenceViewBase {
      * @param context [Context]
      * @param attrs [AttributeSet]
      */
-    constructor(context: Context, attrs: AttributeSet?) : super(
-        context, attrs
-    )
+    constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, 0)
 
     /**
      * コンストラクタ
@@ -38,9 +36,8 @@ class TimePeriodPreferenceView : TimePreferenceViewBase {
      * @param attrs [AttributeSet]
      * @param defStyleAttr 適用するスタイル属性値
      */
-    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(
-        context, attrs, defStyleAttr
-    )
+    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int)
+            : super(context, attrs, defStyleAttr)
 
     /**
      * コンストラクタ
@@ -50,24 +47,23 @@ class TimePeriodPreferenceView : TimePreferenceViewBase {
      * @param defStyleAttr 適用するスタイル属性値
      * @param defStyleRes 適用するスタイルのリソースID
      */
+    @Suppress("unused")
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     constructor(
         context: Context,
         attrs: AttributeSet?,
         defStyleAttr: Int,
         defStyleRes: Int
-    ) : super(
-        context, attrs, defStyleAttr, defStyleRes
-    )
+    ) : super(context, attrs, defStyleAttr, defStyleRes)
 
     override val valueViewText: String
         get() {
-            val period = getTimePeriod(currentValue)
+            val period = getTimePeriod(mCurrentValue)
             Log.d(TAG, "updateViews: period = $period")
             return if (period != null) {
                 getTimePeriodText(period)
             } else {
-                valueForNull ?: ""
+                mValueForNull ?: ""
             }
         }
 

@@ -14,6 +14,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.FrameLayout
 import android.widget.TextView
+import androidx.annotation.CallSuper
 import androidx.annotation.LayoutRes
 import androidx.core.widget.TextViewCompat
 import net.imoya.android.preference.R
@@ -39,7 +40,7 @@ import net.imoya.android.util.ViewUtil
  * - ビューの内容を定義するレイアウトリソースを指定します。
  * 必要な内容は「カスタムレイアウト」の項を参照してください。
  *
- * <h2>カスタムレイアウト</h2>
+ *  # カスタムレイアウト
  *
  * レイアウトXMLへ [PreferenceCategoryView] を配置する際、 android:layout
  * ([android.R.attr.layout])
@@ -53,43 +54,6 @@ import net.imoya.android.util.ViewUtil
  */
 @Suppress("unused")
 open class PreferenceCategoryView : FrameLayout, PreferenceItemView {
-    /**
-     * 状態オブジェクト
-     */
-    private class State {
-        /**
-         * ビューの title 文言
-         */
-        var title: String? = null
-
-        /**
-         * 状態オブジェクトの内容を、自身へコピーします。
-         *
-         * @param source コピー元
-         */
-        fun copyFrom(source: State) {
-            title = source.title
-        }
-
-        /**
-         * [Parcel] の内容を読み取り、自身へ保存します。
-         *
-         * @param in [Parcel]
-         */
-        fun readFromParcel(`in`: Parcel) {
-            title = `in`.readString()
-        }
-
-        /**
-         * 自身の内容を [Parcel] へ保存します。
-         *
-         * @param out [Parcel]
-         */
-        fun writeToParcel(out: Parcel) {
-            out.writeString(title)
-        }
-    }
-
     /**
      * 再起動時に保存する状態オブジェクト定義
      */
@@ -172,24 +136,25 @@ open class PreferenceCategoryView : FrameLayout, PreferenceItemView {
     /**
      * ビューの有効、無効を連動させる、[SharedPreferences] のキー
      */
-    private var dependency: String? = null
+    @JvmField
+    protected var mDependency: String? = null
+
+    /**
+     * ビューの有効、無効を連動させる、[SharedPreferences] のキー
+     */
+    @Suppress("MemberVisibilityCanBePrivate")
+    var dependency: String?
+        get() = mDependency
+        set(value) {
+            mDependency = value
+        }
 
     /**
      * コンストラクタ
      *
      * @param context [Context]
      */
-    constructor(context: Context) : super(context) {
-        Log.d(
-            TAG,
-            "PreferenceCategoryView#__construct(c): start. class = " + this.javaClass.simpleName + ", instance = " + super.toString()
-        )
-        init(context, null, 0, 0)
-        Log.d(
-            TAG,
-            "PreferenceCategoryView#__construct(c): end. class = " + this.javaClass.simpleName + ", instance = " + super.toString()
-        )
-    }
+    constructor(context: Context) : this(context, null)
 
     /**
      * コンストラクタ
@@ -197,17 +162,7 @@ open class PreferenceCategoryView : FrameLayout, PreferenceItemView {
      * @param context [Context]
      * @param attrs [AttributeSet]
      */
-    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {
-        Log.d(
-            TAG,
-            "PreferenceCategoryView#__construct(c,a): start. class = " + this.javaClass.simpleName + ", instance = " + super.toString()
-        )
-        init(context, attrs, 0, 0)
-        Log.d(
-            TAG,
-            "PreferenceCategoryView#__construct(c,a): end. class = " + this.javaClass.simpleName + ", instance = " + super.toString()
-        )
-    }
+    constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, 0)
 
     /**
      * コンストラクタ
@@ -216,11 +171,8 @@ open class PreferenceCategoryView : FrameLayout, PreferenceItemView {
      * @param attrs [AttributeSet]
      * @param defStyleAttr 適用するスタイル属性値
      */
-    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(
-        context,
-        attrs,
-        defStyleAttr
-    ) {
+    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int)
+            : super(context, attrs, defStyleAttr) {
         Log.d(
             TAG,
             "PreferenceCategoryView#__construct(c,a,i): start. class = " + this.javaClass.simpleName + ", instance = " + super.toString()
@@ -289,8 +241,8 @@ open class PreferenceCategoryView : FrameLayout, PreferenceItemView {
                 values.getDrawable(R.styleable.PreferenceView_titleIcon), null, null, null
             )
         }
-        dependency = values.getString(R.styleable.PreferenceView_android_dependency)
-        Log.d(TAG, "loadAttributes: title = $title, dependency = $dependency")
+        mDependency = values.getString(R.styleable.PreferenceView_android_dependency)
+        Log.d(TAG, "loadAttributes: title = $title, dependency = $mDependency")
     }
 
     /**
@@ -343,8 +295,9 @@ open class PreferenceCategoryView : FrameLayout, PreferenceItemView {
      *
      * @param savedState 一時保存される [SavedState]
      */
-    protected open fun onSaveInstanceState(savedState: SavedState?) {
-        // 何もしない(既にStateに保存されている内容が保存されれば問題ない)
+    @CallSuper
+    protected open fun onSaveInstanceState(savedState: SavedState) {
+        savedState.title = title ?: ""
     }
 
     /**
@@ -363,6 +316,7 @@ open class PreferenceCategoryView : FrameLayout, PreferenceItemView {
      *
      * @param savedState 一時保存された [SavedState]
      */
+    @CallSuper
     protected open fun onRestoreState(savedState: SavedState) {
         // ビューへ反映する
         if (titleView != null) {
@@ -412,9 +366,9 @@ open class PreferenceCategoryView : FrameLayout, PreferenceItemView {
      * @param sharedPreferences [SharedPreferences]
      */
     open fun updateViews(sharedPreferences: SharedPreferences?) {
-        Log.d(TAG, "updateViews: title = $title dependency = $dependency")
-        if (dependency != null && sharedPreferences != null) {
-            this.isEnabled = sharedPreferences.getBoolean(dependency, false)
+        Log.d(TAG, "updateViews: title = $title dependency = $mDependency")
+        if (mDependency != null && sharedPreferences != null) {
+            this.isEnabled = sharedPreferences.getBoolean(mDependency, false)
         }
     }
 
@@ -428,7 +382,7 @@ open class PreferenceCategoryView : FrameLayout, PreferenceItemView {
     override fun onPreferenceChange(
         sharedPreferences: SharedPreferences, key: String
     ): Boolean {
-        if (key == dependency) {
+        if (key == mDependency) {
             updateViews(sharedPreferences)
             return true
         }
@@ -437,9 +391,10 @@ open class PreferenceCategoryView : FrameLayout, PreferenceItemView {
 
     override fun setEnabled(enabled: Boolean) {
         Log.d(TAG, "setEnabled: enabled = $enabled")
+        super.setEnabled(enabled)
 
         // 全ての子ビューへ反映する
-        ViewUtil.setDeepEnabled(this, enabled)
+        ViewUtil.setEnabledDescendants(this, enabled)
     }
 
     companion object {

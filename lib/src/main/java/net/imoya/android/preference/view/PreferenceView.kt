@@ -162,19 +162,19 @@ open class PreferenceView : LinearLayout, PreferenceItemView {
      * title 表示用 [View]
      */
     @Suppress("MemberVisibilityCanBePrivate")
-    protected var titleView: TextView? = null
+    protected lateinit var titleView: TextView
 
     /**
      * summary 表示用 [View]
      */
     @Suppress("MemberVisibilityCanBePrivate")
-    protected var summaryView: TextView? = null
+    protected lateinit var summaryView: TextView
 
     /**
      * note 表示用 [View]
      */
     @Suppress("MemberVisibilityCanBePrivate")
-    protected var noteView: TextView? = null
+    protected lateinit var noteView: TextView
 
     /**
      * ビューの有効、無効を連動させる、[SharedPreferences] のキー
@@ -192,17 +192,7 @@ open class PreferenceView : LinearLayout, PreferenceItemView {
      *
      * @param context [Context]
      */
-    constructor(context: Context) : super(context) {
-        Log.d(
-            TAG,
-            "PreferenceView#__construct(c): start. class = " + this.javaClass.simpleName + ", instance = " + super.toString()
-        )
-        init(context, null, 0, 0)
-        Log.d(
-            TAG,
-            "PreferenceView#__construct(c): end. class = " + this.javaClass.simpleName + ", instance = " + super.toString()
-        )
-    }
+    constructor(context: Context) : this(context, null)
 
     /**
      * コンストラクタ
@@ -210,17 +200,7 @@ open class PreferenceView : LinearLayout, PreferenceItemView {
      * @param context [Context]
      * @param attrs [AttributeSet]
      */
-    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {
-        Log.d(
-            TAG,
-            "PreferenceView#__construct(c,a): start. class = " + this.javaClass.simpleName + ", instance = " + super.toString()
-        )
-        init(context, attrs, 0, 0)
-        Log.d(
-            TAG,
-            "PreferenceView#__construct(c,a): end. class = " + this.javaClass.simpleName + ", instance = " + super.toString()
-        )
-    }
+    constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, 0)
 
     /**
      * コンストラクタ
@@ -235,13 +215,13 @@ open class PreferenceView : LinearLayout, PreferenceItemView {
         defStyleAttr
     ) {
         Log.d(
-            TAG,
-            "PreferenceView#__construct(c,a,i): start. class = " + this.javaClass.simpleName + ", instance = " + super.toString()
+            TAG, "PreferenceView#__construct(c,a,i): start."
+                    + " class = ${this.javaClass.simpleName}, instance = ${super.toString()}"
         )
         init(context, attrs, defStyleAttr, 0)
         Log.d(
-            TAG,
-            "PreferenceView#__construct(c,a,i): end. class = " + this.javaClass.simpleName + ", instance = " + super.toString()
+            TAG, "PreferenceView#__construct(c,a,i): end."
+                    + " class = ${this.javaClass.simpleName}, instance = ${super.toString()}"
         )
     }
 
@@ -260,8 +240,15 @@ open class PreferenceView : LinearLayout, PreferenceItemView {
         defStyleAttr: Int,
         defStyleRes: Int
     ) : super(context, attrs, defStyleAttr, defStyleRes) {
-        // Log.d(TAG, "PreferenceView#__construct(c,a,i1,i2): start. class = " + this.getClass().getSimpleName());
+        Log.d(
+            TAG, "PreferenceView#__construct(c,a,i1,i2): start."
+                    + " class = ${this.javaClass.simpleName}, instance = ${super.toString()}"
+        )
         init(context, attrs, defStyleAttr, defStyleRes)
+        Log.d(
+            TAG, "PreferenceView#__construct(c,a,i1,i2): end."
+                    + " class = ${this.javaClass.simpleName}, instance = ${super.toString()}"
+        )
     }
 
     /**
@@ -293,37 +280,38 @@ open class PreferenceView : LinearLayout, PreferenceItemView {
      *
      * @param values 取得した属性値
      */
+    @CallSuper
     protected open fun loadAttributes(values: TypedArray) {
-        Log.d(TAG, "loadAttributes: start")
+        Log.d(TAG, "${this.javaClass.simpleName}: loadAttributes: start")
 
         val title = values.getString(R.styleable.PreferenceView_android_title)
-        titleView!!.text = title
-        ViewUtil.setVisibleOrGone(titleView!!, title != null)
+        titleView.text = title
+        ViewUtil.setVisibleOrGone(titleView, title?.isNotEmpty() ?: false)
         TextViewCompat.setCompoundDrawablesRelativeWithIntrinsicBounds(
-            titleView!!,
+            titleView,
             values.getDrawable(R.styleable.PreferenceView_titleIcon), null, null, null
         )
 
         val summary = values.getString(R.styleable.PreferenceView_android_summary)
-        summaryView!!.text = summary
-        ViewUtil.setVisibleOrGone(summaryView!!, summary != null)
+        summaryView.text = summary
+        ViewUtil.setVisibleOrGone(summaryView, summary?.isNotEmpty() ?: false)
         TextViewCompat.setCompoundDrawablesRelativeWithIntrinsicBounds(
-            summaryView!!,
+            summaryView,
             values.getDrawable(R.styleable.PreferenceView_summaryIcon), null, null, null
         )
 
         val note = values.getString(R.styleable.PreferenceView_note)
-        noteView!!.text = note
-        ViewUtil.setVisibleOrGone(noteView!!, note != null)
+        noteView.text = note
+        ViewUtil.setVisibleOrGone(noteView, note?.isNotEmpty() ?: false)
         TextViewCompat.setCompoundDrawablesRelativeWithIntrinsicBounds(
-            noteView!!,
+            noteView,
             values.getDrawable(R.styleable.PreferenceView_noteIcon), null, null, null
         )
 
         dependency = values.getString(R.styleable.PreferenceView_android_dependency)
         Log.d(
             TAG,
-            "loadAttributes: title = $title, summary = $summary,"
+            "${this.javaClass.simpleName}: loadAttributes: title = $title, summary = $summary,"
                     + " note = $note, dependency = $dependency"
         )
     }
@@ -360,6 +348,8 @@ open class PreferenceView : LinearLayout, PreferenceItemView {
         this.isClickable = false
         this.isFocusable = false
         findViewById<View>(android.R.id.content).setOnClickListener(clickListener)
+        invalidate()
+        requestLayout()
         Log.d(TAG, "init: end")
     }
 
@@ -406,15 +396,9 @@ open class PreferenceView : LinearLayout, PreferenceItemView {
     @CallSuper
     protected open fun onRestoreState(savedState: SavedState) {
         // ビューへ反映する
-        if (titleView != null) {
-            title = savedState.title
-        }
-        if (summaryView != null) {
-            summary = savedState.summary
-        }
-        if (noteView != null) {
-            note = savedState.note
-        }
+        title = savedState.title
+        summary = savedState.summary
+        note = savedState.note
     }
 
     /**
@@ -435,7 +419,7 @@ open class PreferenceView : LinearLayout, PreferenceItemView {
      * [View] クリック時の処理を行います。
      */
     protected open fun onClickRootView() {
-        Log.d(TAG, "onClickRootView: start")
+        Log.v(TAG, "onClickRootView: start")
 
         // リスナへ通知する
         if (onPreferenceViewClickListener != null) {
@@ -446,11 +430,12 @@ open class PreferenceView : LinearLayout, PreferenceItemView {
     /**
      * ルート [View] クリック時の処理
      */
-    private val clickListener = OnClickListener { view: View ->
-        Log.d(TAG, "onClick: start")
-        if (view.id == android.R.id.content) {
-            onClickRootView()
-        }
+    private val clickListener = OnClickListener {
+        Log.v(TAG, "onClick: start")
+//        if (it.id == android.R.id.content) {
+//            onClickRootView()
+//        }
+        onClickRootView()
     }
 
     /**
@@ -460,10 +445,10 @@ open class PreferenceView : LinearLayout, PreferenceItemView {
      * 設定すると、クリック時に [OnPreferenceViewClickListener]
      * が動作しない等の問題が発生します。
      *
-     * @param l [View.OnClickListener] 又は null
+     * @param l [View.OnClickListener] or null
      */
     override fun setOnClickListener(l: OnClickListener?) {
-        Log.d(TAG, "setOnClickListener")
+        Log.w(TAG, "Called PreferenceView.setOnClickListener")
         super.setOnClickListener(l)
     }
 
@@ -471,9 +456,12 @@ open class PreferenceView : LinearLayout, PreferenceItemView {
      * title 文言
      */
     var title: String?
-        get() = titleView?.text?.toString()
+        get() = titleView.text?.toString()
         set(value) {
-            titleView?.text = value
+            titleView.text = value
+            ViewUtil.setVisibleOrGone(titleView, value?.isNotEmpty() ?: false)
+            invalidate()
+            requestLayout()
         }
 
     /**
@@ -483,11 +471,9 @@ open class PreferenceView : LinearLayout, PreferenceItemView {
      */
     @Suppress("unused")
     fun setTitleIcon(icon: Drawable?) {
-        if (titleView != null) {
-            TextViewCompat.setCompoundDrawablesRelativeWithIntrinsicBounds(
-                titleView!!, icon, null, null, null
-            )
-        }
+        TextViewCompat.setCompoundDrawablesRelativeWithIntrinsicBounds(
+            titleView, icon, null, null, null
+        )
     }
 
     /**
@@ -495,12 +481,12 @@ open class PreferenceView : LinearLayout, PreferenceItemView {
      */
     @Suppress("MemberVisibilityCanBePrivate")
     var summary: String?
-        get() = summaryView?.text?.toString()
+        get() = summaryView.text?.toString()
         set(value) {
-            if (summaryView != null) {
-                summaryView!!.text = value
-                ViewUtil.setVisibleOrGone(summaryView!!, value != null)
-            }
+            summaryView.text = value
+            ViewUtil.setVisibleOrGone(summaryView, value?.isNotEmpty() ?: false)
+            invalidate()
+            requestLayout()
         }
 
     /**
@@ -510,11 +496,9 @@ open class PreferenceView : LinearLayout, PreferenceItemView {
      */
     @Suppress("unused")
     fun setSummaryIcon(icon: Drawable?) {
-        if (summaryView != null) {
-            TextViewCompat.setCompoundDrawablesRelativeWithIntrinsicBounds(
-                summaryView!!, icon, null, null, null
-            )
-        }
+        TextViewCompat.setCompoundDrawablesRelativeWithIntrinsicBounds(
+            summaryView, icon, null, null, null
+        )
     }
 
     /**
@@ -522,12 +506,12 @@ open class PreferenceView : LinearLayout, PreferenceItemView {
      */
     @Suppress("MemberVisibilityCanBePrivate")
     var note: String?
-        get() = noteView?.text?.toString()
+        get() = noteView.text?.toString()
         set(value) {
-            if (noteView != null) {
-                noteView!!.text = value
-                ViewUtil.setVisibleOrGone(noteView!!, value != null)
-            }
+            noteView.text = value
+            ViewUtil.setVisibleOrGone(noteView, value?.isNotEmpty() ?: false)
+            invalidate()
+            requestLayout()
         }
 
     /**
@@ -537,11 +521,9 @@ open class PreferenceView : LinearLayout, PreferenceItemView {
      */
     @Suppress("unused")
     fun setNoteIcon(icon: Drawable?) {
-        if (noteView != null) {
-            TextViewCompat.setCompoundDrawablesRelativeWithIntrinsicBounds(
-                noteView!!, icon, null, null, null
-            )
-        }
+        TextViewCompat.setCompoundDrawablesRelativeWithIntrinsicBounds(
+            noteView, icon, null, null, null
+        )
     }
 
     /**
@@ -549,9 +531,9 @@ open class PreferenceView : LinearLayout, PreferenceItemView {
      *
      * @param sharedPreferences [SharedPreferences]
      */
-    open fun updateViews(sharedPreferences: SharedPreferences?) {
+    open fun updateViews(sharedPreferences: SharedPreferences) {
         Log.d(TAG, "updateViews: title = $title, dependency = $dependency")
-        if (dependency != null && sharedPreferences != null) {
+        if (dependency != null) {
             this.isEnabled = sharedPreferences.getBoolean(dependency, false)
         }
     }
@@ -574,9 +556,10 @@ open class PreferenceView : LinearLayout, PreferenceItemView {
 
     override fun setEnabled(enabled: Boolean) {
         Log.d(TAG, "setEnabled: enabled = $enabled")
+        super.setEnabled(enabled)
 
         // 全ての子ビューへ反映する
-        ViewUtil.setDeepEnabled(this, enabled)
+        ViewUtil.setEnabledDescendants(this, enabled)
     }
 
     companion object {

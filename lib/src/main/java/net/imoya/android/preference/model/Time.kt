@@ -83,7 +83,7 @@ data class Time(
                 separatorPos1 + 1,
                 separatorPos2
             ) else s.substring(separatorPos1 + 1)
-            val second = if (hasSecond) s.substring(separatorPos2) else ""
+            val second = if (hasSecond) s.substring(separatorPos2 + 1) else ""
 
             // 時, 分, 秒を取得し、フィールドへ保存する
             val result = Time()

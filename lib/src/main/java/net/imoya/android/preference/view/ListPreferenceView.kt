@@ -20,8 +20,7 @@ import net.imoya.android.util.LogUtil
  * 固定の選択肢より選択する設定項目ビュー
  *
  * 設定項目風の [View] です。
- * [SharedPreferences] に保存される1個の設定値に対応する文字列を、
- * [TextView] へ表示します。
+ * [SharedPreferences] に保存される1個の設定値に対応する文字列を [TextView] へ表示します。
  *
  * Layout XML上で指定可能な attributes は、[PreferenceView],
  * [SingleValuePreferenceView] に以下を加えたものとなります:
@@ -33,17 +32,12 @@ import net.imoya.android.util.LogUtil
  * このビューに表示する設定値が未保存の場合に使用する、デフォルト値を指定します。
  * この属性が存在しない場合は、最初の選択肢をデフォルト値とします。
  *
- * <h2>カスタムレイアウト</h2>
+ *  # カスタムレイアウト
  *
- * レイアウトXMLへ [SwitchPreferenceView] を配置する際、 android:layout
- * ([android.R.attr.layout])
+ * レイアウトXMLへ [ListPreferenceView] を配置する際、 android:layout([android.R.attr.layout])
  * 属性を指定することで、自由に定義されたレイアウトを適用することができます。
  *
- * 適用するレイアウトは、 [PreferenceView]
- * の説明に記載された規則に加え、最低限次の規則に従ってください:
- *  * 設定値をユーザへ表示するため、IDが &quot;@android:id/text1&quot;
- * ([android.R.id.text1])である [TextView] を配置してください。
- *
+ * 適用するレイアウトは [PreferenceView] の説明に記載された規則に従ってください。
  */
 abstract class ListPreferenceView : SingleValuePreferenceView {
     /**
@@ -118,8 +112,7 @@ abstract class ListPreferenceView : SingleValuePreferenceView {
     /**
      * 選択肢の表示用文字列リスト
      */
-    var entries: Array<String> = arrayOf()
-        get() = field.clone()
+    lateinit var entries: Array<String>
 
     /**
      * 選択中の項目を表示する [TextView]
@@ -132,7 +125,7 @@ abstract class ListPreferenceView : SingleValuePreferenceView {
      *
      * @param context [Context]
      */
-    constructor(context: Context) : super(context)
+    constructor(context: Context) : this(context, null)
 
     /**
      * コンストラクタ
@@ -140,9 +133,7 @@ abstract class ListPreferenceView : SingleValuePreferenceView {
      * @param context [Context]
      * @param attrs [AttributeSet]
      */
-    constructor(context: Context, attrs: AttributeSet?) : super(
-        context, attrs
-    )
+    constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, 0)
 
     /**
      * コンストラクタ
@@ -151,9 +142,8 @@ abstract class ListPreferenceView : SingleValuePreferenceView {
      * @param attrs [AttributeSet]
      * @param defStyleAttr 適用するスタイル属性値
      */
-    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(
-        context, attrs, defStyleAttr
-    )
+    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int)
+            : super(context, attrs, defStyleAttr)
 
     /**
      * コンストラクタ
@@ -165,13 +155,8 @@ abstract class ListPreferenceView : SingleValuePreferenceView {
      */
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     constructor(
-        context: Context?,
-        attrs: AttributeSet?,
-        defStyleAttr: Int,
-        defStyleRes: Int
-    ) : super(
-        context!!, attrs, defStyleAttr, defStyleRes
-    )
+        context: Context, attrs: AttributeSet?, defStyleAttr: Int, defStyleRes: Int
+    ) : super(context, attrs, defStyleAttr, defStyleRes)
 
     /**
      * デフォルトのレイアウトリソースIDを返します。
@@ -196,14 +181,15 @@ abstract class ListPreferenceView : SingleValuePreferenceView {
      * @param values 取得した属性値
      */
     override fun loadAttributes(values: TypedArray) {
-        Log.d(TAG, "loadAttributes: start")
         super.loadAttributes(values)
-        Log.d(TAG, "loadAttributes: preferenceKey = $preferenceKey")
         val entriesId = values.getResourceId(R.styleable.PreferenceView_android_entries, 0)
         entries =
             if (entriesId != 0) values.resources.getStringArray(entriesId)
             else throw RuntimeException("entry_values is not defined at layout XML")
-        Log.d(TAG, "loadAttributes: entries = ${LogUtil.logString(entries)}")
+        Log.d(
+            TAG, "loadAttributes: preferenceKey = $preferenceKey"
+                    + ", entries = ${LogUtil.logString(entries)}"
+        )
     }
 
     override fun createSavedState(superState: Parcelable?): SavedState {
@@ -214,6 +200,8 @@ abstract class ListPreferenceView : SingleValuePreferenceView {
         super.onSaveInstanceState(savedState)
         if (savedState is SavedState) {
             savedState.entries = entries
+        } else {
+            Log.w(TAG, "onSaveInstanceState(s): savedState is not SavedState")
         }
     }
 
@@ -229,15 +217,14 @@ abstract class ListPreferenceView : SingleValuePreferenceView {
      *
      * @param sharedPreferences [SharedPreferences]
      */
-    override fun updateViews(sharedPreferences: SharedPreferences?) {
-        val key = preferenceKey
-        Log.d(TAG, "updateViews: key = $key")
+    override fun updateViews(sharedPreferences: SharedPreferences) {
+        Log.d(TAG, "updateViews: key = $preferenceKey")
         super.updateViews(sharedPreferences)
-        if (sharedPreferences != null) {
-            val index = getSelectedIndex(sharedPreferences)
-            Log.d(TAG, "updateViews: index = $index")
-            selectionView.text = entries[index]
-        }
+        val index = getSelectedIndex(sharedPreferences)
+        Log.d(TAG, "updateViews: entries = ${LogUtil.logString(entries)}, index = $index")
+        selectionView.text = entries[index]
+        invalidate()
+        requestLayout()
     }
 
     /**

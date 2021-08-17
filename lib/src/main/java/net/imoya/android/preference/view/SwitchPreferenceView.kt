@@ -51,7 +51,7 @@ open class SwitchPreferenceView : SingleValuePreferenceView {
     /**
      * 再起動時に保存する状態オブジェクト定義
      */
-    protected class SavedState : SingleValuePreferenceView.SavedState {
+    protected open class SavedState : SingleValuePreferenceView.SavedState {
         /**
          * 現在のON/OFF状態
          */
@@ -74,14 +74,14 @@ open class SwitchPreferenceView : SingleValuePreferenceView {
          *
          * @param parcel [Parcel]
          */
-        private constructor(parcel: Parcel): this(parcel, null)
+        protected constructor(parcel: Parcel): this(parcel, null)
 
         /**
          * [Parcel] の内容で初期化するコンストラクタ
          *
          * @param parcel [Parcel]
          */
-        private constructor(parcel: Parcel, loader: ClassLoader? = null) : super(parcel, loader) {
+        protected constructor(parcel: Parcel, loader: ClassLoader? = null) : super(parcel, loader) {
             val booleans = parcel.createBooleanArray()
             if (booleans == null || booleans.size < 2) {
                 throw RuntimeException("Invalid parcel content")
@@ -138,19 +138,40 @@ open class SwitchPreferenceView : SingleValuePreferenceView {
     /**
      * 現在のON/OFF状態
      */
-    private var currentValue = false
+    @JvmField
+    protected var mCurrentValue = false
+
+    /**
+     * 現在のON/OFF状態
+     */
+    @Suppress("unused", "MemberVisibilityCanBePrivate")
+    var currentValue: Boolean
+        get() = mCurrentValue
+        set(value) {
+            mCurrentValue = value
+        }
 
     /**
      * デフォルト値
      */
-    private var defaultValue = false
+    @JvmField
+    protected var mDefaultValue = false
+
+    /**
+     * デフォルト値
+     */
+    var defaultValue: Boolean
+        get() = mDefaultValue
+        set(value) {
+            mDefaultValue = value
+        }
 
     /**
      * コンストラクタ
      *
      * @param context [Context]
      */
-    constructor(context: Context) : super(context)
+    constructor(context: Context) : this(context, null)
 
     /**
      * コンストラクタ
@@ -158,9 +179,7 @@ open class SwitchPreferenceView : SingleValuePreferenceView {
      * @param context [Context]
      * @param attrs [AttributeSet]
      */
-    constructor(context: Context, attrs: AttributeSet?) : super(
-        context, attrs
-    )
+    constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, 0)
 
     /**
      * コンストラクタ
@@ -181,6 +200,7 @@ open class SwitchPreferenceView : SingleValuePreferenceView {
      * @param defStyleAttr 適用するスタイル属性値
      * @param defStyleRes 適用するスタイルのリソースID
      */
+    @Suppress("unused")
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     constructor(
         context: Context,
@@ -203,10 +223,10 @@ open class SwitchPreferenceView : SingleValuePreferenceView {
     override fun loadAttributes(values: TypedArray) {
         Log.d(TAG, "loadAttributes: start")
         super.loadAttributes(values)
-        defaultValue = values.getBoolean(
+        mDefaultValue = values.getBoolean(
             R.styleable.PreferenceView_android_defaultValue, false
         )
-        Log.d(TAG, "loadAttributes: defaultValue = $defaultValue")
+        Log.d(TAG, "loadAttributes: defaultValue = $mDefaultValue")
     }
 
     override fun createSavedState(superState: Parcelable?): SavedState {
@@ -216,16 +236,16 @@ open class SwitchPreferenceView : SingleValuePreferenceView {
     override fun onSaveInstanceState(savedState: PreferenceView.SavedState) {
         super.onSaveInstanceState(savedState)
         if (savedState is SavedState) {
-            savedState.currentValue = currentValue
-            savedState.defaultValue = defaultValue
+            savedState.currentValue = mCurrentValue
+            savedState.defaultValue = mDefaultValue
         }
     }
 
     override fun onRestoreState(savedState: PreferenceView.SavedState) {
         super.onRestoreState(savedState)
         if (savedState is SavedState) {
-            currentValue = savedState.currentValue
-            defaultValue = savedState.defaultValue
+            mCurrentValue = savedState.currentValue
+            mDefaultValue = savedState.defaultValue
         }
     }
 
@@ -235,27 +255,27 @@ open class SwitchPreferenceView : SingleValuePreferenceView {
      * @return 現在のON/OFF状態
      */
     fun getIsOn(): Boolean {
-        return currentValue
+        return mCurrentValue
     }
 
-    override fun updateViews(sharedPreferences: SharedPreferences?) {
+    override fun updateViews(sharedPreferences: SharedPreferences) {
         val preferenceKey = preferenceKey
         Log.d(TAG, "updateViews: preferenceKey = $preferenceKey")
         super.updateViews(sharedPreferences)
-        if (sharedPreferences != null) {
-            currentValue = sharedPreferences.getBoolean(preferenceKey, defaultValue)
-            Log.d(TAG, "updateViews: value = $currentValue")
-            compoundButton.isChecked = currentValue
-        }
+        mCurrentValue = sharedPreferences.getBoolean(preferenceKey, mDefaultValue)
+        Log.d(TAG, "updateViews: value = $mCurrentValue")
+        compoundButton.isChecked = mCurrentValue
+        invalidate()
+        requestLayout()
     }
 
     override fun onClickRootView() {
         super.onClickRootView()
 
         // ON/OFF状態を切り替える
-        Log.d(TAG, "onClickRootView: before = $currentValue, after = ${!currentValue}")
-        currentValue = !currentValue
-        compoundButton.isChecked = currentValue
+        Log.d(TAG, "onClickRootView: before = $mCurrentValue, after = ${!mCurrentValue}")
+        mCurrentValue = !mCurrentValue
+        compoundButton.isChecked = mCurrentValue
 
         // リスナへ変更を通知する
         if (onPreferenceChangeListener != null) {

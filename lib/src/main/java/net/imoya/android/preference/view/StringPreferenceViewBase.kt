@@ -29,7 +29,7 @@ import net.imoya.android.util.Log
  *  * app:valueForNull([R.attr.valueForNull]) -
  * 設定値が null の場合に表示する文字列を指定します。
  *
- * <h2>カスタムレイアウト</h2>
+ *  # カスタムレイアウト
  *
  * レイアウトXMLへ [SwitchPreferenceView] を配置する際、 android:layout
  * ([android.R.attr.layout])
@@ -39,7 +39,6 @@ import net.imoya.android.util.Log
  * の説明に記載された規則に加え、最低限次の規則に従ってください:
  *  * 設定値をユーザへ表示するため、IDが &quot;@android:id/text1&quot;
  * ([android.R.id.text1])である [TextView] を配置してください。
- *
  */
 abstract class StringPreferenceViewBase : SingleValuePreferenceView {
     /**
@@ -87,6 +86,14 @@ abstract class StringPreferenceViewBase : SingleValuePreferenceView {
             valueForNull = parcel.readString()
         }
 
+        override fun writeToParcel(out: Parcel, flags: Int) {
+            super.writeToParcel(out, flags)
+
+            out.writeString(currentValue)
+            out.writeString(defaultValue)
+            out.writeString(valueForNull)
+        }
+
         companion object {
             /**
              * [Parcelable] 対応用 [Creator]
@@ -119,21 +126,55 @@ abstract class StringPreferenceViewBase : SingleValuePreferenceView {
     /**
      * 現在の設定値
      */
-    protected var currentValue: String? = null
+    @JvmField
+    protected var mCurrentValue: String? = null
+
+    /**
+     * 現在の設定値
+     */
+    protected var currentValue: String?
+        get() = mCurrentValue
+        set(value) {
+            mCurrentValue = value
+            invalidate()
+            requestLayout()
+        }
 
     /**
      * デフォルト値
      */
-    protected var defaultValue: String? = null
+    @JvmField
+    protected var mDefaultValue: String? = null
+
+    /**
+     * デフォルト値
+     */
+    @Suppress("MemberVisibilityCanBePrivate")
+    protected var defaultValue: String?
+        get() = mDefaultValue
+        set(value) {
+            mDefaultValue = value
+        }
 
     /**
      * null時に表示する文言
      */
-    protected var valueForNull: String? = null
+    @JvmField
+    protected var mValueForNull: String? = null
+
+    /**
+     * null時に表示する文言
+     */
+    protected var valueForNull: String?
+        get() = mValueForNull
+        set(value) {
+            mValueForNull = value
+        }
 
     /**
      * 値を表示する [TextView]
      */
+    @Suppress("MemberVisibilityCanBePrivate")
     protected lateinit var valueView: TextView
 
     /**
@@ -141,7 +182,7 @@ abstract class StringPreferenceViewBase : SingleValuePreferenceView {
      *
      * @param context [Context]
      */
-    constructor(context: Context) : super(context)
+    constructor(context: Context) : this(context, null)
 
     /**
      * コンストラクタ
@@ -149,7 +190,7 @@ abstract class StringPreferenceViewBase : SingleValuePreferenceView {
      * @param context [Context]
      * @param attrs [AttributeSet]
      */
-    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
+    constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, 0)
 
     /**
      * コンストラクタ
@@ -158,9 +199,8 @@ abstract class StringPreferenceViewBase : SingleValuePreferenceView {
      * @param attrs [AttributeSet]
      * @param defStyleAttr 適用するスタイル属性値
      */
-    constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) : super(
-        context!!, attrs, defStyleAttr
-    )
+    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int)
+            : super(context, attrs, defStyleAttr)
 
     /**
      * コンストラクタ
@@ -172,13 +212,11 @@ abstract class StringPreferenceViewBase : SingleValuePreferenceView {
      */
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     constructor(
-        context: Context?,
+        context: Context,
         attrs: AttributeSet?,
         defStyleAttr: Int,
         defStyleRes: Int
-    ) : super(
-        context!!, attrs, defStyleAttr, defStyleRes
-    )
+    ) : super(context, attrs, defStyleAttr, defStyleRes)
 
     @get:LayoutRes
     override val defaultLayout: Int
@@ -193,14 +231,14 @@ abstract class StringPreferenceViewBase : SingleValuePreferenceView {
         Log.d(TAG, "loadAttributes: start")
         super.loadAttributes(values)
         Log.d(TAG, "loadAttributes: preferenceKey = $preferenceKey")
-        defaultValue = values.getString(R.styleable.PreferenceView_android_defaultValue)
-        valueForNull = values.getString(R.styleable.PreferenceView_valueForNull)
-        if (valueForNull == null) {
-            valueForNull = "null"
+        mDefaultValue = values.getString(R.styleable.PreferenceView_android_defaultValue)
+        mValueForNull = values.getString(R.styleable.PreferenceView_valueForNull)
+        if (mValueForNull == null) {
+            mValueForNull = ""
         }
         Log.d(
             TAG,
-            "loadAttributes: defaultValue = $defaultValue, valueForNull = $valueForNull"
+            "loadAttributes: defaultValue = $mDefaultValue, valueForNull = $mValueForNull"
         )
     }
 
@@ -211,30 +249,30 @@ abstract class StringPreferenceViewBase : SingleValuePreferenceView {
     override fun onSaveInstanceState(savedState: PreferenceView.SavedState) {
         super.onSaveInstanceState(savedState)
         if (savedState is SavedState) {
-            savedState.currentValue = currentValue
-            savedState.defaultValue = defaultValue
-            savedState.valueForNull = valueForNull
+            savedState.currentValue = mCurrentValue
+            savedState.defaultValue = mDefaultValue
+            savedState.valueForNull = mValueForNull
         }
     }
 
     override fun onRestoreState(savedState: PreferenceView.SavedState) {
         super.onRestoreState(savedState)
         if (savedState is SavedState) {
-            currentValue = savedState.currentValue
-            defaultValue = savedState.defaultValue
-            valueForNull = savedState.valueForNull
+            mCurrentValue = savedState.currentValue
+            mDefaultValue = savedState.defaultValue
+            mValueForNull = savedState.valueForNull
         }
     }
 
-    override fun updateViews(sharedPreferences: SharedPreferences?) {
+    override fun updateViews(sharedPreferences: SharedPreferences) {
         val key = preferenceKey
         Log.d(TAG, "updateViews: key = $key")
         super.updateViews(sharedPreferences)
-        if (sharedPreferences != null) {
-            currentValue = sharedPreferences.getString(key, defaultValue)
-            Log.d(TAG, "updateViews: value = \"$currentValue\"")
-            valueView.text = valueViewText
-        }
+        mCurrentValue = sharedPreferences.getString(key, mDefaultValue)
+        Log.d(TAG, "updateViews: value = $mCurrentValue")
+        valueView.text = valueViewText
+        invalidate()
+        requestLayout()
     }
 
     /**

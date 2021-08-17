@@ -44,12 +44,12 @@ data class TimePeriod(
         if (!isValid()) throw IllegalStateException("invalid")
 
         // start == end ならばその1点がこのインスタンスが表す範囲である。
-        // start <= end ならばその間がこのインスタンスが表す範囲である。
-        // start > end ならばその間以外がこのインスタンスが表す範囲である。
+        // start < end ならばその間(start, endを含む)がこのインスタンスが表す範囲である。
+        // start > end ならばその間以外(start, endを含む)がこのインスタンスが表す範囲である。
         return when {
             start == end -> time == end
             start < end -> time in start..end
-            else /* equivalent to start > end */ -> time <= start || time >= end
+            else /* equivalent to start > end */ -> time >= start || time <= end
         }
     }
 
@@ -86,6 +86,11 @@ data class TimePeriod(
     override fun describeContents() = 0
 
     companion object {
+//        /**
+//         * Tag for log
+//         */
+//        private const val TAG = "TimePeriod"
+
         /**
          * 文字列を解析して、対応する [TimePeriod] を返します。
          *

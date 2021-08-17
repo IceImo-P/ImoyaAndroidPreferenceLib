@@ -17,15 +17,15 @@ import net.imoya.android.util.LogUtil
 /**
  * 設定値が [String] である、 [ListPreferenceView] の実装
  */
-class StringListPreferenceView : ListPreferenceView {
+open class StringListPreferenceView : ListPreferenceView {
     /**
      * 再起動時に保存する状態オブジェクト定義
      */
-    protected class SavedState : ListPreferenceView.SavedState {
+    protected open class SavedState : ListPreferenceView.SavedState {
         /**
          * 選択肢の設定値文字列リスト
          */
-        var entryValues: Array<String>
+        var entryValues: Array<String> = arrayOf()
 
         /**
          * 現在の設定値
@@ -42,16 +42,14 @@ class StringListPreferenceView : ListPreferenceView {
          *
          * @param superState [View] の状態
          */
-        constructor(superState: Parcelable?) : super(superState) {
-            entryValues = arrayOf()
-        }
+        constructor(superState: Parcelable?) : super(superState)
 
         /**
          * [Parcel] の内容で初期化するコンストラクタ
          *
          * @param parcel [Parcel]
          */
-        private constructor(parcel: Parcel) : this(parcel, null)
+        protected constructor(parcel: Parcel) : this(parcel, null)
 
         /**
          * [Parcel] の内容で初期化するコンストラクタ
@@ -59,7 +57,7 @@ class StringListPreferenceView : ListPreferenceView {
          * @param parcel [Parcel]
          * @param loader [ClassLoader]
          */
-        private constructor(parcel: Parcel, loader: ClassLoader?) : super(parcel, loader) {
+        protected constructor(parcel: Parcel, loader: ClassLoader?) : super(parcel, loader) {
             entryValues = parcel.createStringArray()
                 ?: throw RuntimeException("parcel.createStringArray returns null")
             currentValue = parcel.readString()
@@ -103,26 +101,48 @@ class StringListPreferenceView : ListPreferenceView {
     }
 
     /**
-     * 選択肢の設定値文字列リスト
+     * 選択肢の設定値リスト
      */
     lateinit var entryValues: Array<String>
 
     /**
      * 現在の設定値
      */
-    var currentValue: String? = null
+    @JvmField
+    protected var mCurrentValue: String? = null
+
+    /**
+     * 現在の設定値
+     */
+    @Suppress("unused", "MemberVisibilityCanBePrivate")
+    var currentValue: String?
+        get() = mCurrentValue
+        set(value) {
+            mCurrentValue = value
+        }
 
     /**
      * デフォルト値
      */
-    var defaultValue: String? = null
+    @JvmField
+    protected var mDefaultValue: String? = null
+
+    /**
+     * デフォルト値
+     */
+    @Suppress("MemberVisibilityCanBePrivate")
+    var defaultValue: String?
+        get() = mDefaultValue
+        set(value) {
+            mDefaultValue = value
+        }
 
     /**
      * コンストラクタ
      *
      * @param context [Context]
      */
-    constructor(context: Context) : super(context)
+    constructor(context: Context) : this(context, null)
 
     /**
      * コンストラクタ
@@ -130,9 +150,7 @@ class StringListPreferenceView : ListPreferenceView {
      * @param context [Context]
      * @param attrs [AttributeSet]
      */
-    constructor(context: Context, attrs: AttributeSet?) : super(
-        context, attrs
-    )
+    constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, 0)
 
     /**
      * コンストラクタ
@@ -153,15 +171,11 @@ class StringListPreferenceView : ListPreferenceView {
      * @param defStyleAttr 適用するスタイル属性値
      * @param defStyleRes 適用するスタイルのリソースID
      */
+    @Suppress("unused")
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     constructor(
-        context: Context,
-        attrs: AttributeSet?,
-        defStyleAttr: Int,
-        defStyleRes: Int
-    ) : super(
-        context, attrs, defStyleAttr, defStyleRes
-    )
+        context: Context, attrs: AttributeSet?, defStyleAttr: Int, defStyleRes: Int
+    ) : super(context, attrs, defStyleAttr, defStyleRes)
 
     /**
      * 独自のXML属性値を読み取ります。
@@ -169,19 +183,19 @@ class StringListPreferenceView : ListPreferenceView {
      * @param values 取得した属性値
      */
     override fun loadAttributes(values: TypedArray) {
-        Log.d(TAG, "loadAttributes: start")
         super.loadAttributes(values)
-        Log.d(TAG, "loadAttributes: preferenceKey = $preferenceKey")
         val entryValuesId = values.getResourceId(
             R.styleable.PreferenceView_android_entryValues, 0
         )
         entryValues =
             if (entryValuesId != 0) values.resources.getStringArray(entryValuesId)
             else throw RuntimeException("entry_values is not defined at layout XML")
-        defaultValue = values.getString(R.styleable.PreferenceView_android_defaultValue)
+        mDefaultValue = values.getString(R.styleable.PreferenceView_android_defaultValue)
         Log.d(
-            TAG, "loadAttributes: entryValues = ${LogUtil.logString(entryValues)}"
-                    + ", defaultValue = $defaultValue"
+            TAG, "loadAttributes: preferenceKey = $preferenceKey"
+                    + ", entries = ${LogUtil.logString(entries)}"
+                    + ", entryValues = ${LogUtil.logString(entryValues)}"
+                    + ", defaultValue = $mDefaultValue"
         )
         if (entries.size != entryValues.size) {
             throw RuntimeException("entries.length != entryValues.length")
@@ -200,19 +214,25 @@ class StringListPreferenceView : ListPreferenceView {
 
     override fun onSaveInstanceState(savedState: PreferenceView.SavedState) {
         super.onSaveInstanceState(savedState)
+
         if (savedState is SavedState) {
             savedState.entryValues = entryValues
-            savedState.currentValue = currentValue
-            savedState.defaultValue = defaultValue
+            savedState.currentValue = mCurrentValue
+            savedState.defaultValue = mDefaultValue
+        } else {
+            Log.w(TAG, "onSaveInstanceState(s): savedState is not SavedState")
         }
     }
 
     override fun onRestoreState(savedState: PreferenceView.SavedState) {
         super.onRestoreState(savedState)
+
         if (savedState is SavedState) {
             entryValues = savedState.entryValues
-            currentValue = savedState.currentValue
-            defaultValue = savedState.defaultValue
+            mCurrentValue = savedState.currentValue
+            mDefaultValue = savedState.defaultValue
+        } else {
+            Log.w(TAG, "onSaveInstanceState(s): savedState is not SavedState")
         }
     }
 
@@ -224,17 +244,10 @@ class StringListPreferenceView : ListPreferenceView {
      */
     override fun getSelectedIndex(sharedPreferences: SharedPreferences): Int {
         // 現在の設定値を取得する
-        currentValue = sharedPreferences.getString(preferenceKey, defaultValue)
+        mCurrentValue = sharedPreferences.getString(preferenceKey, mDefaultValue)
 
         // 選択肢に於ける位置を検索する
-        var selectedIndex = 0
-        for (i in entryValues.indices) {
-            if (entryValues[i] == currentValue) {
-                selectedIndex = i
-                break
-            }
-        }
-        return selectedIndex
+        return entryValues.indexOf(mCurrentValue)
     }
 
     companion object {
