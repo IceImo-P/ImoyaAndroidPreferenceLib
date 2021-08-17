@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="preference_time_period_value_format">#start# - #end#</string>
+    <string name="preference_time_period_edit_start_title">Start time</string>
+    <string name="preference_time_period_edit_end_title">End time</string>
+
+    <string name="preference_dialog_back">Back</string>
+    <string name="preference_dialog_next">Next</string>
+</resources>

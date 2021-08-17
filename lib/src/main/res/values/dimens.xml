@@ -1,0 +1,4 @@
+<resources>
+    <dimen name="view_preference_element_margin">6dp</dimen>
+    <dimen name="view_preference_summary_icon_margin">4dp</dimen>
+</resources>
