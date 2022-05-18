@@ -57,8 +57,11 @@ abstract class DialogPreferenceEditor(
             resultCode == Activity.RESULT_OK &&
             data != null
         ) {
-            val tag = data.getStringExtra(DialogBase.EXTRA_KEY_TAG)
-            Log.d(TAG, "onDialogResult: tag = $tag requestCode = $requestCode")
+
+            Log.d(TAG) {
+                val tag = data.getStringExtra(DialogBase.EXTRA_KEY_TAG)
+                "onDialogResult: tag = $tag requestCode = $requestCode"
+            }
             // 入力値を保存する
             saveInput(resultCode, data)
 

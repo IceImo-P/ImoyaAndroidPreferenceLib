@@ -1,10 +1,8 @@
 package net.imoya.android.preference.view
 
-import android.annotation.TargetApi
 import android.content.Context
 import android.content.SharedPreferences
 import android.content.res.TypedArray
-import android.os.Build
 import android.os.Parcel
 import android.os.Parcelable
 import android.os.Parcelable.Creator
@@ -187,11 +185,11 @@ open class NumberAndUnitPreferenceView : SingleValuePreferenceView {
      */
     var minValue: Int
         get() {
-            Log.d(TAG, "getMinValue: value = $mMinValue")
+            Log.d(TAG) { "getMinValue: value = $mMinValue" }
             return mMinValue
         }
         set(value) {
-            Log.d(TAG, "setMinValue: value = $value")
+            Log.d(TAG) { "setMinValue: value = $value" }
             mMinValue = value
         }
 
@@ -206,11 +204,11 @@ open class NumberAndUnitPreferenceView : SingleValuePreferenceView {
      */
     var maxValue: Int
         get() {
-            Log.d(TAG, "getMaxValue: value = $mMaxValue")
+            Log.d(TAG) { "getMaxValue: value = $mMaxValue" }
             return mMaxValue
         }
         set(value) {
-            Log.d(TAG, "setMaxValue: value = $value")
+            Log.d(TAG) { "setMaxValue: value = $value" }
             mMaxValue = value
         }
 
@@ -274,7 +272,7 @@ open class NumberAndUnitPreferenceView : SingleValuePreferenceView {
      * @param defStyleRes 適用するスタイルのリソースID
      */
     @Suppress("unused")
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+//    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     constructor(
         context: Context, attrs: AttributeSet?, defStyleAttr: Int, defStyleRes: Int
     ) : super(context, attrs, defStyleAttr, defStyleRes)
@@ -291,15 +289,14 @@ open class NumberAndUnitPreferenceView : SingleValuePreferenceView {
 
     override fun loadAttributes(values: TypedArray) {
         super.loadAttributes(values)
-        Log.d(TAG, "NumberAndUnitPreferenceView.loadAttributes: preferenceKey = $preferenceKey")
+        Log.d(TAG) { "NumberAndUnitPreferenceView.loadAttributes: preferenceKey = $preferenceKey" }
         mDefaultValue = values.getInt(R.styleable.PreferenceView_android_defaultValue, 0)
         mMinValue = values.getInt(R.styleable.PreferenceView_minValue, 0)
         mMaxValue = values.getInt(R.styleable.PreferenceView_maxValue, 0)
         unit = values.getString(R.styleable.PreferenceView_unit)
         Log.d(
-            TAG, "loadAttributes: defaultValue = $mDefaultValue"
-                    + ", minValue = $mMinValue, maxValue = $mMaxValue, unit = $unit"
-        )
+            TAG
+        ) { "loadAttributes: defaultValue = $mDefaultValue, minValue = $mMinValue, maxValue = $mMaxValue, unit = $unit" }
     }
 
     override fun createSavedState(superState: Parcelable?): SavedState {
@@ -311,11 +308,8 @@ open class NumberAndUnitPreferenceView : SingleValuePreferenceView {
         super.onSaveInstanceState(savedState)
         if (savedState is SavedState) {
             Log.d(
-                TAG,
-                "onSaveInstanceState: currentValue = $mCurrentValue"
-                        + ", defaultValue = $mDefaultValue"
-                        + ", minValue = $mMinValue, maxValue = $mMaxValue, unit = $unit"
-            )
+                TAG
+            ) { "onSaveInstanceState: currentValue = $mCurrentValue, defaultValue = $mDefaultValue, minValue = $mMinValue, maxValue = $mMaxValue, unit = $unit" }
             savedState.currentValue = mCurrentValue
             savedState.defaultValue = mDefaultValue
             savedState.minValue = mMinValue
@@ -331,11 +325,8 @@ open class NumberAndUnitPreferenceView : SingleValuePreferenceView {
         super.onRestoreState(savedState)
         if (savedState is SavedState) {
             Log.d(
-                TAG,
-                "onRestoreState: currentValue = $mCurrentValue"
-                        + ", defaultValue = $mDefaultValue"
-                        + ", minValue = $mMinValue, maxValue = $mMaxValue, unit = $unit"
-            )
+                TAG
+            ) { "onRestoreState: currentValue = $mCurrentValue, defaultValue = $mDefaultValue, minValue = $mMinValue, maxValue = $mMaxValue, unit = $unit" }
             mCurrentValue = savedState.currentValue
             mDefaultValue = savedState.defaultValue
             mMinValue = savedState.minValue
@@ -348,18 +339,17 @@ open class NumberAndUnitPreferenceView : SingleValuePreferenceView {
 
     override fun updateViews(sharedPreferences: SharedPreferences) {
         val preferenceKey = preferenceKey
-        Log.d(TAG, "updateViews: preferenceKey = $preferenceKey")
+        Log.d(TAG) { "updateViews: preferenceKey = $preferenceKey" }
         super.updateViews(sharedPreferences)
         mCurrentValue = sharedPreferences.getInt(preferenceKey, mDefaultValue)
-        Log.d(TAG, "updateViews: value = $mCurrentValue")
+        Log.d(TAG) { "updateViews: value = $mCurrentValue" }
         valueView.text = mCurrentValue.toString()
         invalidate()
         requestLayout()
 
         Log.d(
-            TAG, "updateViews: currentValue = $mCurrentValue, defaultValue = $mDefaultValue"
-                    + ", minValue = $mMinValue, maxValue = $mMaxValue, unit = $unit"
-        )
+            TAG
+        ) { "updateViews: currentValue = $mCurrentValue, defaultValue = $mDefaultValue, minValue = $mMinValue, maxValue = $mMaxValue, unit = $unit" }
     }
 
     companion object {

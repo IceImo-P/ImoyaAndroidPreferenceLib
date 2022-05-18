@@ -3,11 +3,6 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/DATA/Development/UYO/Android/ImoyaLib/preference/lib/src/main/res/layout/preference.xml" value="0.20520833333333333" />
-        <entry key="..\:/DATA/Development/UYO/Android/ImoyaLib/preference/lib/src/main/res/layout/preference_category.xml" value="0.20520833333333333" />
-        <entry key="..\:/DATA/Development/UYO/Android/ImoyaLib/preference/lib/src/main/res/layout/preference_number_unit.xml" value="0.20520833333333333" />
-        <entry key="..\:/DATA/Development/UYO/Android/ImoyaLib/preference/lib/src/main/res/layout/preference_string.xml" value="0.20520833333333333" />
-        <entry key="..\:/DATA/Development/UYO/Android/ImoyaLib/preference/lib/src/main/res/layout/preference_switch.xml" value="0.20520833333333333" />
       </map>
     </option>
   </component>

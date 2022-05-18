@@ -3,7 +3,7 @@ package net.imoya.android.preference.model
 import android.os.Parcel
 import android.os.Parcelable
 import android.os.Parcelable.Creator
-import java.util.*
+import java.util.Locale
 
 /**
  * 時:分:秒によって指定される時刻モデル

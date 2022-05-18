@@ -1,10 +1,8 @@
 package net.imoya.android.preference.view
 
-import android.annotation.TargetApi
 import android.content.Context
 import android.content.SharedPreferences
 import android.content.res.TypedArray
-import android.os.Build
 import android.os.Parcel
 import android.os.Parcelable
 import android.os.Parcelable.Creator
@@ -210,7 +208,7 @@ abstract class StringPreferenceViewBase : SingleValuePreferenceView {
      * @param defStyleAttr 適用するスタイル属性値
      * @param defStyleRes 適用するスタイルのリソースID
      */
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+//    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     constructor(
         context: Context,
         attrs: AttributeSet?,
@@ -228,18 +226,17 @@ abstract class StringPreferenceViewBase : SingleValuePreferenceView {
     }
 
     override fun loadAttributes(values: TypedArray) {
-        Log.d(TAG, "loadAttributes: start")
+        Log.v(TAG, "loadAttributes: start")
         super.loadAttributes(values)
-        Log.d(TAG, "loadAttributes: preferenceKey = $preferenceKey")
+        Log.d(TAG) { "loadAttributes: preferenceKey = $preferenceKey" }
         mDefaultValue = values.getString(R.styleable.PreferenceView_android_defaultValue)
         mValueForNull = values.getString(R.styleable.PreferenceView_valueForNull)
         if (mValueForNull == null) {
             mValueForNull = ""
         }
         Log.d(
-            TAG,
-            "loadAttributes: defaultValue = $mDefaultValue, valueForNull = $mValueForNull"
-        )
+            TAG
+        ) { "loadAttributes: defaultValue = $mDefaultValue, valueForNull = $mValueForNull" }
     }
 
     override fun createSavedState(superState: Parcelable?): SavedState {
@@ -266,10 +263,10 @@ abstract class StringPreferenceViewBase : SingleValuePreferenceView {
 
     override fun updateViews(sharedPreferences: SharedPreferences) {
         val key = preferenceKey
-        Log.d(TAG, "updateViews: key = $key")
+        Log.d(TAG) { "updateViews: key = $key" }
         super.updateViews(sharedPreferences)
         mCurrentValue = sharedPreferences.getString(key, mDefaultValue)
-        Log.d(TAG, "updateViews: value = $mCurrentValue")
+        Log.d(TAG) { "updateViews: value = $mCurrentValue" }
         valueView.text = valueViewText
         invalidate()
         requestLayout()

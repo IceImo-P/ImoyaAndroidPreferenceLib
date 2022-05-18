@@ -100,12 +100,11 @@ abstract class ListPreferenceEditor(
             else throw RuntimeException("view is not ListPreferenceView")
         val entries: Array<String> = getEntries(prefView)
 
-        Log.d(
-            TAG,
+        Log.d(TAG) {
             "showDialog: title = ${prefView.title}, entries = ${LogUtil.logString(entries)}" +
                     ", selectedIndex = ${prefView.getSelectedIndex(preferences)}" +
                     ", key = ${prefView.preferenceKey}"
-        )
+        }
 
         SingleChoiceDialog.Builder(parent, requestCode)
             .setTitle(prefView.title ?: "")

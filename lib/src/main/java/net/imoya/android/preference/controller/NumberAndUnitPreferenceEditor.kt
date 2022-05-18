@@ -118,11 +118,10 @@ open class NumberAndUnitPreferenceEditor(
         super.setupState(view)
         val prefView = view as NumberAndUnitPreferenceView
         Log.d(
-            TAG, "setupState: defaultValue = ${prefView.defaultValue}"
-                    + ", minValue = ${prefView.minValue}"
-                    + ", maxValue = ${prefView.maxValue}"
-                    + ", unit = ${prefView.unit}"
-        )
+            TAG
+        ) {
+            "setupState: defaultValue = ${prefView.defaultValue}, minValue = ${prefView.minValue}, maxValue = ${prefView.maxValue}, unit = ${prefView.unit}"
+        }
         (state as State).defaultValue = prefView.defaultValue
         (state as State).minValue = prefView.minValue
         (state as State).maxValue = prefView.maxValue

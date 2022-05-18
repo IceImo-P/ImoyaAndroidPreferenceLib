@@ -20,11 +20,10 @@ open class SliderNumberEditor(
 ) : NumberAndUnitPreferenceEditor(parent, preferences, requestCode) {
     override fun showDialog(view: SingleValuePreferenceView) {
         Log.d(
-            TAG, "SliderNumberEditor.showDialog: title = ${view.title}"
-                    + ", minValue = ${(state as State).minValue}"
-                    + ", maxValue = ${(state as State).maxValue}"
-                    + ", defaultValue = ${(state as State).defaultValue}"
-        )
+            TAG
+        ) {
+            "SliderNumberEditor.showDialog: title = ${view.title}, minValue = ${(state as State).minValue}, maxValue = ${(state as State).maxValue}, defaultValue = ${(state as State).defaultValue}"
+        }
         SeekBarInputDialog.Builder(parent, requestCode)
             .setTitle(view.title ?: "")
             .setMin((state as State).minValue)

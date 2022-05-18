@@ -128,7 +128,7 @@ open class TimePeriodInputActivity : BaseActivity() {
         get() = R.id.root
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        Log.d(TAG, "onCreate: start")
+        Log.v(TAG, "onCreate: start")
 
         if (savedInstanceState == null) {
             state = State()
@@ -141,9 +141,8 @@ open class TimePeriodInputActivity : BaseActivity() {
         }
         is24HourView = this.intent.getBooleanExtra(EXTRA_IS_24_HOUR_VIEW, false)
         Log.d(
-            TAG,
-            "onCreate: timePeriod = " + state!!.timePeriod + ", step = " + state!!.inputStep.name + ", is24 = " + is24HourView
-        )
+            TAG
+        ) { "onCreate: timePeriod = " + state!!.timePeriod + ", step = " + state!!.inputStep.name + ", is24 = " + is24HourView }
 
         super.onCreate(savedInstanceState)
 
@@ -175,7 +174,7 @@ open class TimePeriodInputActivity : BaseActivity() {
             // OKボタンの場合
             val (hour, minute) = currentTime
             if (state!!.inputStep == InputStep.END) {
-                Log.d(TAG, "onOptionsItemSelected: Complete")
+                Log.v(TAG, "onOptionsItemSelected: Complete")
 
                 // 終了時刻を保存する
                 state!!.timePeriod.end = Time(hour, minute, 0)
@@ -186,7 +185,7 @@ open class TimePeriodInputActivity : BaseActivity() {
                 this.setResult(RESULT_OK, data)
                 finish()
             } else {
-                Log.d(TAG, "onOptionsItemSelected: to EndTime")
+                Log.v(TAG, "onOptionsItemSelected: to EndTime")
 
                 // 開始時刻を保存する
                 state!!.timePeriod.start = Time(hour, minute, 0)
@@ -212,13 +211,13 @@ open class TimePeriodInputActivity : BaseActivity() {
 
     override fun onSupportNavigateUp(): Boolean {
         return if (this.supportFragmentManager.backStackEntryCount == 0) {
-            Log.d(TAG, "onSupportNavigateUp: Cancel")
+            Log.v(TAG, "onSupportNavigateUp: Cancel")
             finish()
             true
         } else {
             // 終了時刻入力中か?
             if (state!!.inputStep == InputStep.END) {
-                Log.d(TAG, "onSupportNavigateUp: to StartTime")
+                Log.v(TAG, "onSupportNavigateUp: to StartTime")
 
                 // 終了時刻入力中の場合は、終了時刻を保存する
                 val (hour, minute) = currentTime

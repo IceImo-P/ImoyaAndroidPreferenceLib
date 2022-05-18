@@ -1,10 +1,8 @@
 package net.imoya.android.preference.view
 
-import android.annotation.TargetApi
 import android.content.Context
 import android.content.SharedPreferences
 import android.content.res.TypedArray
-import android.os.Build
 import android.os.Parcel
 import android.os.Parcelable
 import android.os.Parcelable.Creator
@@ -148,7 +146,7 @@ open class StringPreferenceView : StringPreferenceViewBase {
      * @param defStyleRes 適用するスタイルのリソースID
      */
     @Suppress("unused")
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+//    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     constructor(
         context: Context,
         attrs: AttributeSet?,
@@ -157,13 +155,13 @@ open class StringPreferenceView : StringPreferenceViewBase {
     ) : super(context, attrs, defStyleAttr, defStyleRes)
 
     override fun loadAttributes(values: TypedArray) {
-        Log.d(TAG, "loadAttributes: start")
+        Log.v(TAG, "loadAttributes: start")
         super.loadAttributes(values)
-        Log.d(TAG, "loadAttributes: preferenceKey = $preferenceKey")
+        Log.d(TAG) { "loadAttributes: preferenceKey = $preferenceKey" }
         mMaxLength = values.getInt(
             R.styleable.PreferenceView_android_maxLength, Int.MAX_VALUE
         )
-        Log.d(TAG, "loadAttributes: maxLength = $mMaxLength")
+        Log.d(TAG) { "loadAttributes: maxLength = $mMaxLength" }
     }
 
     override fun createSavedState(superState: Parcelable?): SavedState {
