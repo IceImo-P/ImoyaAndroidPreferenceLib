@@ -1,8 +1,6 @@
 package net.imoya.android.preference.view
 
-import android.annotation.TargetApi
 import android.content.Context
-import android.os.Build
 import android.util.AttributeSet
 import net.imoya.android.preference.R
 import net.imoya.android.preference.model.TimePeriod
@@ -48,7 +46,7 @@ class TimePeriodPreferenceView : TimePreferenceViewBase {
      * @param defStyleRes 適用するスタイルのリソースID
      */
     @Suppress("unused")
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+//    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     constructor(
         context: Context,
         attrs: AttributeSet?,
@@ -59,7 +57,7 @@ class TimePeriodPreferenceView : TimePreferenceViewBase {
     override val valueViewText: String
         get() {
             val period = getTimePeriod(mCurrentValue)
-            Log.d(TAG, "updateViews: period = $period")
+            Log.d(TAG) { "updateViews: period = $period" }
             return if (period != null) {
                 getTimePeriodText(period)
             } else {

@@ -1,10 +1,8 @@
 package net.imoya.android.preference.view
 
-import android.annotation.TargetApi
 import android.content.Context
 import android.content.SharedPreferences
 import android.content.res.TypedArray
-import android.os.Build
 import android.os.Parcel
 import android.os.Parcelable
 import android.os.Parcelable.Creator
@@ -153,7 +151,7 @@ abstract class ListPreferenceView : SingleValuePreferenceView {
      * @param defStyleAttr 適用するスタイル属性値
      * @param defStyleRes 適用するスタイルのリソースID
      */
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+//    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     constructor(
         context: Context, attrs: AttributeSet?, defStyleAttr: Int, defStyleRes: Int
     ) : super(context, attrs, defStyleAttr, defStyleRes)
@@ -186,10 +184,9 @@ abstract class ListPreferenceView : SingleValuePreferenceView {
         entries =
             if (entriesId != 0) values.resources.getStringArray(entriesId)
             else throw RuntimeException("entry_values is not defined at layout XML")
-        Log.d(
-            TAG, "loadAttributes: preferenceKey = $preferenceKey"
-                    + ", entries = ${LogUtil.logString(entries)}"
-        )
+        Log.d(TAG) {
+            "loadAttributes: preferenceKey = $preferenceKey, entries = ${LogUtil.logString(entries)}"
+        }
     }
 
     override fun createSavedState(superState: Parcelable?): SavedState {
@@ -218,11 +215,11 @@ abstract class ListPreferenceView : SingleValuePreferenceView {
      * @param sharedPreferences [SharedPreferences]
      */
     override fun updateViews(sharedPreferences: SharedPreferences) {
-        Log.d(TAG, "updateViews: key = $preferenceKey")
+        Log.d(TAG) { "updateViews: key = $preferenceKey" }
         super.updateViews(sharedPreferences)
         val index = getSelectedIndex(sharedPreferences)
-        Log.d(TAG, "updateViews: entries = ${LogUtil.logString(entries)}, index = $index")
-        selectionView.text = entries[index]
+        Log.d(TAG) { "updateViews: entries = ${LogUtil.logString(entries)}, index = $index" }
+        selectionView.text = if (index >= 0 && index < entries.size) entries[index] else ""
         invalidate()
         requestLayout()
     }

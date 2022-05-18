@@ -1,10 +1,8 @@
 package net.imoya.android.preference.view
 
-import android.annotation.TargetApi
 import android.content.Context
 import android.content.SharedPreferences
 import android.content.res.TypedArray
-import android.os.Build
 import android.os.Parcel
 import android.os.Parcelable
 import android.os.Parcelable.Creator
@@ -171,7 +169,7 @@ open class IntListPreferenceView : ListPreferenceView {
      * @param defStyleRes 適用するスタイルのリソースID
      */
     @Suppress("unused")
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+//    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     constructor(
         context: Context, attrs: AttributeSet?, defStyleAttr: Int, defStyleRes: Int
     ) : super(context, attrs, defStyleAttr, defStyleRes)
@@ -190,12 +188,14 @@ open class IntListPreferenceView : ListPreferenceView {
             if (entryValuesId != 0) values.resources.getIntArray(entryValuesId)
             else throw RuntimeException("entry_values is not defined at layout XML")
         mDefaultValue = values.getInt(R.styleable.PreferenceView_android_defaultValue, 0)
-        Log.d(
-            TAG, "loadAttributes: preferenceKey = $preferenceKey"
-                    + ", entries = ${LogUtil.logString(entries)}"
-                    + ", entryValues = ${LogUtil.logString(entryValues)}"
-                    + ", defaultValue = $mDefaultValue"
-        )
+        Log.d(TAG) {
+            "loadAttributes: preferenceKey = $preferenceKey" + ", entries = ${
+                LogUtil.logString(entries)
+            }" + ", entryValues = ${
+                LogUtil.logString(entryValues)
+            }" + ", defaultValue = $mDefaultValue"
+        }
+
         if (entries.size != entryValues.size) {
             throw RuntimeException("entries.length != entryValues.length")
         }

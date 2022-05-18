@@ -1,16 +1,16 @@
 package net.imoya.android.preference.fragment
 
-import net.imoya.android.util.Log
-import net.imoya.android.fragment.BaseFragment
-import android.widget.TimePicker
 import android.os.Bundle
-import net.imoya.android.util.TimePickerHelper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TimePicker
 import androidx.fragment.app.Fragment
+import net.imoya.android.fragment.BaseFragment
 import net.imoya.android.preference.R
 import net.imoya.android.preference.model.Time
+import net.imoya.android.util.Log
+import net.imoya.android.util.TimePickerHelper
 
 /**
  * [TimePicker] を表示する [Fragment]
@@ -99,7 +99,7 @@ class TimePickerFragment : BaseFragment() {
             requireArguments().getParcelable(ARGUMENT_TIME)
                 ?: throw RuntimeException("arguments[$ARGUMENT_TIME] is not set")
         }
-        Log.d(TAG, "onCreate: time = $time")
+        Log.d(TAG) { "onCreate: time = $time" }
         this.time.hour = time.hour
         this.time.minute = time.minute
     }
@@ -119,7 +119,7 @@ class TimePickerFragment : BaseFragment() {
         TimePickerHelper(picker).setHourAndMinute(time.hour, time.minute)
         picker.setIs24HourView(requireArguments().getBoolean(ARGUMENT_IS_24_HOUR_VIEW))
         val title = requireArguments().getString(ARGUMENT_TITLE)
-        Log.d(TAG, "onViewCreated: title = $title")
+        Log.d(TAG) { "onViewCreated: title = $title" }
         this.setTitle(title)
     }
 

@@ -130,7 +130,7 @@ abstract class SingleValuePreferenceView : PreferenceView {
      * @param defStyleAttr 適用するスタイル属性値
      * @param defStyleRes 適用するスタイルのリソースID
      */
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+//    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     constructor(
         context: Context, attrs: AttributeSet?, defStyleAttr: Int, defStyleRes: Int
     ) : super(
@@ -141,7 +141,7 @@ abstract class SingleValuePreferenceView : PreferenceView {
     override fun loadAttributes(values: TypedArray) {
         super.loadAttributes(values)
         preferenceKey = values.getString(R.styleable.PreferenceView_android_key) ?: ""
-        Log.d(TAG, "loadAttributes: preferenceKey = $preferenceKey")
+        Log.d(TAG) { "loadAttributes: preferenceKey = $preferenceKey" }
     }
 
     override fun createSavedState(superState: Parcelable?): SavedState {
@@ -174,6 +174,9 @@ abstract class SingleValuePreferenceView : PreferenceView {
     }
 
     companion object {
+        /**
+         * Tag for log
+         */
         private const val TAG = "SingleValuePreferenceView"
     }
 }

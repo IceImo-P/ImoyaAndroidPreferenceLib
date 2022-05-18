@@ -18,7 +18,7 @@ object TimePeriodPreferenceUtil {
      */
     @JvmStatic
     fun getTimePeriod(sharedPreferences: SharedPreferences, key: String): TimePeriod? {
-        // Log.d(TAG, "getTimePeriod: start.");
+        // Log.v(TAG, "getTimePeriod: start.")
         val stored = sharedPreferences.getString(key, null)
         return if (stored != null) {
             try {

@@ -5,9 +5,7 @@ import android.os.Parcelable
 import android.os.Parcel
 import android.os.Parcelable.Creator
 import android.widget.CompoundButton
-import android.annotation.TargetApi
 import android.content.Context
-import android.os.Build
 import androidx.annotation.LayoutRes
 import net.imoya.android.preference.R
 import android.content.res.TypedArray
@@ -201,7 +199,7 @@ open class SwitchPreferenceView : SingleValuePreferenceView {
      * @param defStyleRes 適用するスタイルのリソースID
      */
     @Suppress("unused")
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+//    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     constructor(
         context: Context,
         attrs: AttributeSet?,
@@ -221,12 +219,12 @@ open class SwitchPreferenceView : SingleValuePreferenceView {
     }
 
     override fun loadAttributes(values: TypedArray) {
-        Log.d(TAG, "loadAttributes: start")
+        Log.v(TAG, "loadAttributes: start")
         super.loadAttributes(values)
         mDefaultValue = values.getBoolean(
             R.styleable.PreferenceView_android_defaultValue, false
         )
-        Log.d(TAG, "loadAttributes: defaultValue = $mDefaultValue")
+        Log.d(TAG) { "loadAttributes: defaultValue = $mDefaultValue" }
     }
 
     override fun createSavedState(superState: Parcelable?): SavedState {
@@ -260,10 +258,10 @@ open class SwitchPreferenceView : SingleValuePreferenceView {
 
     override fun updateViews(sharedPreferences: SharedPreferences) {
         val preferenceKey = preferenceKey
-        Log.d(TAG, "updateViews: preferenceKey = $preferenceKey")
+        Log.d(TAG)  { "updateViews: preferenceKey = $preferenceKey" }
         super.updateViews(sharedPreferences)
         mCurrentValue = sharedPreferences.getBoolean(preferenceKey, mDefaultValue)
-        Log.d(TAG, "updateViews: value = $mCurrentValue")
+        Log.d(TAG) { "updateViews: value = $mCurrentValue" }
         compoundButton.isChecked = mCurrentValue
         invalidate()
         requestLayout()
@@ -273,7 +271,7 @@ open class SwitchPreferenceView : SingleValuePreferenceView {
         super.onClickRootView()
 
         // ON/OFF状態を切り替える
-        Log.d(TAG, "onClickRootView: before = $mCurrentValue, after = ${!mCurrentValue}")
+        Log.d(TAG) { "onClickRootView: before = $mCurrentValue, after = ${!mCurrentValue}" }
         mCurrentValue = !mCurrentValue
         compoundButton.isChecked = mCurrentValue
 

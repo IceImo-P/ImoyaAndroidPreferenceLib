@@ -14,43 +14,43 @@ open class PreferenceViewUpdater : OnSharedPreferenceChangeListener {
     var views: Array<PreferenceView> = arrayOf()
 
     fun clearViews() {
-        Log.d(TAG, "clearViews")
+        Log.v(TAG, "clearViews")
         views = arrayOf()
     }
 
     fun start(preferences: SharedPreferences) {
-        Log.d(TAG, "start")
+        Log.v(TAG, "start")
         preferences.registerOnSharedPreferenceChangeListener(this)
     }
 
     fun stop(preferences: SharedPreferences) {
-        Log.d(TAG, "stop")
+        Log.v(TAG, "stop")
         preferences.unregisterOnSharedPreferenceChangeListener(this)
     }
 
     fun update(sharedPreferences: SharedPreferences) {
         try {
             for (view in views) {
-                Log.v(TAG, "update: updating ${view.title}")
+                Log.v(TAG) { "update: updating ${view.title}" }
                 try {
                     view.updateViews(sharedPreferences)
                 } catch (e1: Exception) {
-                    Log.v(TAG, "update: Exception at ${view.title}", e1)
+                    Log.v(TAG, { "update: Exception at ${view.title}" }, e1)
                 }
             }
         } catch (e: Exception) {
-            Log.v(TAG, "update: Exception", e)
+            Log.w(TAG, "update: Exception", e)
         }
     }
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String) {
-        Log.d(TAG, "onSharedPreferenceChanged")
+        Log.v(TAG, "onSharedPreferenceChanged")
         try {
             for (view in views) {
                 view.onPreferenceChange(sharedPreferences, key)
             }
         } catch (e: Exception) {
-            Log.v(TAG, "onSharedPreferenceChanged: Exception", e)
+            Log.w(TAG, "onSharedPreferenceChanged: Exception", e)
         }
     }
 

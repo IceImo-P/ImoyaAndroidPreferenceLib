@@ -1,11 +1,9 @@
 package net.imoya.android.preference.view
 
-import android.annotation.TargetApi
 import android.content.Context
 import android.content.SharedPreferences
 import android.content.res.TypedArray
 import android.graphics.drawable.Drawable
-import android.os.Build
 import android.os.Parcel
 import android.os.Parcelable
 import android.os.Parcelable.Creator
@@ -174,14 +172,12 @@ open class PreferenceCategoryView : FrameLayout, PreferenceItemView {
     constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int)
             : super(context, attrs, defStyleAttr) {
         Log.d(
-            TAG,
-            "PreferenceCategoryView#__construct(c,a,i): start. class = " + this.javaClass.simpleName + ", instance = " + super.toString()
-        )
+            TAG
+        ) { "PreferenceCategoryView#__construct(c,a,i): start. class = " + this.javaClass.simpleName + ", instance = " + super.toString() }
         init(context, attrs, defStyleAttr, 0)
         Log.d(
-            TAG,
-            "PreferenceCategoryView#__construct(c,a,i): end. class = " + this.javaClass.simpleName + ", instance = " + super.toString()
-        )
+            TAG
+        ) { "PreferenceCategoryView#__construct(c,a,i): end. class = " + this.javaClass.simpleName + ", instance = " + super.toString() }
     }
 
     /**
@@ -192,7 +188,7 @@ open class PreferenceCategoryView : FrameLayout, PreferenceItemView {
      * @param defStyleAttr 適用するスタイル属性値
      * @param defStyleRes 適用するスタイルのリソースID
      */
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+//    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     constructor(
         context: Context,
         attrs: AttributeSet?,
@@ -230,7 +226,7 @@ open class PreferenceCategoryView : FrameLayout, PreferenceItemView {
      * @param values 取得した属性値
      */
     protected open fun loadAttributes(values: TypedArray) {
-        Log.d(TAG, "loadAttributes: start")
+        Log.v(TAG, "loadAttributes: start")
 
         val title = values.getString(R.styleable.PreferenceView_android_title)
         titleView?.text = title
@@ -242,7 +238,7 @@ open class PreferenceCategoryView : FrameLayout, PreferenceItemView {
             )
         }
         mDependency = values.getString(R.styleable.PreferenceView_android_dependency)
-        Log.d(TAG, "loadAttributes: title = $title, dependency = $mDependency")
+        Log.d(TAG) { "loadAttributes: title = $title, dependency = $mDependency" }
     }
 
     /**
@@ -259,7 +255,7 @@ open class PreferenceCategoryView : FrameLayout, PreferenceItemView {
         defStyleAttr: Int,
         defStyleRes: Int
     ) {
-        Log.d(TAG, "init: start. class = " + this.javaClass.simpleName)
+        Log.v(TAG) { "init: start. class = " + this.javaClass.simpleName }
         val values = context.obtainStyledAttributes(
             attrs, R.styleable.PreferenceCategoryView, defStyleAttr, defStyleRes
         )
@@ -275,7 +271,7 @@ open class PreferenceCategoryView : FrameLayout, PreferenceItemView {
         }
         this.isClickable = false
         this.isFocusable = false
-        Log.d(TAG, "init: end")
+        Log.v(TAG, "init: end")
     }
 
     /**
@@ -366,7 +362,7 @@ open class PreferenceCategoryView : FrameLayout, PreferenceItemView {
      * @param sharedPreferences [SharedPreferences]
      */
     open fun updateViews(sharedPreferences: SharedPreferences?) {
-        Log.d(TAG, "updateViews: title = $title dependency = $mDependency")
+        Log.d(TAG) { "updateViews: title = $title dependency = $mDependency" }
         if (mDependency != null && sharedPreferences != null) {
             this.isEnabled = sharedPreferences.getBoolean(mDependency, false)
         }
@@ -390,7 +386,7 @@ open class PreferenceCategoryView : FrameLayout, PreferenceItemView {
     }
 
     override fun setEnabled(enabled: Boolean) {
-        Log.d(TAG, "setEnabled: enabled = $enabled")
+        Log.d(TAG) { "setEnabled: enabled = $enabled" }
         super.setEnabled(enabled)
 
         // 全ての子ビューへ反映する
