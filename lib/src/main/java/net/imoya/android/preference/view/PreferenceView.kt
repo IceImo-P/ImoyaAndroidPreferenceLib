@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2022 IceImo-P
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package net.imoya.android.preference.view
 
 import android.annotation.SuppressLint
@@ -19,8 +35,8 @@ import androidx.annotation.CallSuper
 import androidx.annotation.LayoutRes
 import androidx.annotation.RequiresApi
 import androidx.core.widget.TextViewCompat
+import net.imoya.android.preference.PreferenceLog
 import net.imoya.android.preference.R
-import net.imoya.android.util.Log
 import net.imoya.android.util.ViewUtil
 
 /**
@@ -213,13 +229,13 @@ open class PreferenceView : LinearLayout, PreferenceItemView {
         attrs,
         defStyleAttr
     ) {
-        Log.d(
-            TAG
-        ) { "PreferenceView#__construct(c,a,i): start. class = ${this.javaClass.simpleName}, instance = ${super.toString()}" }
+        PreferenceLog.v(TAG) {
+            "PreferenceView#__construct(c,a,i): start. class = ${this.javaClass.simpleName}, instance = ${super.toString()}"
+        }
         init(context, attrs, defStyleAttr, 0)
-        Log.d(
-            TAG
-        ) { "PreferenceView#__construct(c,a,i): end. class = ${this.javaClass.simpleName}, instance = ${super.toString()}" }
+        PreferenceLog.v(TAG) {
+            "PreferenceView#__construct(c,a,i): end. class = ${this.javaClass.simpleName}, instance = ${super.toString()}"
+        }
     }
 
     /**
@@ -237,13 +253,13 @@ open class PreferenceView : LinearLayout, PreferenceItemView {
         defStyleAttr: Int,
         defStyleRes: Int
     ) : super(context, attrs, defStyleAttr, defStyleRes) {
-        Log.d(
-            TAG
-        ) { "PreferenceView#__construct(c,a,i1,i2): start. class = ${this.javaClass.simpleName}, instance = ${super.toString()}" }
+        PreferenceLog.v(TAG) {
+            "PreferenceView#__construct(c,a,i1,i2): start. class = ${this.javaClass.simpleName}, instance = ${super.toString()}"
+        }
         init(context, attrs, defStyleAttr, defStyleRes)
-        Log.d(
-            TAG
-        ){ "PreferenceView#__construct(c,a,i1,i2): end. class = ${this.javaClass.simpleName}, instance = ${super.toString()}" }
+        PreferenceLog.v(TAG) {
+            "PreferenceView#__construct(c,a,i1,i2): end. class = ${this.javaClass.simpleName}, instance = ${super.toString()}"
+        }
     }
 
     /**
@@ -277,7 +293,7 @@ open class PreferenceView : LinearLayout, PreferenceItemView {
      */
     @CallSuper
     protected open fun loadAttributes(values: TypedArray) {
-        Log.v(TAG) { "${this.javaClass.simpleName}: loadAttributes: start" }
+        PreferenceLog.v(TAG) { "${this.javaClass.simpleName}: loadAttributes: start" }
 
         val title = values.getString(R.styleable.PreferenceView_android_title)
         titleView.text = title
@@ -304,9 +320,9 @@ open class PreferenceView : LinearLayout, PreferenceItemView {
         )
 
         dependency = values.getString(R.styleable.PreferenceView_android_dependency)
-        Log.d(
-            TAG
-        ) { "${this.javaClass.simpleName}: loadAttributes: title = $title, summary = $summary, note = $note, dependency = $dependency" }
+        PreferenceLog.d(TAG) {
+            "${this.javaClass.simpleName}: loadAttributes: title = $title, summary = $summary, note = $note, dependency = $dependency"
+        }
     }
 
     /**
@@ -324,7 +340,7 @@ open class PreferenceView : LinearLayout, PreferenceItemView {
         defStyleAttr: Int,
         defStyleRes: Int
     ) {
-        Log.v(TAG) { "init: start. class = " + this.javaClass.simpleName }
+        PreferenceLog.v(TAG) { "init: start. class = " + this.javaClass.simpleName }
         val values = context.obtainStyledAttributes(
             attrs, R.styleable.PreferenceView, defStyleAttr, defStyleRes
         )
@@ -343,7 +359,7 @@ open class PreferenceView : LinearLayout, PreferenceItemView {
         findViewById<View>(android.R.id.content).setOnClickListener(clickListener)
         invalidate()
         requestLayout()
-        Log.v(TAG, "init: end")
+        PreferenceLog.v(TAG, "init: end")
     }
 
     /**
@@ -412,7 +428,7 @@ open class PreferenceView : LinearLayout, PreferenceItemView {
      * [View] クリック時の処理を行います。
      */
     protected open fun onClickRootView() {
-        Log.v(TAG, "onClickRootView: start")
+        PreferenceLog.v(TAG, "onClickRootView: start")
 
         // リスナへ通知する
         if (onPreferenceViewClickListener != null) {
@@ -424,7 +440,7 @@ open class PreferenceView : LinearLayout, PreferenceItemView {
      * ルート [View] クリック時の処理
      */
     private val clickListener = OnClickListener {
-        Log.v(TAG, "onClick: start")
+        PreferenceLog.v(TAG, "onClick: start")
 //        if (it.id == android.R.id.content) {
 //            onClickRootView()
 //        }
@@ -441,7 +457,7 @@ open class PreferenceView : LinearLayout, PreferenceItemView {
      * @param l [View.OnClickListener] or null
      */
     override fun setOnClickListener(l: OnClickListener?) {
-        Log.w(TAG, "Called PreferenceView.setOnClickListener")
+        PreferenceLog.w(TAG, "Called PreferenceView.setOnClickListener")
         super.setOnClickListener(l)
     }
 
@@ -525,7 +541,7 @@ open class PreferenceView : LinearLayout, PreferenceItemView {
      * @param sharedPreferences [SharedPreferences]
      */
     open fun updateViews(sharedPreferences: SharedPreferences) {
-        Log.d(TAG) { "updateViews: title = $title, dependency = $dependency" }
+        PreferenceLog.d(TAG) { "updateViews: title = $title, dependency = $dependency" }
         if (dependency != null) {
             this.isEnabled = sharedPreferences.getBoolean(dependency, false)
         }
@@ -548,7 +564,7 @@ open class PreferenceView : LinearLayout, PreferenceItemView {
     }
 
     override fun setEnabled(enabled: Boolean) {
-        Log.d(TAG) { "setEnabled: enabled = $enabled" }
+        PreferenceLog.d(TAG) { "setEnabled: enabled = $enabled" }
         super.setEnabled(enabled)
 
         // 全ての子ビューへ反映する

@@ -1,3 +1,51 @@
 <resources>
-    <string name="app_name">ImoyaAndroidPreferenceLib</string>
+    <string name="app_name" translatable="false">Preference Sample</string>
+
+    <string name="start_activity_sample" translatable="false">Activity Sample</string>
+    <string name="start_fragment_sample" translatable="false">Fragment Sample</string>
+
+    <string name="back" translatable="false">Back</string>
+
+    <string name="pref_category_title_1" translatable="false">Category 1</string>
+    <string name="pref_category_title_2" translatable="false">Category 2</string>
+
+    <string name="pref_string_1_key" translatable="false">string_1</string>
+    <string name="pref_string_1_title" translatable="false">String sample</string>
+    <string name="pref_string_1_summary" translatable="false">Description of StringPreference</string>
+
+    <string name="pref_number_1_key" translatable="false">number_1</string>
+    <string name="pref_number_1_title" translatable="false">Number sample</string>
+    <string name="pref_number_1_summary" translatable="false">Description of NumberPreference</string>
+    <string name="pref_number_1_unit" translatable="false">sec.</string>
+
+    <string name="pref_number_2_key" translatable="false">number_2</string>
+    <string name="pref_number_2_title" translatable="false">Number slider sample</string>
+    <string name="pref_number_2_summary" translatable="false">Number preference with slider input</string>
+    <string name="pref_number_2_unit" translatable="false">sec.</string>
+
+    <string name="pref_int_list_1_key" translatable="false">int_list_1</string>
+    <string name="pref_int_list_1_title" translatable="false">IntList sample</string>
+    <string name="pref_int_list_1_summary" translatable="false">Description of IntListPreference</string>
+
+    <string name="pref_string_list_1_key" translatable="false">string_list_1</string>
+    <string name="pref_string_list_1_title" translatable="false">StringList sample</string>
+    <string name="pref_string_list_1_summary" translatable="false">Description of StringListPreference</string>
+
+    <string name="pref_switch_1_key" translatable="false">switch_1</string>
+    <string name="pref_switch_1_title" translatable="false">24H display</string>
+    <string name="pref_switch_1_summary" translatable="false">Description of SwitchPreference</string>
+
+    <string name="pref_time_1_key" translatable="false">time_1</string>
+    <string name="pref_time_1_title" translatable="false">Time sample</string>
+    <string name="pref_time_1_default" translatable="false">0:00</string>
+    <string name="pref_time_1_null" translatable="false">(Not set)</string>
+
+    <string name="pref_time_period_1_key" translatable="false">time_period_1</string>
+    <string name="pref_time_period_1_title" translatable="false">Time period sample</string>
+    <string name="pref_time_period_1_default" translatable="false">0:00</string>
+    <string name="pref_time_period_1_null" translatable="false">(Not set)</string>
+
+    <string name="app_log_level" translatable="false">i</string>
+    <string name="imoya_android_preference_log_level" translatable="false">i</string>
+    <string name="imoya_android_dialog_log_level" translatable="false">i</string>
 </resources>

@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2022 IceImo-P
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package net.imoya.android.preference.fragment
 
 import android.os.Bundle
@@ -7,9 +23,9 @@ import android.view.ViewGroup
 import android.widget.TimePicker
 import androidx.fragment.app.Fragment
 import net.imoya.android.fragment.BaseFragment
+import net.imoya.android.preference.PreferenceLog
 import net.imoya.android.preference.R
 import net.imoya.android.preference.model.Time
-import net.imoya.android.util.Log
 import net.imoya.android.util.TimePickerHelper
 
 /**
@@ -24,7 +40,7 @@ class TimePickerFragment : BaseFragment() {
     /**
      * [TimePicker]
      */
-    private lateinit var picker: TimePicker
+    private var picker: TimePicker? = null
 
     /**
      * 24時間表示フラグを設定します。
@@ -79,9 +95,12 @@ class TimePickerFragment : BaseFragment() {
     }
 
     private fun loadTime() {
-        val pickerHelper = TimePickerHelper(picker)
-        time.hour = pickerHelper.getHour()
-        time.minute = pickerHelper.getMinute()
+        val timePicker = picker
+        if (timePicker != null) {
+            val pickerHelper = TimePickerHelper(timePicker)
+            time.hour = pickerHelper.getHour()
+            time.minute = pickerHelper.getMinute()
+        }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -99,7 +118,7 @@ class TimePickerFragment : BaseFragment() {
             requireArguments().getParcelable(ARGUMENT_TIME)
                 ?: throw RuntimeException("arguments[$ARGUMENT_TIME] is not set")
         }
-        Log.d(TAG) { "onCreate: time = $time" }
+        PreferenceLog.v(TAG) { "onCreate: time = $time" }
         this.time.hour = time.hour
         this.time.minute = time.minute
     }
@@ -108,18 +127,20 @@ class TimePickerFragment : BaseFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(
+        val view = inflater.inflate(
             R.layout.preference_time_input_fragment, container, false
         )
+        picker = view.findViewById(R.id.time)
+        return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        picker = view.findViewById(R.id.time)
-        TimePickerHelper(picker).setHourAndMinute(time.hour, time.minute)
-        picker.setIs24HourView(requireArguments().getBoolean(ARGUMENT_IS_24_HOUR_VIEW))
+        val timePicker = picker!!
+        TimePickerHelper(timePicker).setHourAndMinute(time.hour, time.minute)
+        timePicker.setIs24HourView(requireArguments().getBoolean(ARGUMENT_IS_24_HOUR_VIEW))
         val title = requireArguments().getString(ARGUMENT_TITLE)
-        Log.d(TAG) { "onViewCreated: title = $title" }
+        PreferenceLog.v(TAG) { "onViewCreated: title = $title" }
         this.setTitle(title)
     }
 

@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2022 IceImo-P
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package net.imoya.android.preference.controller
 
 import android.content.Intent
@@ -10,9 +26,9 @@ import androidx.annotation.CallSuper
 import net.imoya.android.dialog.DialogParent
 import net.imoya.android.dialog.InputDialog
 import net.imoya.android.dialog.NumberInputDialog
+import net.imoya.android.preference.PreferenceLog
 import net.imoya.android.preference.view.NumberAndUnitPreferenceView
 import net.imoya.android.preference.view.SingleValuePreferenceView
-import net.imoya.android.util.Log
 
 /**
  * 単位表示付き整数設定値編集コントローラ
@@ -117,10 +133,10 @@ open class NumberAndUnitPreferenceEditor(
     override fun setupState(view: SingleValuePreferenceView) {
         super.setupState(view)
         val prefView = view as NumberAndUnitPreferenceView
-        Log.d(
-            TAG
-        ) {
-            "setupState: defaultValue = ${prefView.defaultValue}, minValue = ${prefView.minValue}, maxValue = ${prefView.maxValue}, unit = ${prefView.unit}"
+        PreferenceLog.v(TAG) {
+            "setupState: defaultValue = ${prefView.defaultValue}, minValue = ${
+                prefView.minValue
+            }, maxValue = ${prefView.maxValue}, unit = ${prefView.unit}"
         }
         (state as State).defaultValue = prefView.defaultValue
         (state as State).minValue = prefView.minValue

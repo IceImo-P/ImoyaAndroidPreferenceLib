@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        >
+
+        <net.imoya.android.preference.view.PreferenceCategoryView
+            android:id="@+id/category_1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:title="@string/pref_category_title_1"
+            />
+
+        <net.imoya.android.preference.view.StringPreferenceView
+            android:id="@+id/pref_string_1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:key="@string/pref_string_1_key"
+            android:title="@string/pref_string_1_title"
+            android:summary="@string/pref_string_1_summary"
+            />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/pref_list_border_width"
+            style="@style/pref_list_divider"
+            />
+
+        <net.imoya.android.preference.view.NumberAndUnitPreferenceView
+            android:id="@+id/pref_number_1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:key="@string/pref_number_1_key"
+            android:title="@string/pref_number_1_title"
+            android:summary="@string/pref_number_1_summary"
+            app:unit="@string/pref_number_1_unit"
+            app:minValue="@integer/pref_number_1_min"
+            app:maxValue="@integer/pref_number_1_max"
+            android:defaultValue="@integer/pref_number_1_default"
+            />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/pref_list_border_width"
+            style="@style/pref_list_divider"
+            />
+
+        <net.imoya.android.preference.view.NumberAndUnitPreferenceView
+            android:id="@+id/pref_number_2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:key="@string/pref_number_2_key"
+            android:title="@string/pref_number_2_title"
+            android:summary="@string/pref_number_2_summary"
+            app:unit="@string/pref_number_2_unit"
+            app:minValue="@integer/pref_number_2_min"
+            app:maxValue="@integer/pref_number_2_max"
+            android:defaultValue="@integer/pref_number_2_default"
+            />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/pref_list_border_width"
+            style="@style/pref_list_divider"
+            />
+
+        <net.imoya.android.preference.view.IntListPreferenceView
+            android:id="@+id/pref_int_list_1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:key="@string/pref_int_list_1_key"
+            android:entries="@array/pref_int_list_1_labels"
+            android:entryValues="@array/pref_int_list_1_values"
+            android:title="@string/pref_int_list_1_title"
+            android:summary="@string/pref_int_list_1_summary"
+            />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/pref_list_border_width"
+            style="@style/pref_list_divider"
+            />
+
+        <net.imoya.android.preference.view.StringListPreferenceView
+            android:id="@+id/pref_string_list_1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:key="@string/pref_string_list_1_key"
+            android:entries="@array/pref_string_list_1_labels"
+            android:entryValues="@array/pref_string_list_1_values"
+            android:title="@string/pref_string_list_1_title"
+            android:summary="@string/pref_string_list_1_summary"
+            />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/pref_list_border_width"
+            style="@style/pref_list_divider"
+            />
+
+        <net.imoya.android.preference.view.PreferenceCategoryView
+            android:id="@+id/category_2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:title="@string/pref_category_title_2"
+            />
+
+        <net.imoya.android.preference.view.SwitchPreferenceView
+            android:id="@+id/pref_switch_1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:key="@string/pref_switch_1_key"
+            android:title="@string/pref_switch_1_title"
+            android:summary="@string/pref_switch_1_summary"
+            />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/pref_list_border_width"
+            style="@style/pref_list_divider"
+            />
+
+        <net.imoya.android.preference.view.TimePreferenceView
+            android:id="@+id/pref_time_1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:key="string/pref_time_1_key"
+            android:title="@string/pref_time_1_title"
+            android:defaultValue="@string/pref_time_1_default"
+            app:valueForNull="@string/pref_time_1_null"
+            />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/pref_list_border_width"
+            style="@style/pref_list_divider"
+            />
+
+        <net.imoya.android.preference.view.TimePeriodPreferenceView
+            android:id="@+id/pref_time_period_1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:key="string/pref_time_period_1_key"
+            android:title="@string/pref_time_period_1_title"
+            android:defaultValue="@string/pref_time_period_1_default"
+            app:valueForNull="@string/pref_time_period_1_null"
+            />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/pref_list_border_width"
+            style="@style/pref_list_divider"
+            />
+
+        <net.imoya.android.preference.view.PreferenceView
+            android:id="@+id/back"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:title="@string/back"
+            />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/pref_list_border_width"
+            style="@style/pref_list_divider"
+            />
+
+    </LinearLayout>
+
+</ScrollView>

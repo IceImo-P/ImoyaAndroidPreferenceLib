@@ -1,19 +1,34 @@
+/*
+ * Copyright (C) 2022 IceImo-P
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package net.imoya.android.preference.view
 
-import net.imoya.android.util.Log
-import android.os.Parcelable
-import android.os.Parcel
-import android.os.Parcelable.Creator
-import android.widget.CompoundButton
 import android.content.Context
-import androidx.annotation.LayoutRes
-import net.imoya.android.preference.R
-import android.content.res.TypedArray
 import android.content.SharedPreferences
+import android.content.res.TypedArray
+import android.os.Parcel
+import android.os.Parcelable
+import android.os.Parcelable.Creator
 import android.util.AttributeSet
 import android.view.View
+import android.widget.CompoundButton
 import android.widget.Switch
-import java.lang.RuntimeException
+import androidx.annotation.LayoutRes
+import net.imoya.android.preference.PreferenceLog
+import net.imoya.android.preference.R
 
 /**
  * スイッチ付き設定項目ビュー
@@ -72,7 +87,7 @@ open class SwitchPreferenceView : SingleValuePreferenceView {
          *
          * @param parcel [Parcel]
          */
-        protected constructor(parcel: Parcel): this(parcel, null)
+        protected constructor(parcel: Parcel) : this(parcel, null)
 
         /**
          * [Parcel] の内容で初期化するコンストラクタ
@@ -219,12 +234,12 @@ open class SwitchPreferenceView : SingleValuePreferenceView {
     }
 
     override fun loadAttributes(values: TypedArray) {
-        Log.v(TAG, "loadAttributes: start")
+        PreferenceLog.v(TAG, "loadAttributes: start")
         super.loadAttributes(values)
         mDefaultValue = values.getBoolean(
             R.styleable.PreferenceView_android_defaultValue, false
         )
-        Log.d(TAG) { "loadAttributes: defaultValue = $mDefaultValue" }
+        PreferenceLog.v(TAG) { "loadAttributes: defaultValue = $mDefaultValue" }
     }
 
     override fun createSavedState(superState: Parcelable?): SavedState {
@@ -258,10 +273,10 @@ open class SwitchPreferenceView : SingleValuePreferenceView {
 
     override fun updateViews(sharedPreferences: SharedPreferences) {
         val preferenceKey = preferenceKey
-        Log.d(TAG)  { "updateViews: preferenceKey = $preferenceKey" }
+        PreferenceLog.v(TAG) { "updateViews: preferenceKey = $preferenceKey" }
         super.updateViews(sharedPreferences)
         mCurrentValue = sharedPreferences.getBoolean(preferenceKey, mDefaultValue)
-        Log.d(TAG) { "updateViews: value = $mCurrentValue" }
+        PreferenceLog.v(TAG) { "updateViews: value = $mCurrentValue" }
         compoundButton.isChecked = mCurrentValue
         invalidate()
         requestLayout()
@@ -271,7 +286,7 @@ open class SwitchPreferenceView : SingleValuePreferenceView {
         super.onClickRootView()
 
         // ON/OFF状態を切り替える
-        Log.d(TAG) { "onClickRootView: before = $mCurrentValue, after = ${!mCurrentValue}" }
+        PreferenceLog.v(TAG) { "onClickRootView: before = $mCurrentValue, after = ${!mCurrentValue}" }
         mCurrentValue = !mCurrentValue
         compoundButton.isChecked = mCurrentValue
 
