@@ -1,16 +1,30 @@
+/*
+ * Copyright (C) 2022 IceImo-P
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package net.imoya.android.preference.controller
 
 import android.app.Activity
 import android.content.Intent
 import android.content.SharedPreferences
-import net.imoya.android.dialog.DialogBase
-import net.imoya.android.dialog.DialogParent
+import net.imoya.android.dialog.*
+import net.imoya.android.preference.PreferenceLog
 import net.imoya.android.preference.view.SingleValuePreferenceView
-import net.imoya.android.util.Log
 
 /**
- * 設定値編集コントローラの共通実装
- *
+ * ダイアログを表示する設定値編集コントローラの共通実装
  *
  * 設定項目タップ時に設定ダイアログを表示し、ダイアログの結果を保存するタイプの
  * 設定値編集コントローラ共通部分を実装します。
@@ -31,6 +45,27 @@ abstract class DialogPreferenceEditor(
     @JvmField
     protected val requestCode: Int
 ) : PreferenceEditor(preferences) {
+
+    /**
+     * ダイアログより結果を受け取る機能を初期化します。
+     *
+     * [androidx.fragment.app.Fragment.onViewCreated] で呼び出してください。
+     */
+    fun registerDialogCallback() {
+        PreferenceLog.v(TAG, "registerDialogCallback: start")
+
+        // 親画面が Fragment の場合、コールバックを受け取る処理を FragmentManager へ登録する
+        if (parent is DialogParentFragment<*>) {
+            PreferenceLog.v(TAG, "registerDialogCallback: Registering callback")
+            DialogUtil.registerDialogListener(parent, requestCode)
+        }
+        if (parent is PreferenceScreenParentFragment<*>) {
+            PreferenceLog.v(TAG, "registerDialogCallback: Registering callback")
+            DialogUtil.registerDialogListener(parent.fragment, parent.fragment as DialogListener, requestCode)
+        }
+
+        PreferenceLog.v(TAG, "registerDialogCallback: end")
+    }
 
     override fun startEditorUI(view: SingleValuePreferenceView) {
         showDialog(view)
@@ -58,7 +93,7 @@ abstract class DialogPreferenceEditor(
             data != null
         ) {
 
-            Log.d(TAG) {
+            PreferenceLog.v(TAG) {
                 val tag = data.getStringExtra(DialogBase.EXTRA_KEY_TAG)
                 "onDialogResult: tag = $tag requestCode = $requestCode"
             }

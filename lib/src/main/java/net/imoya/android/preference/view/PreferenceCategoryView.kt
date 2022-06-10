@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2022 IceImo-P
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package net.imoya.android.preference.view
 
 import android.content.Context
@@ -15,8 +31,8 @@ import android.widget.TextView
 import androidx.annotation.CallSuper
 import androidx.annotation.LayoutRes
 import androidx.core.widget.TextViewCompat
+import net.imoya.android.preference.PreferenceLog
 import net.imoya.android.preference.R
-import net.imoya.android.util.Log
 import net.imoya.android.util.ViewUtil
 
 /**
@@ -171,13 +187,17 @@ open class PreferenceCategoryView : FrameLayout, PreferenceItemView {
      */
     constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int)
             : super(context, attrs, defStyleAttr) {
-        Log.d(
-            TAG
-        ) { "PreferenceCategoryView#__construct(c,a,i): start. class = " + this.javaClass.simpleName + ", instance = " + super.toString() }
+        PreferenceLog.v(TAG) {
+            "PreferenceCategoryView#__construct(c,a,i): start. class = ${
+                this.javaClass.simpleName
+            }, instance = ${super.toString()}"
+        }
         init(context, attrs, defStyleAttr, 0)
-        Log.d(
-            TAG
-        ) { "PreferenceCategoryView#__construct(c,a,i): end. class = " + this.javaClass.simpleName + ", instance = " + super.toString() }
+        PreferenceLog.v(TAG) {
+            "PreferenceCategoryView#__construct(c,a,i): end. class = ${
+                this.javaClass.simpleName
+            }, instance = ${super.toString()}"
+        }
     }
 
     /**
@@ -195,7 +215,9 @@ open class PreferenceCategoryView : FrameLayout, PreferenceItemView {
         defStyleAttr: Int,
         defStyleRes: Int
     ) : super(context, attrs, defStyleAttr, defStyleRes) {
-        // Log.d(TAG, "PreferenceCategoryView#__construct(c,a,i1,i2): start. class = " + this.getClass().getSimpleName());
+        PreferenceLog.v(TAG) {
+            "PreferenceCategoryView#__construct(c,a,i1,i2): start. class = ${this.javaClass.simpleName}"
+        }
         init(context, attrs, defStyleAttr, defStyleRes)
     }
 
@@ -226,7 +248,7 @@ open class PreferenceCategoryView : FrameLayout, PreferenceItemView {
      * @param values 取得した属性値
      */
     protected open fun loadAttributes(values: TypedArray) {
-        Log.v(TAG, "loadAttributes: start")
+        PreferenceLog.v(TAG, "loadAttributes: start")
 
         val title = values.getString(R.styleable.PreferenceView_android_title)
         titleView?.text = title
@@ -238,7 +260,7 @@ open class PreferenceCategoryView : FrameLayout, PreferenceItemView {
             )
         }
         mDependency = values.getString(R.styleable.PreferenceView_android_dependency)
-        Log.d(TAG) { "loadAttributes: title = $title, dependency = $mDependency" }
+        PreferenceLog.v(TAG) { "loadAttributes: title = $title, dependency = $mDependency" }
     }
 
     /**
@@ -255,7 +277,7 @@ open class PreferenceCategoryView : FrameLayout, PreferenceItemView {
         defStyleAttr: Int,
         defStyleRes: Int
     ) {
-        Log.v(TAG) { "init: start. class = " + this.javaClass.simpleName }
+        PreferenceLog.v(TAG) { "init: start. class = " + this.javaClass.simpleName }
         val values = context.obtainStyledAttributes(
             attrs, R.styleable.PreferenceCategoryView, defStyleAttr, defStyleRes
         )
@@ -271,7 +293,7 @@ open class PreferenceCategoryView : FrameLayout, PreferenceItemView {
         }
         this.isClickable = false
         this.isFocusable = false
-        Log.v(TAG, "init: end")
+        PreferenceLog.v(TAG, "init: end")
     }
 
     /**
@@ -362,7 +384,7 @@ open class PreferenceCategoryView : FrameLayout, PreferenceItemView {
      * @param sharedPreferences [SharedPreferences]
      */
     open fun updateViews(sharedPreferences: SharedPreferences?) {
-        Log.d(TAG) { "updateViews: title = $title dependency = $mDependency" }
+        PreferenceLog.v(TAG) { "updateViews: title = $title dependency = $mDependency" }
         if (mDependency != null && sharedPreferences != null) {
             this.isEnabled = sharedPreferences.getBoolean(mDependency, false)
         }
@@ -386,7 +408,7 @@ open class PreferenceCategoryView : FrameLayout, PreferenceItemView {
     }
 
     override fun setEnabled(enabled: Boolean) {
-        Log.d(TAG) { "setEnabled: enabled = $enabled" }
+        PreferenceLog.v(TAG) { "setEnabled: enabled = $enabled" }
         super.setEnabled(enabled)
 
         // 全ての子ビューへ反映する

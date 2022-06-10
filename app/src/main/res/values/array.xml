@@ -1,0 +1,27 @@
+<resources>
+    <array name="pref_int_list_1_labels">
+        <item>Item 1</item>
+        <item>Item 2</item>
+        <item>Item 3</item>
+        <item>Item 4</item>
+    </array>
+    <array name="pref_int_list_1_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>9</item>
+    </array>
+
+    <array name="pref_string_list_1_labels">
+        <item>Item one</item>
+        <item>Item two</item>
+        <item>Item three</item>
+        <item>Item four</item>
+    </array>
+    <array name="pref_string_list_1_values">
+        <item>zero</item>
+        <item>one</item>
+        <item>two</item>
+        <item>three</item>
+    </array>
+</resources>

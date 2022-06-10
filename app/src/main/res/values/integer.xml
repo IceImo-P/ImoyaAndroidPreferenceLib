@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="pref_number_1_min">-10</integer>
+    <integer name="pref_number_1_max">10</integer>
+    <integer name="pref_number_1_default">5</integer>
+
+    <integer name="pref_number_2_min">-10</integer>
+    <integer name="pref_number_2_max">10</integer>
+    <integer name="pref_number_2_default">5</integer>
+
+</resources>

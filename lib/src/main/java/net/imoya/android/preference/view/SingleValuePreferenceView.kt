@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2022 IceImo-P
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package net.imoya.android.preference.view
 
 import android.annotation.TargetApi
@@ -11,13 +27,11 @@ import android.os.Parcelable.Creator
 import android.util.AttributeSet
 import android.view.View
 import androidx.annotation.CallSuper
+import net.imoya.android.preference.PreferenceLog
 import net.imoya.android.preference.R
-import net.imoya.android.util.Log
 
 /**
  * [SharedPreferences] に於ける、1件の設定項目を表すビュー
- *
- *
  *
  * 設定項目風の [View] です。
  *
@@ -25,7 +39,6 @@ import net.imoya.android.util.Log
  * に以下を加えたものとなります:
  *  * android:preferenceKey([android.R.attr.key])
  * - このビューに表示する設定値が保存される、[SharedPreferences] のキーを指定します。
- *
  */
 abstract class SingleValuePreferenceView : PreferenceView {
     /**
@@ -141,7 +154,7 @@ abstract class SingleValuePreferenceView : PreferenceView {
     override fun loadAttributes(values: TypedArray) {
         super.loadAttributes(values)
         preferenceKey = values.getString(R.styleable.PreferenceView_android_key) ?: ""
-        Log.d(TAG) { "loadAttributes: preferenceKey = $preferenceKey" }
+        PreferenceLog.v(TAG) { "loadAttributes: preferenceKey = $preferenceKey" }
     }
 
     override fun createSavedState(superState: Parcelable?): SavedState {

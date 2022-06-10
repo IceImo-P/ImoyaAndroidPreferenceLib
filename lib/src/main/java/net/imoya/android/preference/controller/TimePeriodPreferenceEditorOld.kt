@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2022 IceImo-P
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package net.imoya.android.preference.controller
 
 import android.app.Activity
@@ -9,17 +25,16 @@ import android.os.Parcelable
 import android.os.Parcelable.Creator
 import net.imoya.android.dialog.DialogParent
 import net.imoya.android.dialog.TimeInputDialog
+import net.imoya.android.preference.PreferenceLog
 import net.imoya.android.preference.R
 import net.imoya.android.preference.model.Time
 import net.imoya.android.preference.model.TimePeriod
 import net.imoya.android.preference.model.TimePeriod.Companion.parse
 import net.imoya.android.preference.view.SingleValuePreferenceView
 import net.imoya.android.preference.view.TimePeriodPreferenceView
-import net.imoya.android.util.Log
 
 /**
  * [TimePeriod] 設定値編集コントローラ
- *
  *
  * [TimePeriodPreferenceView] と組み合わせて使用することを想定しています。
  */
@@ -136,7 +151,7 @@ open class TimePeriodPreferenceEditorOld(
         return try {
             parse(sharedPreferences.getString(key, null)!!)
         } catch (e: Exception) {
-            Log.v(TAG, "getTimePeriod: Exception", e)
+            PreferenceLog.v(TAG, "getTimePeriod: Exception", e)
             TimePeriod()
         }
     }

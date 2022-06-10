@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2022 IceImo-P
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package net.imoya.android.preference.view
 
 import android.content.Context
@@ -8,9 +24,9 @@ import android.os.Parcelable
 import android.os.Parcelable.Creator
 import android.util.AttributeSet
 import android.view.View
+import net.imoya.android.log.LogUtil
+import net.imoya.android.preference.PreferenceLog
 import net.imoya.android.preference.R
-import net.imoya.android.util.Log
-import net.imoya.android.util.LogUtil
 
 /**
  * 設定値が整数値である、 [ListPreferenceView] の実装
@@ -188,7 +204,7 @@ open class IntListPreferenceView : ListPreferenceView {
             if (entryValuesId != 0) values.resources.getIntArray(entryValuesId)
             else throw RuntimeException("entry_values is not defined at layout XML")
         mDefaultValue = values.getInt(R.styleable.PreferenceView_android_defaultValue, 0)
-        Log.d(TAG) {
+        PreferenceLog.v(TAG) {
             "loadAttributes: preferenceKey = $preferenceKey" + ", entries = ${
                 LogUtil.logString(entries)
             }" + ", entryValues = ${
@@ -219,7 +235,7 @@ open class IntListPreferenceView : ListPreferenceView {
             savedState.currentValue = mCurrentValue
             savedState.defaultValue = mDefaultValue
         } else {
-            Log.w(TAG, "onSaveInstanceState(s): savedState is not SavedState")
+            PreferenceLog.w(TAG, "onSaveInstanceState(s): savedState is not SavedState")
         }
     }
 
@@ -231,7 +247,7 @@ open class IntListPreferenceView : ListPreferenceView {
             mCurrentValue = savedState.currentValue
             mDefaultValue = savedState.defaultValue
         } else {
-            Log.w(TAG, "onSaveInstanceState(s): savedState is not SavedState")
+            PreferenceLog.w(TAG, "onSaveInstanceState(s): savedState is not SavedState")
         }
     }
 

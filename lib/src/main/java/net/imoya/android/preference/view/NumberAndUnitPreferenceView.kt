@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2022 IceImo-P
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package net.imoya.android.preference.view
 
 import android.content.Context
@@ -11,8 +27,8 @@ import android.view.View
 import android.widget.TextView
 import androidx.annotation.CallSuper
 import androidx.annotation.LayoutRes
+import net.imoya.android.preference.PreferenceLog
 import net.imoya.android.preference.R
-import net.imoya.android.util.Log
 import net.imoya.android.util.ViewUtil
 
 /**
@@ -185,11 +201,11 @@ open class NumberAndUnitPreferenceView : SingleValuePreferenceView {
      */
     var minValue: Int
         get() {
-            Log.d(TAG) { "getMinValue: value = $mMinValue" }
+            PreferenceLog.v(TAG) { "getMinValue: value = $mMinValue" }
             return mMinValue
         }
         set(value) {
-            Log.d(TAG) { "setMinValue: value = $value" }
+            PreferenceLog.v(TAG) { "setMinValue: value = $value" }
             mMinValue = value
         }
 
@@ -204,11 +220,11 @@ open class NumberAndUnitPreferenceView : SingleValuePreferenceView {
      */
     var maxValue: Int
         get() {
-            Log.d(TAG) { "getMaxValue: value = $mMaxValue" }
+            PreferenceLog.v(TAG) { "getMaxValue: value = $mMaxValue" }
             return mMaxValue
         }
         set(value) {
-            Log.d(TAG) { "setMaxValue: value = $value" }
+            PreferenceLog.v(TAG) { "setMaxValue: value = $value" }
             mMaxValue = value
         }
 
@@ -289,14 +305,14 @@ open class NumberAndUnitPreferenceView : SingleValuePreferenceView {
 
     override fun loadAttributes(values: TypedArray) {
         super.loadAttributes(values)
-        Log.d(TAG) { "NumberAndUnitPreferenceView.loadAttributes: preferenceKey = $preferenceKey" }
+        PreferenceLog.v(TAG) { "NumberAndUnitPreferenceView.loadAttributes: preferenceKey = $preferenceKey" }
         mDefaultValue = values.getInt(R.styleable.PreferenceView_android_defaultValue, 0)
         mMinValue = values.getInt(R.styleable.PreferenceView_minValue, 0)
         mMaxValue = values.getInt(R.styleable.PreferenceView_maxValue, 0)
         unit = values.getString(R.styleable.PreferenceView_unit)
-        Log.d(
-            TAG
-        ) { "loadAttributes: defaultValue = $mDefaultValue, minValue = $mMinValue, maxValue = $mMaxValue, unit = $unit" }
+        PreferenceLog.v(TAG) {
+            "loadAttributes: defaultValue = $mDefaultValue, minValue = $mMinValue, maxValue = $mMaxValue, unit = $unit"
+        }
     }
 
     override fun createSavedState(superState: Parcelable?): SavedState {
@@ -307,16 +323,16 @@ open class NumberAndUnitPreferenceView : SingleValuePreferenceView {
     override fun onSaveInstanceState(savedState: PreferenceView.SavedState) {
         super.onSaveInstanceState(savedState)
         if (savedState is SavedState) {
-            Log.d(
-                TAG
-            ) { "onSaveInstanceState: currentValue = $mCurrentValue, defaultValue = $mDefaultValue, minValue = $mMinValue, maxValue = $mMaxValue, unit = $unit" }
+            PreferenceLog.v(TAG) {
+                "onSaveInstanceState: currentValue = $mCurrentValue, defaultValue = $mDefaultValue, minValue = $mMinValue, maxValue = $mMaxValue, unit = $unit"
+            }
             savedState.currentValue = mCurrentValue
             savedState.defaultValue = mDefaultValue
             savedState.minValue = mMinValue
             savedState.maxValue = mMaxValue
             savedState.unit = unit
         } else {
-            Log.w(TAG, "onSaveInstanceState: savedState is incompatible")
+            PreferenceLog.w(TAG, "onSaveInstanceState: savedState is incompatible")
         }
     }
 
@@ -324,32 +340,32 @@ open class NumberAndUnitPreferenceView : SingleValuePreferenceView {
     override fun onRestoreState(savedState: PreferenceView.SavedState) {
         super.onRestoreState(savedState)
         if (savedState is SavedState) {
-            Log.d(
-                TAG
-            ) { "onRestoreState: currentValue = $mCurrentValue, defaultValue = $mDefaultValue, minValue = $mMinValue, maxValue = $mMaxValue, unit = $unit" }
+            PreferenceLog.v(TAG) {
+                "onRestoreState: currentValue = $mCurrentValue, defaultValue = $mDefaultValue, minValue = $mMinValue, maxValue = $mMaxValue, unit = $unit"
+            }
             mCurrentValue = savedState.currentValue
             mDefaultValue = savedState.defaultValue
             mMinValue = savedState.minValue
             mMaxValue = savedState.maxValue
             unit = savedState.unit
         } else {
-            Log.w(TAG, "onRestoreState: savedState is incompatible")
+            PreferenceLog.w(TAG, "onRestoreState: savedState is incompatible")
         }
     }
 
     override fun updateViews(sharedPreferences: SharedPreferences) {
         val preferenceKey = preferenceKey
-        Log.d(TAG) { "updateViews: preferenceKey = $preferenceKey" }
+        PreferenceLog.v(TAG) { "updateViews: preferenceKey = $preferenceKey" }
         super.updateViews(sharedPreferences)
         mCurrentValue = sharedPreferences.getInt(preferenceKey, mDefaultValue)
-        Log.d(TAG) { "updateViews: value = $mCurrentValue" }
+        PreferenceLog.v(TAG) { "updateViews: value = $mCurrentValue" }
         valueView.text = mCurrentValue.toString()
         invalidate()
         requestLayout()
 
-        Log.d(
-            TAG
-        ) { "updateViews: currentValue = $mCurrentValue, defaultValue = $mDefaultValue, minValue = $mMinValue, maxValue = $mMaxValue, unit = $unit" }
+        PreferenceLog.v(TAG) {
+            "updateViews: currentValue = $mCurrentValue, defaultValue = $mDefaultValue, minValue = $mMinValue, maxValue = $mMaxValue, unit = $unit"
+        }
     }
 
     companion object {

@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2022 IceImo-P
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package net.imoya.android.preference.view
 
 import android.content.Context
@@ -10,9 +26,9 @@ import android.util.AttributeSet
 import android.view.View
 import android.widget.TextView
 import androidx.annotation.LayoutRes
+import net.imoya.android.log.LogUtil
+import net.imoya.android.preference.PreferenceLog
 import net.imoya.android.preference.R
-import net.imoya.android.util.Log
-import net.imoya.android.util.LogUtil
 
 /**
  * 固定の選択肢より選択する設定項目ビュー
@@ -184,7 +200,7 @@ abstract class ListPreferenceView : SingleValuePreferenceView {
         entries =
             if (entriesId != 0) values.resources.getStringArray(entriesId)
             else throw RuntimeException("entry_values is not defined at layout XML")
-        Log.d(TAG) {
+        PreferenceLog.v(TAG) {
             "loadAttributes: preferenceKey = $preferenceKey, entries = ${LogUtil.logString(entries)}"
         }
     }
@@ -198,7 +214,7 @@ abstract class ListPreferenceView : SingleValuePreferenceView {
         if (savedState is SavedState) {
             savedState.entries = entries
         } else {
-            Log.w(TAG, "onSaveInstanceState(s): savedState is not SavedState")
+            PreferenceLog.w(TAG, "onSaveInstanceState(s): savedState is not SavedState")
         }
     }
 
@@ -215,10 +231,10 @@ abstract class ListPreferenceView : SingleValuePreferenceView {
      * @param sharedPreferences [SharedPreferences]
      */
     override fun updateViews(sharedPreferences: SharedPreferences) {
-        Log.d(TAG) { "updateViews: key = $preferenceKey" }
+        PreferenceLog.v(TAG) { "updateViews: key = $preferenceKey" }
         super.updateViews(sharedPreferences)
         val index = getSelectedIndex(sharedPreferences)
-        Log.d(TAG) { "updateViews: entries = ${LogUtil.logString(entries)}, index = $index" }
+        PreferenceLog.v(TAG) { "updateViews: entries = ${LogUtil.logString(entries)}, index = $index" }
         selectionView.text = if (index >= 0 && index < entries.size) entries[index] else ""
         invalidate()
         requestLayout()

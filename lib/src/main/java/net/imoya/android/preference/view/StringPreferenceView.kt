@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2022 IceImo-P
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package net.imoya.android.preference.view
 
 import android.content.Context
@@ -9,8 +25,8 @@ import android.os.Parcelable.Creator
 import android.util.AttributeSet
 import android.view.View
 import android.widget.TextView
+import net.imoya.android.preference.PreferenceLog
 import net.imoya.android.preference.R
-import net.imoya.android.util.Log
 
 /**
  * 文字列値設定項目ビュー
@@ -155,13 +171,13 @@ open class StringPreferenceView : StringPreferenceViewBase {
     ) : super(context, attrs, defStyleAttr, defStyleRes)
 
     override fun loadAttributes(values: TypedArray) {
-        Log.v(TAG, "loadAttributes: start")
+        PreferenceLog.v(TAG, "loadAttributes: start")
         super.loadAttributes(values)
-        Log.d(TAG) { "loadAttributes: preferenceKey = $preferenceKey" }
+        PreferenceLog.d(TAG) { "loadAttributes: preferenceKey = $preferenceKey" }
         mMaxLength = values.getInt(
             R.styleable.PreferenceView_android_maxLength, Int.MAX_VALUE
         )
-        Log.d(TAG) { "loadAttributes: maxLength = $mMaxLength" }
+        PreferenceLog.d(TAG) { "loadAttributes: maxLength = $mMaxLength" }
     }
 
     override fun createSavedState(superState: Parcelable?): SavedState {

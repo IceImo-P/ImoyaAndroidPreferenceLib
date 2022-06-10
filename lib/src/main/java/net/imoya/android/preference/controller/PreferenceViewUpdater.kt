@@ -1,9 +1,25 @@
+/*
+ * Copyright (C) 2022 IceImo-P
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package net.imoya.android.preference.controller
 
 import android.content.SharedPreferences
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener
+import net.imoya.android.preference.PreferenceLog
 import net.imoya.android.preference.view.PreferenceView
-import net.imoya.android.util.Log
 
 /**
  * [PreferenceView] 自動更新コントローラ
@@ -14,43 +30,58 @@ open class PreferenceViewUpdater : OnSharedPreferenceChangeListener {
     var views: Array<PreferenceView> = arrayOf()
 
     fun clearViews() {
-        Log.v(TAG, "clearViews")
+        PreferenceLog.v(TAG, "clearViews")
         views = arrayOf()
     }
 
+    /**
+     * [PreferenceView] の自動更新を開始します。
+     *
+     * @param preferences 変更を監視する [SharedPreferences]
+     */
     fun start(preferences: SharedPreferences) {
-        Log.v(TAG, "start")
+        PreferenceLog.v(TAG, "start")
         preferences.registerOnSharedPreferenceChangeListener(this)
     }
 
+    /**
+     * [PreferenceView] の自動更新を終了します。
+     *
+     * @param preferences 変更を監視していた [SharedPreferences] 。 [start] の引数と同じものを指定する。
+     */
     fun stop(preferences: SharedPreferences) {
-        Log.v(TAG, "stop")
+        PreferenceLog.v(TAG, "stop")
         preferences.unregisterOnSharedPreferenceChangeListener(this)
     }
 
+    /**
+     * [PreferenceView] の表示を直ちに更新します。
+     *
+     * @param sharedPreferences 変更を監視している [SharedPreferences] 。 [start] の引数と同じものを指定する。
+     */
     fun update(sharedPreferences: SharedPreferences) {
         try {
             for (view in views) {
-                Log.v(TAG) { "update: updating ${view.title}" }
+                PreferenceLog.v(TAG) { "update: updating ${view.title}" }
                 try {
                     view.updateViews(sharedPreferences)
                 } catch (e1: Exception) {
-                    Log.v(TAG, { "update: Exception at ${view.title}" }, e1)
+                    PreferenceLog.v(TAG, { "update: Exception at ${view.title}" }, e1)
                 }
             }
         } catch (e: Exception) {
-            Log.w(TAG, "update: Exception", e)
+            PreferenceLog.w(TAG, "update: Exception", e)
         }
     }
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String) {
-        Log.v(TAG, "onSharedPreferenceChanged")
+        PreferenceLog.v(TAG, "onSharedPreferenceChanged")
         try {
             for (view in views) {
                 view.onPreferenceChange(sharedPreferences, key)
             }
         } catch (e: Exception) {
-            Log.w(TAG, "onSharedPreferenceChanged: Exception", e)
+            PreferenceLog.w(TAG, "onSharedPreferenceChanged: Exception", e)
         }
     }
 
