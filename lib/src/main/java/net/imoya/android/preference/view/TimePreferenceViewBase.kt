@@ -26,7 +26,6 @@ import android.view.View
 import net.imoya.android.preference.PreferenceLog
 import net.imoya.android.preference.R
 import net.imoya.android.preference.model.Time
-import net.imoya.android.util.Log
 
 /**
  * [Time] を取り扱う設定項目ビューの共通部分

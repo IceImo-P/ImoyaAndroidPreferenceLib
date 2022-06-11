@@ -25,8 +25,7 @@ import net.imoya.android.dialog.DialogParent
 import net.imoya.android.dialog.TimeInputDialog
 import net.imoya.android.preference.PreferenceLog
 import net.imoya.android.preference.model.Time
-import net.imoya.android.preference.model.Time.Companion.parse
-import net.imoya.android.preference.view.SingleValuePreferenceView
+import net.imoya.android.preference.view.PreferenceView
 import net.imoya.android.preference.view.TimePreferenceView
 
 /**
@@ -109,7 +108,7 @@ open class TimePreferenceEditor(
         return State()
     }
 
-    override fun setupState(view: SingleValuePreferenceView) {
+    override fun setupState(view: PreferenceView) {
         super.setupState(view)
         (state as State).time = getTime(preferences, state.key!!)
         show24Hour = (view as TimePreferenceView).is24hourView
@@ -117,14 +116,14 @@ open class TimePreferenceEditor(
 
     private fun getTime(sharedPreferences: SharedPreferences, key: String): Time {
         return try {
-            parse(sharedPreferences.getString(key, null)!!)
+            Time.parse(sharedPreferences.getString(key, null)!!)
         } catch (e: Exception) {
             PreferenceLog.v(TAG, "getTime: Exception", e)
             Time()
         }
     }
 
-    override fun showDialog(view: SingleValuePreferenceView) {
+    override fun showDialog(view: PreferenceView) {
         // 時刻入力ダイアログを表示する
         TimeInputDialog.Builder(parent, requestCode)
             .setHour((state as State).time!!.hour)

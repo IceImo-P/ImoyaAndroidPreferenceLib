@@ -107,7 +107,7 @@ abstract class PreferenceEditor(
      *
      * @param view 設定項目ビュー
      */
-    fun attach(view: SingleValuePreferenceView) {
+    fun attach(view: PreferenceView) {
         view.onPreferenceViewClickListener = this
     }
 
@@ -140,14 +140,17 @@ abstract class PreferenceEditor(
     }
 
     /**
-     * [SingleValuePreferenceView] より、設定情報を取得します。
+     * 状態オブジェクトを初期化し、
+     * [PreferenceView] が保持する情報を状態オブジェクトへ保存します。
      *
-     * @param view [SingleValuePreferenceView]
+     * @param view [PreferenceView]
      */
     @CallSuper
-    protected open fun setupState(view: SingleValuePreferenceView) {
+    protected open fun setupState(view: PreferenceView) {
         state = createState()
-        state.key = view.preferenceKey
+        if (view is SingleValuePreferenceView) {
+            state.key = view.preferenceKey
+        }
     }
 
     /**
@@ -172,7 +175,7 @@ abstract class PreferenceEditor(
      *
      * @param view タップされた項目設定ビュー
      */
-    protected abstract fun startEditorUI(view: SingleValuePreferenceView)
+    protected abstract fun startEditorUI(view: PreferenceView)
 
 //    companion object {
 //        /**

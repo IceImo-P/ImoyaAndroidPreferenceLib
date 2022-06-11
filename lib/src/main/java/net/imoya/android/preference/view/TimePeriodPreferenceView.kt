@@ -21,7 +21,6 @@ import android.util.AttributeSet
 import net.imoya.android.preference.PreferenceLog
 import net.imoya.android.preference.R
 import net.imoya.android.preference.model.TimePeriod
-import net.imoya.android.preference.model.TimePeriod.Companion.parse
 import net.imoya.android.util.TimeUtil.formatTime
 
 /**
@@ -83,7 +82,7 @@ class TimePeriodPreferenceView : TimePreferenceViewBase {
 
     private fun getTimePeriod(s: String?): TimePeriod? {
         return try {
-            if (s != null) parse(s) else null
+            if (s != null) TimePeriod.parse(s) else null
         } catch (e: Exception) {
             PreferenceLog.v(TAG, "getTimePeriod: Exception", e)
             null

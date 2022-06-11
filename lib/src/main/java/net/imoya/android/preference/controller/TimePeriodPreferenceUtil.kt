@@ -18,7 +18,6 @@ package net.imoya.android.preference.controller
 
 import android.content.SharedPreferences
 import net.imoya.android.preference.model.TimePeriod
-import net.imoya.android.preference.model.TimePeriod.Companion.parse
 
 /**
  * [TimePeriod] 設定値関連ユーティリティ
@@ -38,7 +37,7 @@ object TimePeriodPreferenceUtil {
         val stored = sharedPreferences.getString(key, null)
         return if (stored != null) {
             try {
-                parse(stored)
+                TimePeriod.parse(stored)
             } catch (ex: Exception) {
                 null
             }

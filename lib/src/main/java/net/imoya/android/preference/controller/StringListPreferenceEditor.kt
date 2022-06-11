@@ -23,7 +23,7 @@ import android.os.Parcelable
 import android.os.Parcelable.Creator
 import net.imoya.android.dialog.DialogBase
 import net.imoya.android.dialog.DialogParent
-import net.imoya.android.preference.view.SingleValuePreferenceView
+import net.imoya.android.preference.view.PreferenceView
 import net.imoya.android.preference.view.StringListPreferenceView
 
 /**
@@ -105,7 +105,7 @@ open class StringListPreferenceEditor(
         return State()
     }
 
-    override fun setupState(view: SingleValuePreferenceView) {
+    override fun setupState(view: PreferenceView) {
         super.setupState(view)
         val prefView = view as StringListPreferenceView
         (state as State).entryValues = prefView.entryValues
