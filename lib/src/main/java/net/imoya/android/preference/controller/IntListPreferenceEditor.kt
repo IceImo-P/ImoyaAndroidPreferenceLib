@@ -24,7 +24,7 @@ import android.os.Parcelable.Creator
 import net.imoya.android.dialog.DialogBase
 import net.imoya.android.dialog.DialogParent
 import net.imoya.android.preference.view.IntListPreferenceView
-import net.imoya.android.preference.view.SingleValuePreferenceView
+import net.imoya.android.preference.view.PreferenceView
 
 /**
  * 整数値選択設定コントローラ
@@ -105,7 +105,7 @@ open class IntListPreferenceEditor(
         return State()
     }
 
-    override fun setupState(view: SingleValuePreferenceView) {
+    override fun setupState(view: PreferenceView) {
         super.setupState(view)
         val prefView = view as IntListPreferenceView
         (state as State).entryValues = prefView.entryValues

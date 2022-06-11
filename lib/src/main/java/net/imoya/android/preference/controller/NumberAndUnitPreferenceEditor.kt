@@ -28,6 +28,7 @@ import net.imoya.android.dialog.InputDialog
 import net.imoya.android.dialog.NumberInputDialog
 import net.imoya.android.preference.PreferenceLog
 import net.imoya.android.preference.view.NumberAndUnitPreferenceView
+import net.imoya.android.preference.view.PreferenceView
 import net.imoya.android.preference.view.SingleValuePreferenceView
 
 /**
@@ -130,7 +131,7 @@ open class NumberAndUnitPreferenceEditor(
     }
 
     @CallSuper
-    override fun setupState(view: SingleValuePreferenceView) {
+    override fun setupState(view: PreferenceView) {
         super.setupState(view)
         val prefView = view as NumberAndUnitPreferenceView
         PreferenceLog.v(TAG) {
@@ -144,7 +145,10 @@ open class NumberAndUnitPreferenceEditor(
         (state as State).unit = prefView.unit
     }
 
-    override fun showDialog(view: SingleValuePreferenceView) {
+    override fun showDialog(view: PreferenceView) {
+        if (view !is SingleValuePreferenceView) {
+            throw RuntimeException("View must be SingleValuePreferenceView")
+        }
         val inputType =
             if ((state as State).minValue < 0) {
                 InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_FLAG_SIGNED

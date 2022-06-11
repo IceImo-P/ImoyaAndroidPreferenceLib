@@ -25,7 +25,7 @@ import net.imoya.android.dialog.SingleChoiceDialog
 import net.imoya.android.log.LogUtil
 import net.imoya.android.preference.PreferenceLog
 import net.imoya.android.preference.view.ListPreferenceView
-import net.imoya.android.preference.view.SingleValuePreferenceView
+import net.imoya.android.preference.view.PreferenceView
 
 abstract class ListPreferenceEditor(
     /**
@@ -100,7 +100,7 @@ abstract class ListPreferenceEditor(
         return State()
     }
 
-    override fun setupState(view: SingleValuePreferenceView) {
+    override fun setupState(view: PreferenceView) {
         super.setupState(view)
         val prefView = view as ListPreferenceView
         (state as State).entries = prefView.entries
@@ -110,7 +110,7 @@ abstract class ListPreferenceEditor(
         return prefView.entries
     }
 
-    override fun showDialog(view: SingleValuePreferenceView) {
+    override fun showDialog(view: PreferenceView) {
         val prefView: ListPreferenceView =
             if (view is ListPreferenceView) view
             else throw RuntimeException("view is not ListPreferenceView")

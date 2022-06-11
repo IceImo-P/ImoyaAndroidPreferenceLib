@@ -20,7 +20,6 @@ import android.content.Context
 import android.util.AttributeSet
 import net.imoya.android.preference.PreferenceLog
 import net.imoya.android.preference.model.Time
-import net.imoya.android.preference.model.Time.Companion.parse
 import net.imoya.android.util.TimeUtil
 
 /**
@@ -78,7 +77,7 @@ class TimePreferenceView : TimePreferenceViewBase {
 
     private fun getTime(s: String?): Time? {
         return try {
-            if (s != null) parse(s) else null
+            if (s != null) Time.parse(s) else null
         } catch (e: Exception) {
             PreferenceLog.v(TAG, "getTime: Exception", e)
             null

@@ -21,7 +21,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import net.imoya.android.dialog.*
 import net.imoya.android.preference.PreferenceLog
-import net.imoya.android.preference.view.SingleValuePreferenceView
+import net.imoya.android.preference.view.PreferenceView
 
 /**
  * ダイアログを表示する設定値編集コントローラの共通実装
@@ -67,7 +67,7 @@ abstract class DialogPreferenceEditor(
         PreferenceLog.v(TAG, "registerDialogCallback: end")
     }
 
-    override fun startEditorUI(view: SingleValuePreferenceView) {
+    override fun startEditorUI(view: PreferenceView) {
         showDialog(view)
     }
 
@@ -76,7 +76,7 @@ abstract class DialogPreferenceEditor(
      *
      * @param view タップされた項目設定ビュー
      */
-    protected abstract fun showDialog(view: SingleValuePreferenceView)
+    protected abstract fun showDialog(view: PreferenceView)
 
     /**
      * 設定ダイアログが閉じられた時の処理を行います。

@@ -32,7 +32,6 @@ import net.imoya.android.preference.R
 import net.imoya.android.preference.fragment.TimePickerFragment
 import net.imoya.android.preference.model.Time
 import net.imoya.android.preference.model.TimePeriod
-import net.imoya.android.util.Log
 
 /**
  * [TimePeriod] 入力画面

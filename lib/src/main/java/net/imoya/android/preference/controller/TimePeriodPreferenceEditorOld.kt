@@ -29,8 +29,7 @@ import net.imoya.android.preference.PreferenceLog
 import net.imoya.android.preference.R
 import net.imoya.android.preference.model.Time
 import net.imoya.android.preference.model.TimePeriod
-import net.imoya.android.preference.model.TimePeriod.Companion.parse
-import net.imoya.android.preference.view.SingleValuePreferenceView
+import net.imoya.android.preference.view.PreferenceView
 import net.imoya.android.preference.view.TimePeriodPreferenceView
 
 /**
@@ -139,7 +138,7 @@ open class TimePeriodPreferenceEditorOld(
         return State()
     }
 
-    override fun setupState(view: SingleValuePreferenceView) {
+    override fun setupState(view: PreferenceView) {
         super.setupState(view)
         (state as State).timePeriod = getTimePeriod(
             preferences, state.key!!
@@ -149,14 +148,14 @@ open class TimePeriodPreferenceEditorOld(
 
     private fun getTimePeriod(sharedPreferences: SharedPreferences, key: String): TimePeriod {
         return try {
-            parse(sharedPreferences.getString(key, null)!!)
+            TimePeriod.parse(sharedPreferences.getString(key, null)!!)
         } catch (e: Exception) {
             PreferenceLog.v(TAG, "getTimePeriod: Exception", e)
             TimePeriod()
         }
     }
 
-    override fun showDialog(view: SingleValuePreferenceView) {
+    override fun showDialog(view: PreferenceView) {
         showStartTimeInputDialog()
     }
 

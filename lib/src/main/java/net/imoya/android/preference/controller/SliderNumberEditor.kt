@@ -23,7 +23,7 @@ import net.imoya.android.dialog.DialogParent
 import net.imoya.android.dialog.SeekBarInputDialog
 import net.imoya.android.preference.PreferenceLog
 import net.imoya.android.preference.view.NumberAndUnitPreferenceView
-import net.imoya.android.preference.view.SingleValuePreferenceView
+import net.imoya.android.preference.view.PreferenceView
 
 /**
  * [SeekBar] 付き整数値設定コントローラ
@@ -34,7 +34,7 @@ import net.imoya.android.preference.view.SingleValuePreferenceView
 open class SliderNumberEditor(
     parent: DialogParent, preferences: SharedPreferences, requestCode: Int
 ) : NumberAndUnitPreferenceEditor(parent, preferences, requestCode) {
-    override fun showDialog(view: SingleValuePreferenceView) {
+    override fun showDialog(view: PreferenceView) {
         PreferenceLog.v(TAG) {
             "SliderNumberEditor.showDialog: title = ${view.title}, minValue = ${
                 (state as State).minValue

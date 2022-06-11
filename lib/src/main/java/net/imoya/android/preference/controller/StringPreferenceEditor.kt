@@ -25,6 +25,7 @@ import android.text.InputType
 import net.imoya.android.dialog.DialogParent
 import net.imoya.android.dialog.InputDialog
 import net.imoya.android.dialog.TextInputDialog
+import net.imoya.android.preference.view.PreferenceView
 import net.imoya.android.preference.view.SingleValuePreferenceView
 import net.imoya.android.preference.view.StringPreferenceView
 
@@ -128,13 +129,16 @@ open class StringPreferenceEditor(
         return State()
     }
 
-    override fun setupState(view: SingleValuePreferenceView) {
+    override fun setupState(view: PreferenceView) {
         super.setupState(view)
         val prefView = view as StringPreferenceView
         (state as State).maxLength = prefView.maxLength
     }
 
-    override fun showDialog(view: SingleValuePreferenceView) {
+    override fun showDialog(view: PreferenceView) {
+        if (view !is SingleValuePreferenceView) {
+            throw RuntimeException("View must be SingleValuePreferenceView")
+        }
         TextInputDialog.Builder(parent, requestCode)
             .setTitle(view.title ?: "")
             .setInputType((state as State).inputType)

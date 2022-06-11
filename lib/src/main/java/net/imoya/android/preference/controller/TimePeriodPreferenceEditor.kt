@@ -25,10 +25,8 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
 import net.imoya.android.preference.PreferenceLog
 import net.imoya.android.preference.activity.TimePeriodInputActivity
-import net.imoya.android.preference.activity.TimePeriodInputActivity.Companion.getResultTimePeriod
-import net.imoya.android.preference.activity.TimePeriodInputActivity.Companion.putExtras
 import net.imoya.android.preference.model.TimePeriod
-import net.imoya.android.preference.model.TimePeriod.Companion.parse
+import net.imoya.android.preference.view.PreferenceView
 import net.imoya.android.preference.view.SingleValuePreferenceView
 import net.imoya.android.preference.view.TimePeriodPreferenceView
 
@@ -92,15 +90,18 @@ open class TimePeriodPreferenceEditor(
         return State()
     }
 
-    override fun setupState(view: SingleValuePreferenceView) {
+    override fun setupState(view: PreferenceView) {
         super.setupState(view)
         show24Hour = (view as TimePeriodPreferenceView).is24hourView
     }
 
-    override fun startEditorUI(view: SingleValuePreferenceView) {
+    override fun startEditorUI(view: PreferenceView) {
+        if (view !is SingleValuePreferenceView) {
+            throw RuntimeException("View must be SingleValuePreferenceView")
+        }
         // 入力画面を開始する
         val intent = Intent(context, TimePeriodInputActivity::class.java)
-        putExtras(
+        TimePeriodInputActivity.putExtras(
             intent,
             getTimePeriod(preferences, view.preferenceKey),
             show24Hour
@@ -112,7 +113,7 @@ open class TimePeriodPreferenceEditor(
     protected open fun onEditorResult(resultCode: Int, data: Intent?) {
         if (resultCode == Activity.RESULT_OK && data != null) {
             // 入力値を保存する
-            val period = getResultTimePeriod(data)
+            val period = TimePeriodInputActivity.getResultTimePeriod(data)
             preferences.edit()
                 .putString(state.key, period.toString())
                 .apply()
@@ -124,7 +125,7 @@ open class TimePeriodPreferenceEditor(
 
     private fun getTimePeriod(sharedPreferences: SharedPreferences, key: String): TimePeriod {
         return try {
-            parse(sharedPreferences.getString(key, null)!!)
+            TimePeriod.parse(sharedPreferences.getString(key, null)!!)
         } catch (e: Exception) {
             PreferenceLog.v(TAG, "getTimePeriod: Exception", e)
             TimePeriod()
