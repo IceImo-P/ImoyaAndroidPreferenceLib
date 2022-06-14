@@ -27,7 +27,7 @@ import android.view.View
  * [PreferenceView] を使用するプログラムが、
  * [SharedPreferences] へ保存する必要があります。
  */
-interface OnPreferenceChangeListener {
+fun interface OnPreferenceChangeListener {
     /**
      * 設定値が変更された直後に呼び出されます。
      *
