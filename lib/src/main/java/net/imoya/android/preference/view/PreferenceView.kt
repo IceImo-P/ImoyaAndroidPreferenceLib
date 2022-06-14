@@ -269,7 +269,7 @@ open class PreferenceView : LinearLayout, PreferenceItemView {
      */
     @get:LayoutRes
     protected open val defaultLayout: Int
-        get() = R.layout.preference
+        get() = R.layout.imoya_preference
 
     /**
      * 子ビューの生成直後に呼び出されます。

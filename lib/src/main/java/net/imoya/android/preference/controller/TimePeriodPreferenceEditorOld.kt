@@ -164,8 +164,8 @@ open class TimePeriodPreferenceEditorOld(
             (state as State).timePeriod!!.start.hour,
             (state as State).timePeriod!!.start.minute,
             requestCode,
-            context.getString(R.string.preference_time_period_edit_start_title),
-            context.getString(R.string.preference_dialog_next),
+            context.getString(R.string.imoya_preference_time_period_edit_start_title),
+            context.getString(R.string.imoya_preference_dialog_next),
             context.getString(android.R.string.cancel)
         )
     }
@@ -175,9 +175,9 @@ open class TimePeriodPreferenceEditorOld(
             (state as State).timePeriod!!.end.hour,
             (state as State).timePeriod!!.end.minute,
             requestCodeEnd,
-            context.getString(R.string.preference_time_period_edit_end_title),
+            context.getString(R.string.imoya_preference_time_period_edit_end_title),
             context.getString(android.R.string.ok),
-            context.getString(R.string.preference_dialog_back)
+            context.getString(R.string.imoya_preference_dialog_back)
         )
     }
 

@@ -295,7 +295,7 @@ open class NumberAndUnitPreferenceView : SingleValuePreferenceView {
 
     @get:LayoutRes
     override val defaultLayout: Int
-        get() = R.layout.preference_number_unit
+        get() = R.layout.imoya_preference_number_unit
 
     override fun onCreateChildViews() {
         super.onCreateChildViews()

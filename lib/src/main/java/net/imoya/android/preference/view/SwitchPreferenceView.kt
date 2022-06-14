@@ -226,7 +226,7 @@ open class SwitchPreferenceView : SingleValuePreferenceView {
 
     @get:LayoutRes
     override val defaultLayout: Int
-        get() = R.layout.preference_switch
+        get() = R.layout.imoya_preference_switch
 
     override fun onCreateChildViews() {
         super.onCreateChildViews()

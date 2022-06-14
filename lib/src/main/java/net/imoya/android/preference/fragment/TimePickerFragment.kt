@@ -128,7 +128,7 @@ class TimePickerFragment : BaseFragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(
-            R.layout.preference_time_input_fragment, container, false
+            R.layout.imoya_preference_time_input_fragment, container, false
         )
         picker = view.findViewById(R.id.time)
         return view

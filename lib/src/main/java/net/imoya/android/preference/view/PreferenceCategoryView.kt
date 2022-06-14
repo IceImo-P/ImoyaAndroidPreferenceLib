@@ -228,7 +228,7 @@ open class PreferenceCategoryView : FrameLayout, PreferenceItemView {
      */
     @get:LayoutRes
     protected val defaultLayout: Int
-        get() = R.layout.preference_category
+        get() = R.layout.imoya_preference_category
 
     /**
      * 子ビューの生成直後に呼び出されます。

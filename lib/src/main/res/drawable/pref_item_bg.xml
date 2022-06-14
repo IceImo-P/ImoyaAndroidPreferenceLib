@@ -17,33 +17,33 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
 	<item android:state_pressed="true" android:state_focused="true">
 		<shape android:shape="rectangle">
-			<corners android:radius="@dimen/pref_widget_bg_corner_radius" />
-			<solid android:color="@color/pref_item_bg_pressed" />
+			<corners android:radius="@dimen/imoya_pref_widget_bg_corner_radius" />
+			<solid android:color="@color/imoya_pref_item_bg_pressed" />
 			<stroke
-				android:width="@dimen/pref_focus_border"
-				android:color="@color/pref_focus_border"
+				android:width="@dimen/imoya_pref_focus_border"
+				android:color="@color/imoya_pref_focus_border"
 				/>
 		</shape>
 	</item>
 	<item android:state_pressed="true">
 		<shape android:shape="rectangle">
-			<corners android:radius="@dimen/pref_widget_bg_corner_radius" />
-			<solid android:color="@color/pref_item_bg_pressed" />
+			<corners android:radius="@dimen/imoya_pref_widget_bg_corner_radius" />
+			<solid android:color="@color/imoya_pref_item_bg_pressed" />
 		</shape>
 	</item>
 	<item android:state_focused="true">
 		<shape android:shape="rectangle">
-			<corners android:radius="@dimen/pref_widget_bg_corner_radius" />
+			<corners android:radius="@dimen/imoya_pref_widget_bg_corner_radius" />
 			<stroke
-				android:width="@dimen/pref_focus_border"
-				android:color="@color/pref_focus_border"
+				android:width="@dimen/imoya_pref_focus_border"
+				android:color="@color/imoya_pref_focus_border"
 				/>
-			<solid android:color="@color/pref_item_bg_default" />
+			<solid android:color="@color/imoya_pref_item_bg_default" />
 		</shape>
 	</item>
 	<item>
 		<shape android:shape="rectangle">
-			<solid android:color="@color/pref_item_bg_default" />
+			<solid android:color="@color/imoya_pref_item_bg_default" />
 		</shape>
 	</item>
 </selector>

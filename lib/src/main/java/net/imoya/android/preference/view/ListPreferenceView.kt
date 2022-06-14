@@ -179,7 +179,7 @@ abstract class ListPreferenceView : SingleValuePreferenceView {
      */
     @get:LayoutRes
     override val defaultLayout: Int
-        get() = R.layout.preference_string
+        get() = R.layout.imoya_preference_string
 
     /**
      * 子ビューの生成直後に呼び出されます。
