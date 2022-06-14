@@ -19,7 +19,7 @@ package net.imoya.android.preference.view
 /**
  * 項目のクリックを通知します。
  */
-interface OnPreferenceViewClickListener {
+fun interface OnPreferenceViewClickListener {
     /**
      * ユーザが項目をクリックした時に呼び出されます。
      *

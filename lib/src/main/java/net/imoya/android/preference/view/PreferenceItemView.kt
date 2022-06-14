@@ -21,7 +21,7 @@ import android.content.SharedPreferences
 /**
  * 設定項目ビュー共通メソッド定義
  */
-interface PreferenceItemView {
+fun interface PreferenceItemView {
     /**
      * [SharedPreferences] 更新時の処理を行います。
      *

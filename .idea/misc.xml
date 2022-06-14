@@ -3,6 +3,20 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/DATA/Development/UYO/Android/ImoyaLib/preference/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.196" />
+        <entry key="..\:/DATA/Development/UYO/Android/ImoyaLib/preference/app/src/main/res/drawable/ic_launcher_background.xml" value="0.196" />
+        <entry key="..\:/DATA/Development/UYO/Android/ImoyaLib/preference/app/src/main/res/drawable/pref_list_divider.xml" value="0.196" />
+        <entry key="..\:/DATA/Development/UYO/Android/ImoyaLib/preference/app/src/main/res/layout/main_activity.xml" value="0.18802083333333333" />
+        <entry key="..\:/DATA/Development/UYO/Android/ImoyaLib/preference/app/src/main/res/layout/sample.xml" value="0.18802083333333333" />
+        <entry key="..\:/DATA/Development/UYO/Android/ImoyaLib/preference/app/src/main/res/layout/top.xml" value="0.18802083333333333" />
+        <entry key="..\:/DATA/Development/UYO/Android/ImoyaLib/preference/lib/src/main/res/drawable/pref_item_bg.xml" value="0.196" />
+        <entry key="..\:/DATA/Development/UYO/Android/ImoyaLib/preference/lib/src/main/res/layout/preference.xml" value="0.18802083333333333" />
+        <entry key="..\:/DATA/Development/UYO/Android/ImoyaLib/preference/lib/src/main/res/layout/preference_category.xml" value="0.18802083333333333" />
+        <entry key="..\:/DATA/Development/UYO/Android/ImoyaLib/preference/lib/src/main/res/layout/preference_string.xml" value="0.18802083333333333" />
+        <entry key="..\:/DATA/Development/UYO/Android/ImoyaLib/preference/lib/src/main/res/layout/preference_switch.xml" value="0.18802083333333333" />
+        <entry key="..\:/DATA/Development/UYO/Android/ImoyaLib/preference/lib/src/main/res/layout/preference_time_input_fragment.xml" value="0.18802083333333333" />
+        <entry key="..\:/DATA/Development/UYO/Android/ImoyaLib/preference/lib/src/main/res/layout/preference_time_period_input_activity.xml" value="0.18802083333333333" />
+        <entry key="..\:/DATA/Development/UYO/Android/ImoyaLib/preference/lib/src/main/res/menu/preference_time_period_input.xml" value="0.18802083333333333" />
       </map>
     </option>
   </component>
