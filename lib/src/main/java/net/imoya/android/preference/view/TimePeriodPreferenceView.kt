@@ -92,7 +92,7 @@ class TimePeriodPreferenceView : TimePreferenceViewBase {
     private fun getTimePeriodText(period: TimePeriod): String {
         val context = this.context
         val format = context.getString(
-            R.string.preference_time_period_value_format
+            R.string.imoya_preference_time_period_value_format
         )
         val hour24 = is24hourView
         return format.replace(

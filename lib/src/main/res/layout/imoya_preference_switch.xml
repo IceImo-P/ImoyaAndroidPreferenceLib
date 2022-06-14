@@ -32,10 +32,10 @@
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/view_preference_element_margin"
-        android:layout_marginRight="@dimen/view_preference_element_margin"
-        android:layout_marginTop="@dimen/view_preference_element_margin"
-        android:layout_marginBottom="@dimen/view_preference_element_margin"
+        android:layout_marginLeft="@dimen/imoya_view_preference_element_margin"
+        android:layout_marginRight="@dimen/imoya_view_preference_element_margin"
+        android:layout_marginTop="@dimen/imoya_view_preference_element_margin"
+        android:layout_marginBottom="@dimen/imoya_view_preference_element_margin"
         android:layout_weight="1"
         android:orientation="vertical"
         >
@@ -44,7 +44,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:singleLine="true"
-            android:drawablePadding="@dimen/view_preference_summary_icon_margin"
+            android:drawablePadding="@dimen/imoya_view_preference_summary_icon_margin"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="?android:attr/textColorPrimary"
             android:ellipsize="marquee"
@@ -53,7 +53,7 @@
         <TextView android:id="@android:id/summary"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:drawablePadding="@dimen/view_preference_summary_icon_margin"
+            android:drawablePadding="@dimen/imoya_view_preference_summary_icon_margin"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="?android:attr/textColorSecondary"
             android:maxLines="4" />
@@ -62,7 +62,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
-            android:drawablePadding="@dimen/view_preference_summary_icon_margin"
+            android:drawablePadding="@dimen/imoya_view_preference_summary_icon_margin"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="?android:attr/textColorPrimary"
             android:maxLines="4"
@@ -70,13 +70,15 @@
 
     </LinearLayout>
 
-    <!-- Preference should place its actual preference widget here. -->
-    <LinearLayout android:id="@android:id/widget_frame"
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/check"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:orientation="vertical"
-        android:visibility="gone"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="@dimen/imoya_view_preference_element_margin"
+        android:layout_marginRight="@dimen/imoya_view_preference_element_margin"
+        android:clickable="false"
+        android:focusable="false"
         />
 
 </LinearLayout>

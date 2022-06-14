@@ -18,9 +18,9 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
 
-    <dimen name="view_preference_element_margin">6dp</dimen>
-    <dimen name="view_preference_summary_icon_margin">4dp</dimen>
+    <dimen name="imoya_view_preference_element_margin">6dp</dimen>
+    <dimen name="imoya_view_preference_summary_icon_margin">4dp</dimen>
 
-    <dimen name="pref_widget_bg_corner_radius">1dp</dimen>
-    <dimen name="pref_focus_border">2dp</dimen>
+    <dimen name="imoya_pref_widget_bg_corner_radius">1dp</dimen>
+    <dimen name="imoya_pref_focus_border">2dp</dimen>
 </resources>

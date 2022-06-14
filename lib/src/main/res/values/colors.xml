@@ -15,7 +15,7 @@
     limitations under the License.
 -->
 <resources>
-    <color name="pref_focus_border">#80E0FF</color>
-    <color name="pref_item_bg_pressed">#6000</color>
-    <color name="pref_item_bg_default">#FFF</color>
+    <color name="imoya_pref_focus_border">#80E0FF</color>
+    <color name="imoya_pref_item_bg_pressed">#6000</color>
+    <color name="imoya_pref_item_bg_default">#FFF</color>
 </resources>

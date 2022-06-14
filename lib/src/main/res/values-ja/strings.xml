@@ -15,10 +15,10 @@
     limitations under the License.
 -->
 <resources>
-    <string name="preference_time_period_value_format">#start# ～ #end#</string>
-    <string name="preference_time_period_edit_start_title">開始時刻</string>
-    <string name="preference_time_period_edit_end_title">終了時刻</string>
+    <string name="imoya_preference_time_period_value_format">#start# ～ #end#</string>
+    <string name="imoya_preference_time_period_edit_start_title">開始時刻</string>
+    <string name="imoya_preference_time_period_edit_end_title">終了時刻</string>
 
-    <string name="preference_dialog_back">戻る</string>
-    <string name="preference_dialog_next">次へ</string>
+    <string name="imoya_preference_dialog_back">戻る</string>
+    <string name="imoya_preference_dialog_next">次へ</string>
 </resources>

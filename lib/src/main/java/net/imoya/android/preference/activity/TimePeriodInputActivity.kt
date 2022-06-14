@@ -126,7 +126,7 @@ open class TimePeriodInputActivity : BaseActivity() {
     private var is24HourView = false
 
     override val contentViewResourceId: Int
-        get() = R.layout.preference_time_period_input_activity
+        get() = R.layout.imoya_preference_time_period_input_activity
 
     override val firstFragment: Fragment
         get() {
@@ -136,7 +136,7 @@ open class TimePeriodInputActivity : BaseActivity() {
             time.minute = state!!.timePeriod.start.minute
             fragment.setTime(time)
             fragment.setIs24HourView(is24HourView)
-            fragment.setScreenTitle(this.getString(R.string.preference_time_period_edit_start_title))
+            fragment.setScreenTitle(this.getString(R.string.imoya_preference_time_period_edit_start_title))
             return fragment
         }
 
@@ -181,7 +181,7 @@ open class TimePeriodInputActivity : BaseActivity() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        this.menuInflater.inflate(R.menu.preference_time_period_input, menu)
+        this.menuInflater.inflate(R.menu.imoya_preference_time_period_input, menu)
         return true
     }
 
@@ -217,7 +217,7 @@ open class TimePeriodInputActivity : BaseActivity() {
                 fragment.setTime(endTime)
                 fragment.setIs24HourView(is24HourView)
                 fragment.setScreenTitle(
-                    this.getString(R.string.preference_time_period_edit_end_title)
+                    this.getString(R.string.imoya_preference_time_period_edit_end_title)
                 )
                 replaceTo(R.id.root, fragment, null)
             }
