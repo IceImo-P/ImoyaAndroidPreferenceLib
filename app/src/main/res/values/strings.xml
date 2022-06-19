@@ -21,6 +21,7 @@
     <string name="start_plain_activity_sample" translatable="false">Plain AppCompatActivity Sample</string>
     <string name="start_fragment_sample" translatable="false">PreferenceFragment Sample</string>
     <string name="start_plain_fragment_sample" translatable="false">Plain Fragment Sample</string>
+    <string name="license" translatable="false">License</string>
 
     <string name="back" translatable="false">Back</string>
 
@@ -66,6 +67,10 @@
     <string name="pref_time_period_1_title" translatable="false">Time period sample</string>
     <string name="pref_time_period_1_default" translatable="false">0:00</string>
     <string name="pref_time_period_1_null" translatable="false">(Not set)</string>
+
+    <string name="license_copyright_preference_layout" translatable="false">Copyright (C) 2015 The Android Open Source Project</string>
+    <string name="license_copyright_material_icons" translatable="false">Material design icons by Google</string>
+    <string name="license_copyright_imoya_preference" translatable="false">Copyright (C) 2022 IceImo-P</string>
 
     <string name="app_log_level" translatable="false">i</string>
     <string name="imoya_android_preference_log_level" translatable="false">i</string>

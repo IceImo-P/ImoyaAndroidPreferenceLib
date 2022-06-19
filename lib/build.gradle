@@ -51,7 +51,7 @@ publishing {
             // include any transitive dependencies
             pom {
                 withXml {
-                    def dependenciesNode = asNode(null).appendNode('dependencies')
+                    def dependenciesNode = asNode().appendNode('dependencies')
 
                     project.configurations.implementation.allDependencies.each {
                         if (it.group != null || it.name != null || it.version != null || it.name == "unspecified") return

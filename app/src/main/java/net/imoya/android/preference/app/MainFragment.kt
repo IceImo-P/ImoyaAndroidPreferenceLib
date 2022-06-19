@@ -55,6 +55,10 @@ class MainFragment : Fragment() {
             startFragment(SamplePlainFragment())
         }
 
+        view.findViewById<Button>(R.id.license).setOnClickListener {
+            startFragment(LicenseFragment())
+        }
+
         activity?.title = getString(R.string.app_name)
 
         AppLog.v(TAG, "onCreateView: end")
