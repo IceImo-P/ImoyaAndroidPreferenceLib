@@ -29,43 +29,64 @@
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
+            android:orientation="horizontal"
             android:paddingStart="@dimen/activity_horizontal_margin"
             android:paddingTop="@dimen/activity_vertical_margin"
             android:paddingEnd="@dimen/activity_horizontal_margin"
             android:paddingBottom="@dimen/activity_vertical_margin">
 
-            <Button
-                android:id="@+id/start_activity_sample"
-                android:layout_width="match_parent"
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:minHeight="@dimen/pref_list_item_min_height"
-                android:text="@string/start_activity_sample"
-                android:textAllCaps="false" />
+                android:layout_weight="1"
+                android:orientation="vertical">
 
-            <Button
-                android:id="@+id/start_plain_activity_sample"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:minHeight="@dimen/pref_list_item_min_height"
-                android:text="@string/start_plain_activity_sample"
-                android:textAllCaps="false" />
 
-            <Button
-                android:id="@+id/start_fragment_sample"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:minHeight="@dimen/pref_list_item_min_height"
-                android:text="@string/start_fragment_sample"
-                android:textAllCaps="false" />
+                <Button
+                    android:id="@+id/start_activity_sample"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="@dimen/pref_list_item_min_height"
+                    android:text="@string/start_activity_sample"
+                    android:textAllCaps="false" />
 
-            <Button
-                android:id="@+id/start_plain_fragment_sample"
-                android:layout_width="match_parent"
+                <Button
+                    android:id="@+id/start_plain_activity_sample"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="@dimen/pref_list_item_min_height"
+                    android:text="@string/start_plain_activity_sample"
+                    android:textAllCaps="false" />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <Space
+                android:layout_width="@dimen/activity_horizontal_margin"
+                android:layout_height="@dimen/activity_vertical_margin" />
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:minHeight="@dimen/pref_list_item_min_height"
-                android:text="@string/start_plain_fragment_sample"
-                android:textAllCaps="false" />
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <Button
+                    android:id="@+id/start_fragment_sample"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="@dimen/pref_list_item_min_height"
+                    android:text="@string/start_fragment_sample"
+                    android:textAllCaps="false" />
+
+                <Button
+                    android:id="@+id/start_plain_fragment_sample"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="@dimen/pref_list_item_min_height"
+                    android:text="@string/start_plain_fragment_sample"
+                    android:textAllCaps="false" />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
 
         </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -75,7 +96,7 @@
         android:id="@+id/footer_margin"
         android:layout_width="match_parent"
         android:layout_height="@dimen/activity_vertical_margin"
-        android:layout_above="@+id/footer" />
+        android:layout_above="@id/footer" />
 
     <androidx.appcompat.widget.LinearLayoutCompat
         android:id="@+id/footer"
