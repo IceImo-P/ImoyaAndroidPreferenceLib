@@ -2,10 +2,11 @@
 
 [VoiceClock](https://imoya.net/android/voiceclock) より切り出した、設定画面の共通実装です。
 
-* [android.preference](https://developer.android.com/reference/android/preference/Preference) ライクで、ユーザーが拡張可能な設定画面および設定項目ビューの実装
-* 設定画面と SharedPreferences を連携するデフォルトの実装
-
-本ライブラリは Android Jetpack 公開以前に作者がスクラッチ作成したコードがベースとなっているため、 Jetpack が提供する [androidx.preference](https://developer.android.com/jetpack/androidx/releases/preference?hl=ja) との互換性はありません。
+* [android.preference](https://developer.android.com/reference/android/preference/Preference) の便利さをある程度継承しつつ、拡張性と柔軟性を持たせた、設定画面および設定項目ビュー
+  * [android.preference](https://developer.android.com/reference/android/preference/Preference) は独自 XML で作成していた設定画面を、レイアウトリソース XML で作成する仕様で実装、通常のビューと設定ビューを混在させた画面の作成が可能
+  * デフォルトで定義されている設定項目は、少ないコーディングで既存の AppCompatActivity, Fragment へ組み込み可能
+  * 画面回転、特に編集ダイアログ表示中の画面回転にも対応
+  * 本ライブラリのユーザーが、デフォルトで定義されている設定項目のビューを独自に拡張することや、新しい設定項目のビューを作成することも可能
 
 ## Installation
 
@@ -78,7 +79,7 @@
         implementation 'net.imoya.android.dialog:imoya-android-dialog:1.3.0'
         implementation 'net.imoya.android.fragment:imoya-android-fragment:1.2.0'
         implementation 'net.imoya.android.log:imoya-android-log:1.1.0'
-        implementation 'net.imoya.android.preference:imoya-android-preference:1.3.0'
+        implementation 'net.imoya.android.preference:imoya-android-preference:1.4.0'
         implementation 'net.imoya.android.util:imoya-android-util:1.6.0'
         // (other dependencies)
     }
@@ -208,6 +209,29 @@ If you want to see ImoyaAndroidPreferenceLib's log, please do the following step
             // ...
         }
         ```
+
+## Usage and sample application
+
+このライブラリが実装している各 `PreferenceView`, `PreferenceEditor` を、アプリケーションの画面へ実装したサンプルアプリを同梱しております。
+
+使用方法のサンプルとしてご利用ください。
+
+基本的な使用方法は次の通りです。
+
+1. レイアウトリソースへ、設定画面に配置する `PreferenceView` の設定を記述します。
+    * サンプルアプリの [`app/src/main/res/layout/sample.xml`](https://github.com/IceImo-P/ImoyaAndroidPreferenceLib/blob/main/app/src/main/res/layout/sample.xml) が、レイアウトリソースのサンプルとなります。
+    * `PreferenceView` の設定は、各 view の属性に記載します。
+        * `android:key` : この項目が編集する `SharedPreferences` の preference key
+        * `android:title` : ビューのタイトル文言
+        * `android:summary` : ビューのタイトル下部に表示する、小さめの文字で表示される文言
+        * その他、ビュー独自の追加属性。利用可能な属性は、各 `PreferenceView` 実装クラスの[ドキュメント](https://github.com/IceImo-P/ImoyaAndroidPreferenceLib/tree/main/lib/src/main/java/net/imoya/android/preference/view)に記載してあります。
+2. Activity または Fragment へ、各 view をタップした時の処理を実装します。
+    * このライブラリが提供する基本的な `PreferenceView` はタップ時の処理を実装済みですので、既存の Activity や Fragment へ数行のコード追加のみで実装できます。
+    * サンプルアプリの下記ファイルがサンプルとなります。4画面とも、表示内容や動作は同じです。
+        1. [`app/src/main/java/net/imoya/android/preference/app/SampleFragment`](https://github.com/IceImo-P/ImoyaAndroidPreferenceLib/blob/main/app/src/main/java/net/imoya/android/preference/app/SampleFragment.kt) : [`PreferenceFragment`](https://github.com/IceImo-P/ImoyaAndroidPreferenceLib/blob/main/lib/src/main/java/net/imoya/android/preference/fragment/PreferenceFragment.kt) を使用したサンプル
+        2. [`app/src/main/java/net/imoya/android/preference/app/SamplePlainFragment`](https://github.com/IceImo-P/ImoyaAndroidPreferenceLib/blob/main/app/src/main/java/net/imoya/android/preference/app/SamplePlainFragment.kt) : 一般的な [`Fragment`](https://developer.android.com/reference/androidx/fragment/app/Fragment) へ設定ビューを実装したサンプル
+        3. [`app/src/main/java/net/imoya/android/preference/app/SampleActivity`](https://github.com/IceImo-P/ImoyaAndroidPreferenceLib/blob/main/app/src/main/java/net/imoya/android/preference/app/SampleActivity.kt) : [`PreferenceActivity`](https://github.com/IceImo-P/ImoyaAndroidPreferenceLib/blob/main/lib/src/main/java/net/imoya/android/preference/activity/PreferenceActivity.kt) を使用したサンプル
+        4. [`app/src/main/java/net/imoya/android/preference/app/SamplePlainActivity`](https://github.com/IceImo-P/ImoyaAndroidPreferenceLib/blob/main/app/src/main/java/net/imoya/android/preference/app/SamplePlainActivity.kt) : 一般的な [`AppCompatActivity`](https://developer.android.com/reference/androidx/appcompat/app/AppCompatActivity) へ設定ビューを実装したサンプル
 
 ## Copyright notice
 

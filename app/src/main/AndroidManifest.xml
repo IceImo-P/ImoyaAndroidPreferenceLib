@@ -22,6 +22,12 @@
 
         <activity
             android:name=".SampleActivity"
+            android:label="@string/start_activity_sample"
+            android:exported="false"
+            />
+
+        <activity android:name=".SamplePlainActivity"
+            android:label="@string/start_plain_activity_sample"
             android:exported="false"
             />
 

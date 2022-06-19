@@ -21,6 +21,7 @@ import android.content.SharedPreferences
 import android.widget.SeekBar
 import net.imoya.android.dialog.DialogParent
 import net.imoya.android.dialog.SeekBarInputDialog
+import net.imoya.android.preference.Constants
 import net.imoya.android.preference.PreferenceLog
 import net.imoya.android.preference.view.NumberAndUnitPreferenceView
 import net.imoya.android.preference.view.PreferenceView
@@ -32,33 +33,49 @@ import net.imoya.android.preference.view.PreferenceView
  */
 @Suppress("unused")
 open class SliderNumberEditor(
-    parent: DialogParent, preferences: SharedPreferences, requestCode: Int
+    /**
+     * 設定ダイアログの親画面
+     */
+    parent: DialogParent? = null,
+    /**
+     * 設定値が保存される [SharedPreferences]
+     */
+    preferences: SharedPreferences? = null,
+    /**
+     * 設定ダイアログの識別に使用するリクエストコード
+     */
+    requestCode: Int = Constants.DEFAULT_REQUEST_CODE
 ) : NumberAndUnitPreferenceEditor(parent, preferences, requestCode) {
+
     override fun showDialog(view: PreferenceView) {
+        val currentPreferences = checkPreferences()
+        val currentParent = checkParent()
+        val key = checkKey()
+        val currentState = state as State
+        checkAndWarnRequestCode()
+
         PreferenceLog.v(TAG) {
             "SliderNumberEditor.showDialog: title = ${view.title}, minValue = ${
-                (state as State).minValue
-            }, maxValue = ${(state as State).maxValue}, defaultValue = ${
-                (state as State).defaultValue
+                currentState.minValue
+            }, maxValue = ${currentState.maxValue}, defaultValue = ${
+                currentState.defaultValue
             }"
         }
-        SeekBarInputDialog.Builder(parent, requestCode)
+        SeekBarInputDialog.Builder(currentParent, requestCode)
             .setTitle(view.title ?: "")
-            .setMin((state as State).minValue)
-            .setMax((state as State).maxValue)
-            .setValue(
-                preferences.getInt(
-                    state.key, (state as State).defaultValue
-                )
-            )
+            .setMin(currentState.minValue)
+            .setMax(currentState.maxValue)
+            .setValue(currentPreferences.getInt(key, currentState.defaultValue))
             .show()
     }
 
     override fun saveInput(resultCode: Int, data: Intent) {
+        val currentPreferences = checkPreferences()
+        val key = checkKey()
         val value = data.getIntExtra(
             SeekBarInputDialog.EXTRA_KEY_INPUT_VALUE, (state as State).defaultValue
         )
-        preferences.edit().putInt(state.key, value).apply()
+        currentPreferences.edit().putInt(key, value).apply()
     }
 
     companion object {

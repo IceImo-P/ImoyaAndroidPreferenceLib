@@ -23,6 +23,7 @@ import android.os.Parcelable.Creator
 import net.imoya.android.dialog.DialogParent
 import net.imoya.android.dialog.SingleChoiceDialog
 import net.imoya.android.log.LogUtil
+import net.imoya.android.preference.Constants
 import net.imoya.android.preference.PreferenceLog
 import net.imoya.android.preference.view.ListPreferenceView
 import net.imoya.android.preference.view.PreferenceView
@@ -31,15 +32,15 @@ abstract class ListPreferenceEditor(
     /**
      * 設定ダイアログの親画面
      */
-    parent: DialogParent,
+    parent: DialogParent? = null,
     /**
      * 設定値が保存される [SharedPreferences]
      */
-    preferences: SharedPreferences,
+    preferences: SharedPreferences? = null,
     /**
      * 設定ダイアログの識別に使用するリクエストコード
      */
-    requestCode: Int
+    requestCode: Int = Constants.DEFAULT_REQUEST_CODE
 ) : DialogPreferenceEditor(parent, preferences, requestCode) {
     /**
      * 状態オブジェクト
@@ -102,31 +103,33 @@ abstract class ListPreferenceEditor(
 
     override fun setupState(view: PreferenceView) {
         super.setupState(view)
-        val prefView = view as ListPreferenceView
-        (state as State).entries = prefView.entries
-    }
-
-    protected open fun getEntries(prefView: ListPreferenceView): Array<String> {
-        return prefView.entries
+        if (view !is ListPreferenceView) {
+            throw IllegalArgumentException("View must be ListPreferenceView")
+        }
+        (state as State).entries = view.entries
     }
 
     override fun showDialog(view: PreferenceView) {
-        val prefView: ListPreferenceView =
-            if (view is ListPreferenceView) view
-            else throw RuntimeException("view is not ListPreferenceView")
-        val entries: Array<String> = getEntries(prefView)
+        val currentPreferences = checkPreferences()
+        val currentParent = checkParent()
+        val key = checkKey()
+        if (view !is ListPreferenceView) {
+            throw IllegalArgumentException("View must be ListPreferenceView")
+        }
+        checkAndWarnRequestCode()
+        val entries: Array<String> = (state as State).entries
+        val selectedIndex = view.getSelectedIndex(currentPreferences)
 
         PreferenceLog.v(TAG) {
-            "showDialog: title = ${prefView.title}, entries = ${LogUtil.logString(entries)}" +
-                    ", selectedIndex = ${prefView.getSelectedIndex(preferences)}" +
-                    ", key = ${prefView.preferenceKey}"
+            "showDialog: title = ${view.title}, entries = ${LogUtil.logString(entries)}" +
+                    ", selectedIndex = $selectedIndex, key = $key"
         }
 
-        SingleChoiceDialog.Builder(parent, requestCode)
-            .setTitle(prefView.title ?: "")
+        SingleChoiceDialog.Builder(currentParent, requestCode)
+            .setTitle(view.title ?: "")
             .setItems(entries)
-            .setSelectedPosition(prefView.getSelectedIndex(preferences))
-            .setTag(prefView.preferenceKey)
+            .setSelectedPosition(selectedIndex)
+            .setTag(key)
             .show()
     }
 

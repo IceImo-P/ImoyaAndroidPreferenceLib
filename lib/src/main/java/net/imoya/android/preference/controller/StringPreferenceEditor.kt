@@ -25,8 +25,8 @@ import android.text.InputType
 import net.imoya.android.dialog.DialogParent
 import net.imoya.android.dialog.InputDialog
 import net.imoya.android.dialog.TextInputDialog
+import net.imoya.android.preference.Constants
 import net.imoya.android.preference.view.PreferenceView
-import net.imoya.android.preference.view.SingleValuePreferenceView
 import net.imoya.android.preference.view.StringPreferenceView
 
 /**
@@ -39,15 +39,15 @@ open class StringPreferenceEditor(
     /**
      * 設定ダイアログの親画面
      */
-    parent: DialogParent,
+    parent: DialogParent? = null,
     /**
      * 設定値が保存される [SharedPreferences]
      */
-    preferences: SharedPreferences,
+    preferences: SharedPreferences? = null,
     /**
      * 設定ダイアログの識別に使用するリクエストコード
      */
-    requestCode: Int
+    requestCode: Int = Constants.DEFAULT_REQUEST_CODE
 ) : DialogPreferenceEditor(parent, preferences, requestCode) {
     /**
      * 状態オブジェクト
@@ -125,39 +125,53 @@ open class StringPreferenceEditor(
         (state as State).hint = hint
     }
 
+    override fun isCompatibleView(view: PreferenceView): Boolean {
+        return view is StringPreferenceView
+    }
+
     override fun createState(): PreferenceEditor.State {
         return State()
     }
 
     override fun setupState(view: PreferenceView) {
         super.setupState(view)
-        val prefView = view as StringPreferenceView
-        (state as State).maxLength = prefView.maxLength
+        if (view !is StringPreferenceView) {
+            throw IllegalArgumentException("View must be StringPreferenceView")
+        }
+        (state as State).maxLength = view.maxLength
     }
 
     override fun showDialog(view: PreferenceView) {
-        if (view !is SingleValuePreferenceView) {
-            throw RuntimeException("View must be SingleValuePreferenceView")
+        val currentPreferences = checkPreferences()
+        val currentParent = checkParent()
+        val key = checkKey()
+        if (view !is StringPreferenceView) {
+            throw IllegalArgumentException("View must be StringPreferenceView")
         }
-        TextInputDialog.Builder(parent, requestCode)
+        checkAndWarnRequestCode()
+        val currentState = state as State
+
+        TextInputDialog.Builder(currentParent, requestCode)
             .setTitle(view.title ?: "")
-            .setInputType((state as State).inputType)
-            .setMaxLength((state as State).maxLength)
-            .setHint((state as State).hint)
-            .setText(preferences.getString(state.key, "") ?: "")
-            .setTag(view.preferenceKey)
+            .setInputType(currentState.inputType)
+            .setMaxLength(currentState.maxLength)
+            .setHint(currentState.hint)
+            .setText(currentPreferences.getString(key, "") ?: "")
+            .setTag(key)
             .show()
     }
 
     override fun saveInput(resultCode: Int, data: Intent) {
-        val text = data.getStringExtra(InputDialog.EXTRA_KEY_INPUT_VALUE)
-        preferences.edit().putString(state.key, text).apply()
+        val currentPreferences = checkPreferences()
+        val key = checkKey()
+        val value = data.getStringExtra(InputDialog.EXTRA_KEY_INPUT_VALUE)
+        currentPreferences.edit().putString(key, value).apply()
     }
 
-//    companion object {
-//        /**
-//         * Tag for log
-//         */
-//        private const val TAG = "StringPreferenceEditor";
-//    }
+    companion object {
+        /**
+         * Tag for log
+         */
+        private const val TAG = "StringPreferenceEditor"
+    }
 }

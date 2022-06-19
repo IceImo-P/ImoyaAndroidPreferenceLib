@@ -20,30 +20,29 @@ import android.app.Activity
 import android.content.Intent
 import android.content.SharedPreferences
 import net.imoya.android.dialog.*
+import net.imoya.android.preference.Constants
 import net.imoya.android.preference.PreferenceLog
 import net.imoya.android.preference.view.PreferenceView
 
 /**
  * ダイアログを表示する設定値編集コントローラの共通実装
  *
- * 設定項目タップ時に設定ダイアログを表示し、ダイアログの結果を保存するタイプの
- * 設定値編集コントローラ共通部分を実装します。
+ * [PreferenceView] タップ時に編集ダイアログを表示し、ユーザがダイアログへ入力した結果を
+ * [SharedPreferences] へ保存するタイプの設定値編集コントローラ共通部分を実装します。
  */
 abstract class DialogPreferenceEditor(
     /**
-     * 設定ダイアログの親画面
+     * 編集ダイアログの親画面
      */
-    @JvmField
-    protected val parent: DialogParent,
+    var parent: DialogParent? = null,
     /**
-     * 設定値が保存される [SharedPreferences]
+     * [SharedPreferences] to read current value and write result
      */
-    preferences: SharedPreferences,
+    preferences: SharedPreferences? = null,
     /**
-     * 設定ダイアログの識別に使用するリクエストコード
+     * 編集ダイアログの識別に使用するリクエストコード
      */
-    @JvmField
-    protected val requestCode: Int
+    var requestCode: Int = Constants.DEFAULT_REQUEST_CODE
 ) : PreferenceEditor(preferences) {
 
     /**
@@ -54,14 +53,26 @@ abstract class DialogPreferenceEditor(
     fun registerDialogCallback() {
         PreferenceLog.v(TAG, "registerDialogCallback: start")
 
-        // 親画面が Fragment の場合、コールバックを受け取る処理を FragmentManager へ登録する
-        if (parent is DialogParentFragment<*>) {
-            PreferenceLog.v(TAG, "registerDialogCallback: Registering callback")
-            DialogUtil.registerDialogListener(parent, requestCode)
+        // パラメータがデフォルト値である場合は WARN ログを出力する
+        checkAndWarnRequestCode()
+        if (parent == null) {
+            PreferenceLog.w(TAG, "Parent is null. Is it intended?")
         }
-        if (parent is PreferenceScreenParentFragment<*>) {
+
+        // 親画面が Fragment の場合、コールバックを受け取る処理を FragmentManager へ登録する
+        val currentParent = parent
+        if (currentParent is PreferenceScreenParentFragment<*>) {
             PreferenceLog.v(TAG, "registerDialogCallback: Registering callback")
-            DialogUtil.registerDialogListener(parent.fragment, parent.fragment as DialogListener, requestCode)
+            DialogUtil.registerDialogListener(
+                currentParent.fragment,
+                currentParent.fragment as DialogListener,
+                requestCode
+            )
+        } else if (currentParent is DialogParentFragment<*>) {
+            PreferenceLog.v(TAG, "registerDialogCallback: Registering callback")
+            DialogUtil.registerDialogListener(currentParent, requestCode)
+        } else if (currentParent != null) {
+            PreferenceLog.w(TAG, "Parent is unknown class. Is it intended?")
         }
 
         PreferenceLog.v(TAG, "registerDialogCallback: end")
@@ -72,16 +83,16 @@ abstract class DialogPreferenceEditor(
     }
 
     /**
-     * 設定ダイアログを表示します。
+     * 編集ダイアログを表示します。
      *
-     * @param view タップされた項目設定ビュー
+     * @param view [PreferenceView] which has been tapped by user
      */
     protected abstract fun showDialog(view: PreferenceView)
 
     /**
-     * 設定ダイアログが閉じられた時の処理を行います。
+     * 編集ダイアログが閉じられた時の処理を行います。
      *
-     * @param requestCode 設定ダイアログの識別に使用するリクエストコード
+     * @param requestCode 編集ダイアログの識別に使用するリクエストコード
      * @param resultCode  ダイアログが返した結果コード
      * @param data        ダイアログが返した追加情報
      * @return このコントローラが処理した場合はtrue, そうでない場合はfalse
@@ -92,7 +103,6 @@ abstract class DialogPreferenceEditor(
             resultCode == Activity.RESULT_OK &&
             data != null
         ) {
-
             PreferenceLog.v(TAG) {
                 val tag = data.getStringExtra(DialogBase.EXTRA_KEY_TAG)
                 "onDialogResult: tag = $tag requestCode = $requestCode"
@@ -105,12 +115,37 @@ abstract class DialogPreferenceEditor(
     }
 
     /**
-     * 設定ダイアログの入力結果を保存します。
+     * 編集ダイアログの入力結果を保存します。
      *
      * @param resultCode ダイアログが返した結果コード
      * @param data       ダイアログが返した追加情報
      */
     protected abstract fun saveInput(resultCode: Int, data: Intent)
+
+    /**
+     * Check [parent] is set
+     *
+     * @return [DialogParent]
+     * @throws IllegalStateException [parent] is not set
+     */
+    protected fun checkParent(): DialogParent {
+        return parent ?: throw IllegalStateException("preferences is not set")
+    }
+
+    /**
+     * Check [requestCode] is set to non-default value
+     *
+     * - If [requestCode] is the default value ([Constants.DEFAULT_REQUEST_CODE]),
+     *   WARN log is output.
+     */
+    protected fun checkAndWarnRequestCode() {
+        if (requestCode == Constants.DEFAULT_REQUEST_CODE) {
+            PreferenceLog.w(
+                TAG,
+                "requestCode is default value(Integer.MIN_VALUE). Is it intended?"
+            )
+        }
+    }
 
     companion object {
         /**

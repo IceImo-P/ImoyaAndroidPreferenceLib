@@ -17,8 +17,10 @@
 <resources>
     <string name="app_name" translatable="false">Preference Sample</string>
 
-    <string name="start_activity_sample" translatable="false">Activity Sample</string>
-    <string name="start_fragment_sample" translatable="false">Fragment Sample</string>
+    <string name="start_activity_sample" translatable="false">PreferenceActivity Sample</string>
+    <string name="start_plain_activity_sample" translatable="false">Plain AppCompatActivity Sample</string>
+    <string name="start_fragment_sample" translatable="false">PreferenceFragment Sample</string>
+    <string name="start_plain_fragment_sample" translatable="false">Plain Fragment Sample</string>
 
     <string name="back" translatable="false">Back</string>
 
@@ -28,6 +30,10 @@
     <string name="pref_string_1_key" translatable="false">string_1</string>
     <string name="pref_string_1_title" translatable="false">String sample</string>
     <string name="pref_string_1_summary" translatable="false">Description of StringPreference</string>
+
+    <string name="pref_string_2_key" translatable="false">string_2</string>
+    <string name="pref_string_2_title" translatable="false">String sample 2</string>
+    <string name="pref_string_2_summary" translatable="false">Description of StringPreference(2)</string>
 
     <string name="pref_number_1_key" translatable="false">number_1</string>
     <string name="pref_number_1_title" translatable="false">Number sample</string>

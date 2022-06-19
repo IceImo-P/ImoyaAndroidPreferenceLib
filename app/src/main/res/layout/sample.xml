@@ -120,6 +120,21 @@
             style="@style/pref_list_divider"
             />
 
+        <net.imoya.android.preference.view.StringPreferenceView
+            android:id="@+id/pref_string_2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:key="@string/pref_string_2_key"
+            android:title="@string/pref_string_2_title"
+            android:summary="@string/pref_string_2_summary"
+            />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/pref_list_border_width"
+            style="@style/pref_list_divider"
+            />
+
         <net.imoya.android.preference.view.PreferenceCategoryView
             android:id="@+id/category_2"
             android:layout_width="match_parent"
