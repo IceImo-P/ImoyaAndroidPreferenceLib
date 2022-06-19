@@ -17,7 +17,6 @@
 package net.imoya.android.preference.controller
 
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Parcel
@@ -25,6 +24,7 @@ import android.os.Parcelable
 import android.os.Parcelable.Creator
 import net.imoya.android.dialog.DialogParent
 import net.imoya.android.dialog.TimeInputDialog
+import net.imoya.android.preference.Constants
 import net.imoya.android.preference.PreferenceLog
 import net.imoya.android.preference.R
 import net.imoya.android.preference.model.Time
@@ -42,20 +42,20 @@ open class TimePeriodPreferenceEditorOld(
     /**
      * 設定ダイアログの親画面
      */
-    parent: DialogParent,
+    parent: DialogParent?,
     /**
      * 設定値が保存される [SharedPreferences]
      */
-    preferences: SharedPreferences,
+    preferences: SharedPreferences?,
     /**
      * 設定ダイアログの識別に使用するリクエストコード
      */
-    requestCodeStart: Int,
+    requestCodeStart: Int = Constants.DEFAULT_REQUEST_CODE,
     /**
      * 設定ダイアログの識別に使用するリクエストコード
      */
-    @JvmField
-    protected val requestCodeEnd: Int
+    @Suppress("weaker")
+    var requestCodeEnd: Int = Constants.DEFAULT_REQUEST_CODE
 ) : DialogPreferenceEditor(parent, preferences, requestCodeStart) {
     /**
      * リスナ
@@ -119,11 +119,6 @@ open class TimePeriodPreferenceEditorOld(
     }
 
     /**
-     * [Context]
-     */
-    private val context: Context = parent.context
-
-    /**
      * 24時間表示フラグ
      */
     private var show24Hour = false
@@ -134,14 +129,19 @@ open class TimePeriodPreferenceEditorOld(
     @Suppress("MemberVisibilityCanBePrivate")
     var listener: Listener? = null
 
+    override fun isCompatibleView(view: PreferenceView): Boolean {
+        return view is TimePeriodPreferenceView
+    }
+
     override fun createState(): PreferenceEditor.State {
         return State()
     }
 
     override fun setupState(view: PreferenceView) {
         super.setupState(view)
+        val currentPreferences = checkPreferences()
         (state as State).timePeriod = getTimePeriod(
-            preferences, state.key!!
+            currentPreferences, state.key!!
         )
         show24Hour = (view as TimePeriodPreferenceView).is24hourView
     }
@@ -160,6 +160,8 @@ open class TimePeriodPreferenceEditorOld(
     }
 
     private fun showStartTimeInputDialog() {
+        val context = checkParent().context
+        checkAndWarnRequestCode()
         showInputDialog(
             (state as State).timePeriod!!.start.hour,
             (state as State).timePeriod!!.start.minute,
@@ -171,6 +173,7 @@ open class TimePeriodPreferenceEditorOld(
     }
 
     private fun showEndTimeInputDialog() {
+        val context = checkParent().context
         showInputDialog(
             (state as State).timePeriod!!.end.hour,
             (state as State).timePeriod!!.end.minute,
@@ -185,7 +188,10 @@ open class TimePeriodPreferenceEditorOld(
         hour: Int, minute: Int, requestCode: Int, title: String,
         positiveButtonTitle: String, negativeButtonTitle: String
     ) {
-        TimeInputDialog.Builder(parent, requestCode)
+        val currentParent = checkParent()
+        checkAndWarnRequestCode()
+
+        TimeInputDialog.Builder(currentParent, requestCode)
             .setTitle(title)
             .setHour(hour)
             .setMinute(minute)
@@ -228,12 +234,10 @@ open class TimePeriodPreferenceEditorOld(
     }
 
     override fun saveInput(resultCode: Int, data: Intent) {
-        preferences.edit()
+        checkPreferences().edit()
             .putString(state.key, (state as State).timePeriod.toString())
             .apply()
-        if (listener != null) {
-            listener!!.onEdit(this)
-        }
+        listener?.onEdit(this)
     }
 
     companion object {

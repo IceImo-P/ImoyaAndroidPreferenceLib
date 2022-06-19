@@ -16,22 +16,28 @@
 
 package net.imoya.android.preference.app
 
+import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
+import androidx.preference.PreferenceManager
 import net.imoya.android.dialog.DialogListener
-import net.imoya.android.preference.activity.PreferenceActivity
 import net.imoya.android.preference.controller.*
+import net.imoya.android.preference.util.PreferenceActivityController
 import net.imoya.android.preference.view.OnPreferenceViewClickListener
 import net.imoya.android.preference.view.PreferenceView
 import net.imoya.android.preference.view.TimePeriodPreferenceView
 import net.imoya.android.preference.view.TimePreferenceView
 
 /**
- * [PreferenceActivity] implementation sample
+ * Sample implementation: preference views on plain [AppCompatActivity]
  *
  * @author IceImo-P
  */
-class SampleActivity : PreferenceActivity(), DialogListener {
+class SamplePlainActivity : AppCompatActivity(), DialogListener {
+    /** [PreferenceView] を配置する機能の実装 */
+    private val pref = PreferenceActivityController()
+
     /** Custom preference change handler */
     private lateinit var myPreferenceChangeHandler: SharedPreferences.OnSharedPreferenceChangeListener
 
@@ -39,6 +45,21 @@ class SampleActivity : PreferenceActivity(), DialogListener {
         super.onCreate(savedInstanceState)
 
         AppLog.v(TAG, "onCreate: start")
+
+        // Default process for PreferenceActivityLogic
+        pref.onCreateActivity(this)
+
+        // Set up preferences first
+        pref.preferences = PreferenceManager.getDefaultSharedPreferences(applicationContext)
+
+        // Registering default editors
+        pref.setupDefaultEditors()
+
+        // Registering non-default editors
+        pref.registerEditor(KEY_SLIDER_NUMBER_EDITOR, SliderNumberEditor())
+
+        // Restore editors state (if savedInstanceState exists)
+        pref.restoreEditorState(savedInstanceState)
 
         // Custom logic: Update views if SwitchPreference is changed
         val is24hourViewKey = getString(R.string.pref_switch_1_key)
@@ -54,33 +75,45 @@ class SampleActivity : PreferenceActivity(), DialogListener {
         setContentView(R.layout.sample)
 
         // Set the combination of view and editor
-        setupPreferenceView(findViewById(R.id.pref_string_1))
-        setupPreferenceView(findViewById(R.id.pref_string_2))
-        setupPreferenceView(findViewById(R.id.pref_number_1))
-        setupPreferenceView(findViewById(R.id.pref_number_2), KEY_SLIDER_NUMBER_EDITOR)
-        setupPreferenceView(findViewById(R.id.pref_string_list_1))
-        setupPreferenceView(findViewById(R.id.pref_int_list_1))
-        setupPreferenceView(findViewById(R.id.pref_switch_1))
-        setupPreferenceView(findViewById(R.id.pref_time_1))
-        setupPreferenceView(findViewById(R.id.pref_time_period_1))
+        pref.setupPreferenceView(findViewById(R.id.pref_string_1))
+        pref.setupPreferenceView(findViewById(R.id.pref_string_2))
+        pref.setupPreferenceView(findViewById(R.id.pref_number_1))
+        pref.setupPreferenceView(findViewById(R.id.pref_number_2), KEY_SLIDER_NUMBER_EDITOR)
+        pref.setupPreferenceView(findViewById(R.id.pref_string_list_1))
+        pref.setupPreferenceView(findViewById(R.id.pref_int_list_1))
+        pref.setupPreferenceView(findViewById(R.id.pref_switch_1))
+        pref.setupPreferenceView(findViewById(R.id.pref_time_1))
+        pref.setupPreferenceView(findViewById(R.id.pref_time_period_1))
 
         // 「戻る」項目押下時、 Activity を終了し前の画面へ遷移
         findViewById<PreferenceView>(R.id.back).onPreferenceViewClickListener =
             OnPreferenceViewClickListener { finish() }
 
-        commitSetupPreferenceViews()
+        pref.commitSetupPreferenceViews()
 
-        requirePreferences().registerOnSharedPreferenceChangeListener(myPreferenceChangeHandler)
+        pref.requirePreferences()
+            .registerOnSharedPreferenceChangeListener(myPreferenceChangeHandler)
         update24hourView()
 
         AppLog.v(TAG, "onCreate: end")
     }
 
-    override fun onRegisterCustomEditors() {
-        super.onRegisterCustomEditors()
+    override fun onResume() {
+        super.onResume()
 
-        // Register non-default editors
-        registerEditor(KEY_SLIDER_NUMBER_EDITOR, SliderNumberEditor())
+        pref.onResume()
+    }
+
+    override fun onPause() {
+        super.onPause()
+
+        pref.onPause()
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+
+        pref.onSaveInstanceState(outState)
     }
 
     override fun onDestroy() {
@@ -88,19 +121,26 @@ class SampleActivity : PreferenceActivity(), DialogListener {
 
         AppLog.v(TAG, "onDestroy: start")
 
-        requirePreferences().unregisterOnSharedPreferenceChangeListener(myPreferenceChangeHandler)
+        pref.requirePreferences()
+            .unregisterOnSharedPreferenceChangeListener(myPreferenceChangeHandler)
+        pref.onDestroyViews()
+        pref.onDestroy()
 
         AppLog.v(TAG, "onDestroy: end")
     }
 
+    override fun onDialogResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        pref.onDialogResult(requestCode, resultCode, data)
+    }
+
     private fun update24hourView() {
-        val is24hourView = requirePreferences().getBoolean(
+        val is24hourView = pref.requirePreferences().getBoolean(
             getString(R.string.pref_switch_1_key), false
         )
         findViewById<TimePreferenceView>(R.id.pref_time_1)?.is24hourView = is24hourView
         findViewById<TimePeriodPreferenceView>(R.id.pref_time_period_1)?.is24hourView =
             is24hourView
-        updatePreferenceViews()
+        pref.updatePreferenceViews()
     }
 
     companion object {
@@ -110,6 +150,6 @@ class SampleActivity : PreferenceActivity(), DialogListener {
         /**
          * Tag for log
          */
-        const val TAG = "SampleActivity"
+        const val TAG = "SamplePlainActivity"
     }
 }

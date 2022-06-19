@@ -26,6 +26,7 @@ import androidx.annotation.CallSuper
 import net.imoya.android.dialog.DialogParent
 import net.imoya.android.dialog.InputDialog
 import net.imoya.android.dialog.NumberInputDialog
+import net.imoya.android.preference.Constants
 import net.imoya.android.preference.PreferenceLog
 import net.imoya.android.preference.view.NumberAndUnitPreferenceView
 import net.imoya.android.preference.view.PreferenceView
@@ -38,7 +39,9 @@ import net.imoya.android.preference.view.SingleValuePreferenceView
  */
 @Suppress("unused")
 open class NumberAndUnitPreferenceEditor(
-    parent: DialogParent, preferences: SharedPreferences, requestCode: Int
+    parent: DialogParent? = null,
+    preferences: SharedPreferences? = null,
+    requestCode: Int = Constants.DEFAULT_REQUEST_CODE
 ) : DialogPreferenceEditor(parent, preferences, requestCode) {
     /**
      * 状態オブジェクト
@@ -126,6 +129,10 @@ open class NumberAndUnitPreferenceEditor(
         (state as State).hint = hint
     }
 
+    override fun isCompatibleView(view: PreferenceView): Boolean {
+        return view is NumberAndUnitPreferenceView
+    }
+
     override fun createState(): PreferenceEditor.State {
         return State()
     }
@@ -133,44 +140,55 @@ open class NumberAndUnitPreferenceEditor(
     @CallSuper
     override fun setupState(view: PreferenceView) {
         super.setupState(view)
-        val prefView = view as NumberAndUnitPreferenceView
-        PreferenceLog.v(TAG) {
-            "setupState: defaultValue = ${prefView.defaultValue}, minValue = ${
-                prefView.minValue
-            }, maxValue = ${prefView.maxValue}, unit = ${prefView.unit}"
+
+        if (view !is NumberAndUnitPreferenceView) {
+            throw IllegalArgumentException("View must be NumberAndUnitPreferenceView")
         }
-        (state as State).defaultValue = prefView.defaultValue
-        (state as State).minValue = prefView.minValue
-        (state as State).maxValue = prefView.maxValue
-        (state as State).unit = prefView.unit
+        val currentState = state as State
+
+        PreferenceLog.v(TAG) {
+            "setupState: defaultValue = ${view.defaultValue}, minValue = ${
+                view.minValue
+            }, maxValue = ${view.maxValue}, unit = ${view.unit}"
+        }
+        currentState.defaultValue = view.defaultValue
+        currentState.minValue = view.minValue
+        currentState.maxValue = view.maxValue
+        currentState.unit = view.unit
     }
 
     override fun showDialog(view: PreferenceView) {
+        val currentPreferences = checkPreferences()
+        val currentParent = checkParent()
+        val key = checkKey()
         if (view !is SingleValuePreferenceView) {
-            throw RuntimeException("View must be SingleValuePreferenceView")
+            throw IllegalStateException("View must be SingleValuePreferenceView")
         }
+        checkAndWarnRequestCode()
+        val currentState = state as State
+
         val inputType =
-            if ((state as State).minValue < 0) {
+            if (currentState.minValue < 0) {
                 InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_FLAG_SIGNED
             } else {
                 InputType.TYPE_CLASS_NUMBER
             }
-        NumberInputDialog.Builder(parent, requestCode)
+        NumberInputDialog.Builder(currentParent, requestCode)
             .setTitle(view.title ?: "")
             .setInputType(inputType)
-            .setHint((state as State).hint)
-            .setNumber(
-                preferences.getInt(state.key, (state as State).defaultValue)
-            )
-            .setTag(view.preferenceKey)
+            .setHint(currentState.hint)
+            .setNumber(currentPreferences.getInt(key, currentState.defaultValue))
+            .setTag(key)
             .show()
     }
 
     override fun saveInput(resultCode: Int, data: Intent) {
+        val currentPreferences = checkPreferences()
+        val key = checkKey()
         val value = data.getIntExtra(
             InputDialog.EXTRA_KEY_INPUT_VALUE, (state as State).defaultValue
         )
-        preferences.edit().putInt(state.key, value).apply()
+        currentPreferences.edit().putInt(key, value).apply()
     }
 
     companion object {

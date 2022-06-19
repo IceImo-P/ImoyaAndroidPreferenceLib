@@ -19,6 +19,11 @@ package net.imoya.android.preference.app
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 
+/**
+ * Application starting screen Activity
+ *
+ * @author IceImo-P
+ */
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,6 +32,7 @@ class MainActivity : AppCompatActivity() {
 
         setContentView(R.layout.main_activity)
 
+        // Place MainFragment on first start
         if (savedInstanceState == null) {
             AppLog.v(TAG, "onCreate: Setting up MainFragment")
             supportFragmentManager.beginTransaction()
@@ -38,6 +44,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     companion object {
+        /**
+         * Tag for log
+         */
         const val TAG = "MainActivity"
     }
 }

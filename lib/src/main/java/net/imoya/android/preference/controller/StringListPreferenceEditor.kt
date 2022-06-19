@@ -23,6 +23,7 @@ import android.os.Parcelable
 import android.os.Parcelable.Creator
 import net.imoya.android.dialog.DialogBase
 import net.imoya.android.dialog.DialogParent
+import net.imoya.android.preference.Constants
 import net.imoya.android.preference.view.PreferenceView
 import net.imoya.android.preference.view.StringListPreferenceView
 
@@ -36,15 +37,15 @@ open class StringListPreferenceEditor(
     /**
      * 設定ダイアログの親画面
      */
-    parent: DialogParent,
+    parent: DialogParent? = null,
     /**
      * 設定値が保存される [SharedPreferences]
      */
-    preferences: SharedPreferences,
+    preferences: SharedPreferences? = null,
     /**
      * 設定ダイアログの識別に使用するリクエストコード
      */
-    requestCode: Int
+    requestCode: Int = Constants.DEFAULT_REQUEST_CODE
 ) : ListPreferenceEditor(parent, preferences, requestCode) {
     /**
      * 状態オブジェクト
@@ -101,20 +102,37 @@ open class StringListPreferenceEditor(
         }
     }
 
+    override fun isCompatibleView(view: PreferenceView): Boolean {
+        return view is StringListPreferenceView
+    }
+
     override fun createState(): PreferenceEditor.State {
         return State()
     }
 
     override fun setupState(view: PreferenceView) {
         super.setupState(view)
-        val prefView = view as StringListPreferenceView
-        (state as State).entryValues = prefView.entryValues
+        if (view !is StringListPreferenceView) {
+            throw IllegalArgumentException("View must be StringListPreferenceView")
+        }
+        (state as State).entryValues = view.entryValues
     }
 
     override fun saveInput(resultCode: Int, data: Intent) {
-        val selection = data.getIntExtra(DialogBase.EXTRA_KEY_WHICH, 0)
-        preferences.edit()
-            .putString(state.key, (state as State).entryValues[selection]).apply()
+        val currentPreferences = checkPreferences()
+        val key = checkKey()
+        val selection = data.getIntExtra(DialogBase.EXTRA_KEY_WHICH, -1)
+        val entryValues = (state as State).entryValues
+
+        if (selection == -1) {
+            currentPreferences.edit().remove(key).apply()
+        } else if (selection < 0 || selection >= entryValues.size) {
+            throw RuntimeException(
+                "Illegal selection: $selection of entries(size = ${entryValues.size})"
+            )
+        } else {
+            currentPreferences.edit().putString(key, entryValues[selection]).apply()
+        }
     }
 
 //    companion object {
