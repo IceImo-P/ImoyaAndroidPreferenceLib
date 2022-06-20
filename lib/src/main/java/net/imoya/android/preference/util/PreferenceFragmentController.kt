@@ -20,15 +20,38 @@ import androidx.fragment.app.Fragment
 import net.imoya.android.dialog.DialogListener
 import net.imoya.android.preference.controller.*
 import net.imoya.android.preference.view.PreferenceView
+import java.lang.ref.WeakReference
 
 /**
  * [Fragment] へ [PreferenceView] を配置するための追加機能を実装および提供します。
  *
  * @author IceImo-P
  */
-open class PreferenceFragmentController : PreferenceScreenController() {
-    fun <T> onCreateFragment(fragment: T) where T : Fragment, T : DialogListener {
+open class PreferenceFragmentController<T> :
+    PreferenceScreenController() where T : Fragment, T : DialogListener {
+
+    /**
+     * [PreferenceView] を配置する [Fragment]
+     */
+    lateinit var fragment: WeakReference<T>
+
+    /**
+     * [Fragment.onCreate] の処理
+     *
+     * [Fragment.onCreate] で、このメソッドをコールしてください。
+     *
+     * @param fragment [PreferenceView] を配置する [Fragment]。
+     * [Fragment] は [DialogListener] を実装する必要があります。
+     */
+    fun onCreateFragment(fragment: T) {
+        this.fragment = WeakReference(fragment)
+
         super.onCreate()
-        parent = PreferenceScreenParentFragment(fragment)
+    }
+
+    override fun createPreferenceScreenParent(): PreferenceScreenParent {
+        return PreferenceScreenParentFragment(
+            fragment.get() ?: throw IllegalStateException("Fragment is not initialized")
+        )
     }
 }

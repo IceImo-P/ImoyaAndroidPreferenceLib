@@ -20,15 +20,38 @@ import androidx.appcompat.app.AppCompatActivity
 import net.imoya.android.dialog.DialogListener
 import net.imoya.android.preference.controller.*
 import net.imoya.android.preference.view.PreferenceView
+import java.lang.ref.WeakReference
 
 /**
  * [AppCompatActivity] へ [PreferenceView] を配置するための追加機能を実装および提供します。
  *
  * @author IceImo-P
  */
-open class PreferenceActivityController : PreferenceScreenController() {
-    fun <T> onCreateActivity(activity: T) where T : AppCompatActivity, T : DialogListener {
+open class PreferenceActivityController<T> :
+    PreferenceScreenController() where T : AppCompatActivity, T : DialogListener {
+
+    /**
+     * [PreferenceView] を配置する [AppCompatActivity]
+     */
+    lateinit var activity: WeakReference<T>
+
+    /**
+     * [AppCompatActivity.onCreate] の処理
+     *
+     * [AppCompatActivity.onCreate] で、このメソッドをコールしてください。
+     *
+     * @param activity [PreferenceView] を配置する [AppCompatActivity]。
+     * [AppCompatActivity] は [DialogListener] を実装する必要があります。
+     */
+    fun onCreateActivity(activity: T) {
+        this.activity = WeakReference(activity)
+
         super.onCreate()
-        parent = PreferenceScreenParentActivity(activity)
+    }
+
+    override fun createPreferenceScreenParent(): PreferenceScreenParent {
+        return PreferenceScreenParentActivity(
+            activity.get() ?: throw IllegalStateException("Activity is not initialized")
+        )
     }
 }

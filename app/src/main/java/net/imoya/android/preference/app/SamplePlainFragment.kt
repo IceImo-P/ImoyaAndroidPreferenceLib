@@ -40,7 +40,7 @@ import net.imoya.android.preference.view.TimePreferenceView
  */
 class SamplePlainFragment : Fragment(), DialogListener {
     /** [PreferenceView] を配置する機能の実装 */
-    private val pref = PreferenceFragmentController()
+    private val pref = PreferenceFragmentController<SamplePlainFragment>()
 
     /** Custom preference change handler */
     private lateinit var myPreferenceChangeHandler: SharedPreferences.OnSharedPreferenceChangeListener

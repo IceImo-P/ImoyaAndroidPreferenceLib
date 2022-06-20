@@ -64,8 +64,8 @@ abstract class DialogPreferenceEditor(
         if (currentParent is PreferenceScreenParentFragment<*>) {
             PreferenceLog.v(TAG, "registerDialogCallback: Registering callback")
             DialogUtil.registerDialogListener(
-                currentParent.fragment,
-                currentParent.fragment as DialogListener,
+                currentParent.requireFragment(),
+                currentParent.requireFragment() as DialogListener,
                 requestCode
             )
         } else if (currentParent is DialogParentFragment<*>) {

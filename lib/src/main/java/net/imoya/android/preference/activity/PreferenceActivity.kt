@@ -34,7 +34,7 @@ import net.imoya.android.preference.view.*
  */
 abstract class PreferenceActivity : AppCompatActivity(), DialogListener {
     /** [PreferenceView] を配置する機能の実装 */
-    private val pref = PreferenceActivityController()
+    private val pref = PreferenceActivityController<PreferenceActivity>()
 
     /** [PreferenceView] 自動更新コントローラ */
     @Suppress("unused")

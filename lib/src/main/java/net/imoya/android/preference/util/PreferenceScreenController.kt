@@ -53,6 +53,27 @@ abstract class PreferenceScreenController : DialogListener {
     var preferences: SharedPreferences? = null
 
     /**
+     * Return new instance of [PreferenceViewUpdater]
+     *
+     * デフォルトの実装は、 [PreferenceViewUpdater] の新しいインスタンスを返します。
+     * [PreferenceViewUpdater] を独自に拡張した場合、このメソッドを override
+     * し、拡張したクラスの新しいインスタンスを返してください。
+     *
+     * @return New instance of [PreferenceViewUpdater]
+     */
+    @Suppress("weaker")
+    open fun createPreferenceViewUpdater(): PreferenceViewUpdater {
+        return PreferenceViewUpdater()
+    }
+
+    /**
+     * Return new instance of [PreferenceScreenParent]
+     *
+     * @return New instance of [PreferenceScreenParent]
+     */
+    abstract fun createPreferenceScreenParent(): PreferenceScreenParent
+
+    /**
      * Retrieve [SharedPreferences]
      *
      * @return [SharedPreferences]
@@ -171,7 +192,8 @@ abstract class PreferenceScreenController : DialogListener {
 
     open fun onCreate() {
         views.clear()
-        updater = PreferenceViewUpdater()
+        updater = createPreferenceViewUpdater()
+        parent = createPreferenceScreenParent()
     }
 
     open fun onResume() {
