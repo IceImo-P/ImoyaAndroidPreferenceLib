@@ -49,9 +49,16 @@ open class PreferenceFragmentController<T> :
         super.onCreate()
     }
 
+    /**
+     * [PreferenceView] を配置する [Fragment] を返します。
+     *
+     * @return [PreferenceView] を配置する [Fragment]
+     */
+    protected open fun requireFragment(): T {
+        return fragment.get() ?: throw IllegalStateException("Fragment is not initialized")
+    }
+
     override fun createPreferenceScreenParent(): PreferenceScreenParent {
-        return PreferenceScreenParentFragment(
-            fragment.get() ?: throw IllegalStateException("Fragment is not initialized")
-        )
+        return PreferenceScreenParentFragment(requireFragment())
     }
 }

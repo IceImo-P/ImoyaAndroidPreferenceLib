@@ -34,7 +34,7 @@ import net.imoya.android.preference.view.*
  */
 abstract class PreferenceBaseActivity : BaseActivity(), DialogListener {
     /** [PreferenceView] を配置する機能の実装 */
-    private val pref = PreferenceActivityController<PreferenceBaseActivity>()
+    private lateinit var pref: PreferenceActivityController<PreferenceBaseActivity>
 
     /** [PreferenceView] 自動更新コントローラ */
     @Suppress("unused")
@@ -45,6 +45,17 @@ abstract class PreferenceBaseActivity : BaseActivity(), DialogListener {
     @Suppress("unused")
     protected val prefParent: PreferenceScreenParent
         get() = pref.parent
+
+    /**
+     * [PreferenceView] を配置する機能の実装を生成して返します。
+     *
+     * デフォルトの実装は、 [PreferenceActivityController] の新しいインスタンスを返します。
+     *
+     * @return [PreferenceView] を配置する機能の実装
+     */
+    protected open fun createPreferenceActivityController(): PreferenceActivityController<PreferenceBaseActivity> {
+        return PreferenceActivityController()
+    }
 
     /**
      * 編集対象の [SharedPreferences] を返します。
@@ -148,6 +159,10 @@ abstract class PreferenceBaseActivity : BaseActivity(), DialogListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        // Create PreferenceActivityController
+        val pref = createPreferenceActivityController()
+        this.pref = pref
+
         // Default process
         pref.onCreateActivity(this)
 
@@ -177,6 +192,7 @@ abstract class PreferenceBaseActivity : BaseActivity(), DialogListener {
 
         pref.onPause()
     }
+
     @CallSuper
     override fun onDestroy() {
         super.onDestroy()
