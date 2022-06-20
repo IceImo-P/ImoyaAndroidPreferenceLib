@@ -49,9 +49,17 @@ open class PreferenceActivityController<T> :
         super.onCreate()
     }
 
+    /**
+     * [PreferenceView] を配置する [AppCompatActivity] を返します。
+     *
+     * @return [PreferenceView] を配置する [AppCompatActivity]
+     */
+    @Suppress("weaker")
+    protected open fun requireActivity(): T {
+        return activity.get() ?: throw IllegalStateException("Activity is not initialized")
+    }
+
     override fun createPreferenceScreenParent(): PreferenceScreenParent {
-        return PreferenceScreenParentActivity(
-            activity.get() ?: throw IllegalStateException("Activity is not initialized")
-        )
+        return PreferenceScreenParentActivity(requireActivity())
     }
 }

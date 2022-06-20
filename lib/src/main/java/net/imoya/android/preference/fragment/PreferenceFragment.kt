@@ -34,7 +34,7 @@ import net.imoya.android.preference.view.*
  */
 abstract class PreferenceFragment : Fragment(), DialogListener {
     /** [PreferenceView] を配置する機能の実装 */
-    private val pref = PreferenceFragmentController<PreferenceFragment>()
+    private lateinit var pref: PreferenceFragmentController<PreferenceFragment>
 
     /** [PreferenceView] 自動更新コントローラ */
     @Suppress("unused")
@@ -45,6 +45,17 @@ abstract class PreferenceFragment : Fragment(), DialogListener {
     @Suppress("unused")
     protected val prefParent: PreferenceScreenParent
         get() = pref.parent
+
+    /**
+     * [PreferenceView] を配置する機能の実装を生成して返します。
+     *
+     * デフォルトの実装は、 [PreferenceFragmentController] の新しいインスタンスを返します。
+     *
+     * @return [PreferenceView] を配置する機能の実装
+     */
+    protected open fun createPreferenceFragmentController(): PreferenceFragmentController<PreferenceFragment> {
+        return PreferenceFragmentController()
+    }
 
     /**
      * 編集対象の [SharedPreferences] を返します。
@@ -141,6 +152,10 @@ abstract class PreferenceFragment : Fragment(), DialogListener {
     @CallSuper
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // Create PreferenceFragmentController
+        val pref = createPreferenceFragmentController()
+        this.pref = pref
 
         // Default process
         pref.onCreateFragment(this)
