@@ -24,28 +24,41 @@ import androidx.activity.result.contract.ActivityResultContract
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import net.imoya.android.dialog.DialogListener
+import java.lang.ref.WeakReference
 
 /**
  * 設定画面の親画面が [Fragment] である場合に使用する、親画面の interface
+ *
+ * @param fragment 親画面の [Fragment]
  */
 @Suppress("unused")
 open class PreferenceScreenParentFragment<T>(
-    val fragment: T
+    fragment: T
 ) : PreferenceScreenParent where T : Fragment, T : DialogListener {
+    /**
+     * 親画面の [Fragment]
+     */
+    @JvmField
+    protected val fragment: WeakReference<T> = WeakReference(fragment)
+
     override val context: Context
-        get() = fragment.requireContext().applicationContext
+        get() = requireFragment().requireContext().applicationContext
 
     override val listener: DialogListener?
         get() = null
 
     override val fragmentManager: FragmentManager
-        get() = fragment.childFragmentManager
+        get() = requireFragment().childFragmentManager
+
+    fun requireFragment(): T {
+        return fragment.get() ?: throw IllegalStateException("Fragment is not set")
+    }
 
     override fun <I : Any, O : Any> registerForActivityResult(
         contract: ActivityResultContract<I, O>,
         callback: ActivityResultCallback<O>
     ): ActivityResultLauncher<I> {
-        return fragment.registerForActivityResult(contract, callback)
+        return requireFragment().registerForActivityResult(contract, callback)
     }
 
     override fun <I : Any, O : Any> registerForActivityResult(
@@ -53,6 +66,6 @@ open class PreferenceScreenParentFragment<T>(
         registry: ActivityResultRegistry,
         callback: ActivityResultCallback<O>
     ): ActivityResultLauncher<I> {
-        return fragment.registerForActivityResult(contract, registry, callback)
+        return requireFragment().registerForActivityResult(contract, registry, callback)
     }
 }

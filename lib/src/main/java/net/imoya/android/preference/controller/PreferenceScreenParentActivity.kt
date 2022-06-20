@@ -24,29 +24,42 @@ import androidx.activity.result.contract.ActivityResultContract
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentManager
 import net.imoya.android.dialog.DialogListener
+import java.lang.ref.WeakReference
 
 /**
  * 設定画面の親画面が [AppCompatActivity] である場合に使用する、親画面の interface
+ *
+ * @param activity 親画面の [AppCompatActivity]
  */
 @Suppress("unused")
 open class PreferenceScreenParentActivity<T>(
-    @Suppress("MemberVisibilityCanBePrivate")
-    protected val activity: T
+    activity: T
 ) : PreferenceScreenParent where T : AppCompatActivity, T : DialogListener {
+    /**
+     * 親画面の [AppCompatActivity]
+     */
+    @JvmField
+    protected val activity: WeakReference<T> = WeakReference(activity)
+
     override val context: Context
-    get() = activity.applicationContext
+        get() = requireActivity().applicationContext
 
     override val listener: DialogListener?
-    get() = activity
+        get() = requireActivity()
 
     override val fragmentManager: FragmentManager
-    get() = activity.supportFragmentManager
+        get() = requireActivity().supportFragmentManager
+
+    @Suppress("weaker")
+    fun requireActivity(): T {
+        return activity.get() ?: throw IllegalStateException("Activity is not set")
+    }
 
     override fun <I : Any, O : Any> registerForActivityResult(
         contract: ActivityResultContract<I, O>,
         callback: ActivityResultCallback<O>
     ): ActivityResultLauncher<I> {
-        return activity.registerForActivityResult(contract, callback)
+        return requireActivity().registerForActivityResult(contract, callback)
     }
 
     override fun <I : Any, O : Any> registerForActivityResult(
@@ -54,6 +67,6 @@ open class PreferenceScreenParentActivity<T>(
         registry: ActivityResultRegistry,
         callback: ActivityResultCallback<O>
     ): ActivityResultLauncher<I> {
-        return activity.registerForActivityResult(contract, registry, callback)
+        return requireActivity().registerForActivityResult(contract, registry, callback)
     }
 }

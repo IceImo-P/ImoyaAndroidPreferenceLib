@@ -34,7 +34,7 @@ import net.imoya.android.preference.view.*
  */
 abstract class PreferenceFragment : Fragment(), DialogListener {
     /** [PreferenceView] を配置する機能の実装 */
-    private val pref = PreferenceFragmentController()
+    private val pref = PreferenceFragmentController<PreferenceFragment>()
 
     /** [PreferenceView] 自動更新コントローラ */
     @Suppress("unused")

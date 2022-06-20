@@ -36,7 +36,7 @@ import net.imoya.android.preference.view.TimePreferenceView
  */
 class SamplePlainActivity : AppCompatActivity(), DialogListener {
     /** [PreferenceView] を配置する機能の実装 */
-    private val pref = PreferenceActivityController()
+    private val pref = PreferenceActivityController<SamplePlainActivity>()
 
     /** Custom preference change handler */
     private lateinit var myPreferenceChangeHandler: SharedPreferences.OnSharedPreferenceChangeListener
