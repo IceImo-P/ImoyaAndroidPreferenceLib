@@ -16,6 +16,7 @@
 
 package net.imoya.android.preference.controller
 
+import android.app.Activity
 import android.content.Context
 import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.ActivityResultLauncher
@@ -23,6 +24,7 @@ import androidx.activity.result.ActivityResultRegistry
 import androidx.activity.result.contract.ActivityResultContract
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
+import androidx.lifecycle.LifecycleOwner
 import net.imoya.android.dialog.DialogListener
 import java.lang.ref.WeakReference
 
@@ -32,26 +34,63 @@ import java.lang.ref.WeakReference
  * @param fragment 親画面の [Fragment]
  */
 @Suppress("unused")
-open class PreferenceScreenParentFragment<T>(
-    fragment: T
-) : PreferenceScreenParent where T : Fragment, T : DialogListener {
+open class PreferenceScreenParentFragment(
+    fragment: Fragment,
+    listener: DialogListener
+) : PreferenceScreenParent {
     /**
      * 親画面の [Fragment]
      */
     @JvmField
-    protected val fragment: WeakReference<T> = WeakReference(fragment)
+    protected val fragmentRef: WeakReference<Fragment> = WeakReference(fragment)
+
+    /**
+     * [DialogListener]
+     */
+    @JvmField
+    protected val dialogListenerRef: WeakReference<DialogListener> = WeakReference(listener)
 
     override val context: Context
         get() = requireFragment().requireContext().applicationContext
 
-    override val listener: DialogListener?
-        get() = null
+    override val listener: DialogListener
+        get() = requireListener()
 
     override val fragmentManager: FragmentManager
         get() = requireFragment().childFragmentManager
 
-    fun requireFragment(): T {
-        return fragment.get() ?: throw IllegalStateException("Fragment is not set")
+    override val lifecycleOwner: LifecycleOwner
+        get() = requireFragment().viewLifecycleOwner
+
+    override val activity: Activity
+        get() = requireFragment().requireActivity()
+
+    /**
+     * Returns [Fragment]
+     *
+     * @return [Fragment]
+     * @throws Fragment is not set
+     */
+    @Suppress("MemberVisibilityCanBePrivate")
+    fun requireFragment(): Fragment {
+        return fragmentRef.get() ?: throw IllegalStateException("Fragment is not set")
+    }
+
+    /**
+     * [DialogListener] or null
+     */
+    val dialogListener: DialogListener?
+        get() = dialogListenerRef.get()
+
+    /**
+     * Returns [DialogListener]
+     *
+     * @return [DialogListener]
+     * @throws DialogListener is not set
+     */
+    @Suppress("MemberVisibilityCanBePrivate")
+    fun requireListener(): DialogListener {
+        return dialogListenerRef.get() ?: throw IllegalStateException("DialogListener is not set")
     }
 
     override fun <I : Any, O : Any> registerForActivityResult(

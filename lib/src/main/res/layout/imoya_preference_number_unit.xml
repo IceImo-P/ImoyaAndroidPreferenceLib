@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ Copyright (C) 2015 The Android Open Source Project
+  ~ Copyright (C) 2022 IceImo-P
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -15,90 +16,101 @@
   ~ limitations under the License
   -->
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@android:id/content"
+
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:minHeight="?android:attr/listPreferredItemHeight"
-    android:gravity="center_vertical"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:background="?android:attr/selectableItemBackground"
-    android:focusable="true"
-    android:clickable="true"
-    android:baselineAligned="false"
-    android:orientation="horizontal"
-    >
+    android:paddingBottom="@dimen/imoya_preference_list_border_width"
+    android:background="@drawable/imoya_preference_background_with_list_divider"
+    android:focusable="false"
+    android:clickable="false">
 
     <LinearLayout
-        android:layout_width="0dp"
+        android:id="@android:id/content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:layout_marginLeft="@dimen/imoya_view_preference_element_margin"
-        android:layout_marginRight="@dimen/imoya_view_preference_element_margin"
-        android:layout_marginTop="@dimen/imoya_view_preference_element_margin"
-        android:layout_marginBottom="@dimen/imoya_view_preference_element_margin"
-        android:minWidth="100sp"
-        android:orientation="vertical"
+        android:minHeight="?android:attr/listPreferredItemHeight"
+        android:gravity="center_vertical"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:background="?android:attr/selectableItemBackground"
+        android:focusable="true"
+        android:clickable="true"
+        android:baselineAligned="false"
+        android:orientation="horizontal"
         >
 
-        <TextView android:id="@android:id/title"
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginLeft="@dimen/imoya_view_preference_element_margin"
+            android:layout_marginRight="@dimen/imoya_view_preference_element_margin"
+            android:layout_marginTop="@dimen/imoya_view_preference_element_margin"
+            android:layout_marginBottom="@dimen/imoya_view_preference_element_margin"
+            android:minWidth="100sp"
+            android:orientation="vertical"
+            >
+
+            <TextView android:id="@android:id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:drawablePadding="@dimen/imoya_view_preference_summary_icon_margin"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="?android:attr/textColorPrimary"
+                android:ellipsize="marquee"
+                android:fadingEdge="horizontal" />
+
+            <TextView android:id="@android:id/summary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawablePadding="@dimen/imoya_view_preference_summary_icon_margin"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textColor="?android:attr/textColorSecondary"
+                android:maxLines="4" />
+
+            <TextView android:id="@+id/note"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:drawablePadding="@dimen/imoya_view_preference_summary_icon_margin"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textColor="?android:attr/textColorPrimary"
+                android:maxLines="4"
+                android:visibility="gone" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@android:id/text1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="@dimen/imoya_view_preference_element_margin"
+            android:layout_marginRight="@dimen/imoya_view_preference_element_margin"
+            android:maxWidth="200sp"
             android:singleLine="true"
-            android:drawablePadding="@dimen/imoya_view_preference_summary_icon_margin"
+            android:maxLines="1"
+            android:gravity="end"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="?android:attr/textColorPrimary"
-            android:ellipsize="marquee"
-            android:fadingEdge="horizontal" />
+            android:ellipsize="end"
+            />
 
-        <TextView android:id="@android:id/summary"
+        <TextView
+            android:id="@+id/unit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:drawablePadding="@dimen/imoya_view_preference_summary_icon_margin"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textColor="?android:attr/textColorSecondary"
-            android:maxLines="4" />
-
-        <TextView android:id="@+id/note"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:drawablePadding="@dimen/imoya_view_preference_summary_icon_margin"
-            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:layout_gravity="center_vertical"
+            android:layout_marginRight="@dimen/imoya_view_preference_element_margin"
+            android:layout_marginEnd="@dimen/imoya_view_preference_element_margin"
+            android:singleLine="true"
+            android:maxLines="1"
+            android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="?android:attr/textColorPrimary"
-            android:maxLines="4"
-            android:visibility="gone" />
+            />
 
     </LinearLayout>
 
-    <TextView
-        android:id="@android:id/text1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:layout_marginLeft="@dimen/imoya_view_preference_element_margin"
-        android:layout_marginRight="@dimen/imoya_view_preference_element_margin"
-        android:maxWidth="200sp"
-        android:singleLine="true"
-        android:maxLines="1"
-        android:gravity="end"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="?android:attr/textColorPrimary"
-        android:ellipsize="end"
-        />
-
-    <TextView
-        android:id="@+id/unit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:layout_marginRight="@dimen/imoya_view_preference_element_margin"
-        android:layout_marginEnd="@dimen/imoya_view_preference_element_margin"
-        android:singleLine="true"
-        android:maxLines="1"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="?android:attr/textColorPrimary"
-        />
-
-</LinearLayout>
+</FrameLayout>

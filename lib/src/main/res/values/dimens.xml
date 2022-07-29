@@ -21,6 +21,10 @@
     <dimen name="imoya_view_preference_element_margin">6dp</dimen>
     <dimen name="imoya_view_preference_summary_icon_margin">4dp</dimen>
 
-    <dimen name="imoya_pref_widget_bg_corner_radius">1dp</dimen>
-    <dimen name="imoya_pref_focus_border">2dp</dimen>
+    <dimen name="imoya_preference_widget_bg_corner_radius">1dp</dimen>
+    <dimen name="imoya_preference_focus_border">2dp</dimen>
+
+    <dimen name="imoya_preference_list_border_width">1dp</dimen>
+
+    <dimen name="imoya_preference_time_period_buttons_width">100dp</dimen>
 </resources>

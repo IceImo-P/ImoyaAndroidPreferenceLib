@@ -22,7 +22,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 
 /**
  * Application starting screen [Fragment]
@@ -47,6 +49,10 @@ class MainFragment : Fragment() {
             startActivity(Intent(context, SamplePlainActivity::class.java))
         }
 
+        view.findViewById<Button>(R.id.start_plain_activity_and_fragment_sample).setOnClickListener {
+            startActivity(Intent(context, SamplePlainActivityForFragment::class.java))
+        }
+
         view.findViewById<Button>(R.id.start_fragment_sample).setOnClickListener {
             startFragment(SampleFragment())
         }
@@ -56,10 +62,11 @@ class MainFragment : Fragment() {
         }
 
         view.findViewById<Button>(R.id.license).setOnClickListener {
-            startFragment(LicenseFragment())
+            startActivity(Intent(requireContext(), OssLicensesMenuActivity::class.java))
         }
 
         activity?.title = getString(R.string.app_name)
+        (requireActivity() as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(false)
 
         AppLog.v(TAG, "onCreateView: end")
 

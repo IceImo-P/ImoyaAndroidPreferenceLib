@@ -24,8 +24,13 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.PreferenceManager
 import net.imoya.android.dialog.DialogListener
 import net.imoya.android.preference.controller.*
-import net.imoya.android.preference.util.PreferenceActivityController
+import net.imoya.android.preference.controller.editor.*
+import net.imoya.android.preference.controller.editor.list.*
+import net.imoya.android.preference.controller.editor.time.*
+import net.imoya.android.preference.controller.PreferenceActivityController
 import net.imoya.android.preference.view.*
+import net.imoya.android.preference.view.list.*
+import net.imoya.android.preference.view.time.*
 
 /**
  * [PreferenceView] を配置する機能を追加した [AppCompatActivity]
@@ -34,7 +39,7 @@ import net.imoya.android.preference.view.*
  */
 abstract class PreferenceActivity : AppCompatActivity(), DialogListener {
     /** [PreferenceView] を配置する機能の実装 */
-    private lateinit var pref: PreferenceActivityController<PreferenceActivity>
+    private lateinit var pref: PreferenceActivityController
 
     /** [PreferenceView] 自動更新コントローラ */
     @Suppress("unused")
@@ -53,7 +58,7 @@ abstract class PreferenceActivity : AppCompatActivity(), DialogListener {
      *
      * @return [PreferenceView] を配置する機能の実装
      */
-    protected open fun createPreferenceActivityController(): PreferenceActivityController<PreferenceActivity> {
+    protected open fun createPreferenceActivityController(): PreferenceActivityController {
         return PreferenceActivityController()
     }
 
@@ -109,13 +114,13 @@ abstract class PreferenceActivity : AppCompatActivity(), DialogListener {
      * [PreferenceView] タップ時に起動する、デフォルトの [PreferenceEditor] を設定します。
      *
      * デフォルトの [PreferenceEditor] と、対応する [PreferenceView] の組み合わせは下記の通りです。
-     * * [IntListPreferenceEditor] - [IntListPreferenceView]
-     * * [NumberAndUnitPreferenceEditor] - [NumberAndUnitPreferenceView]
-     * * [StringListPreferenceEditor] - [StringListPreferenceView]
-     * * [StringPreferenceEditor] - [StringPreferenceView]
+     * * [SingleSelectionIntListDialogEditor] - [SingleSelectionIntListPreferenceView]
+     * * [NumberAndUnitDialogEditor] - [NumberAndUnitPreferenceView]
+     * * [SingleSelectionStringListDialogEditor] - [SingleSelectionStringListPreferenceView]
+     * * [StringDialogEditor] - [StringPreferenceView]
      * * [SwitchPreferenceViewController] - [SwitchPreferenceView]
-     * * [TimePeriodPreferenceEditor] - [TimePeriodPreferenceView]
-     * * [TimePreferenceEditor] - [TimePreferenceView]
+     * * [TimePeriodActivityEditor] - [TimePeriodPreferenceView]
+     * * [TimeDialogEditor] - [TimePreferenceView]
      *
      * @param view [PreferenceView]
      */
@@ -157,8 +162,8 @@ abstract class PreferenceActivity : AppCompatActivity(), DialogListener {
         val pref = createPreferenceActivityController()
         this.pref = pref
 
-        // Default process
-        pref.onCreateActivity(this)
+        // Default process for PreferenceActivityController
+        pref.onCreateActivity(this, this)
 
         // Set up preferences first
         pref.preferences = getTargetPreferences()

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+	<item>
+		<shape>
+			<solid android:color="@null" />
+		</shape>
+	</item>
+	<item
+		android:top="-1dp"
+		android:left="-1dp"
+		android:right="-1dp"
+		android:bottom="0dp">
+		<shape>
+			<stroke
+				android:width="@dimen/imoya_preference_list_border_width"
+				android:color="@color/imoya_preference_list_divider" />
+		</shape>
+	</item>
+</layer-list>

@@ -24,8 +24,13 @@ import androidx.preference.PreferenceManager
 import net.imoya.android.dialog.DialogListener
 import net.imoya.android.fragment.BaseActivity
 import net.imoya.android.preference.controller.*
-import net.imoya.android.preference.util.PreferenceActivityController
+import net.imoya.android.preference.controller.editor.*
+import net.imoya.android.preference.controller.editor.list.*
+import net.imoya.android.preference.controller.editor.time.*
+import net.imoya.android.preference.controller.PreferenceActivityController
 import net.imoya.android.preference.view.*
+import net.imoya.android.preference.view.list.*
+import net.imoya.android.preference.view.time.*
 
 /**
  * [PreferenceView] を配置する機能を追加した [BaseActivity]
@@ -34,7 +39,7 @@ import net.imoya.android.preference.view.*
  */
 abstract class PreferenceBaseActivity : BaseActivity(), DialogListener {
     /** [PreferenceView] を配置する機能の実装 */
-    private lateinit var pref: PreferenceActivityController<PreferenceBaseActivity>
+    private lateinit var pref: PreferenceActivityController
 
     /** [PreferenceView] 自動更新コントローラ */
     @Suppress("unused")
@@ -53,7 +58,7 @@ abstract class PreferenceBaseActivity : BaseActivity(), DialogListener {
      *
      * @return [PreferenceView] を配置する機能の実装
      */
-    protected open fun createPreferenceActivityController(): PreferenceActivityController<PreferenceBaseActivity> {
+    protected open fun createPreferenceActivityController(): PreferenceActivityController {
         return PreferenceActivityController()
     }
 
@@ -101,7 +106,7 @@ abstract class PreferenceBaseActivity : BaseActivity(), DialogListener {
      *            この文字列は、 instanceState の保存キーとしても使用されます。
      * @param editor 使用する [PreferenceEditor]
      */
-    @Suppress("weaker")
+    @Suppress("MemberVisibilityCanBePrivate")
     protected fun registerEditor(tag: String, editor: PreferenceEditor) =
         pref.registerEditor(tag, editor)
 
@@ -111,17 +116,17 @@ abstract class PreferenceBaseActivity : BaseActivity(), DialogListener {
      * [PreferenceView] タップ時に起動する、デフォルトの [PreferenceEditor] を設定します。
      *
      * デフォルトの [PreferenceEditor] と、対応する [PreferenceView] の組み合わせは下記の通りです。
-     * * [IntListPreferenceEditor] - [IntListPreferenceView]
-     * * [NumberAndUnitPreferenceEditor] - [NumberAndUnitPreferenceView]
-     * * [StringListPreferenceEditor] - [StringListPreferenceView]
-     * * [StringPreferenceEditor] - [StringPreferenceView]
+     * * [SingleSelectionIntListDialogEditor] - [SingleSelectionIntListPreferenceView]
+     * * [NumberAndUnitDialogEditor] - [NumberAndUnitPreferenceView]
+     * * [SingleSelectionStringListDialogEditor] - [SingleSelectionStringListPreferenceView]
+     * * [StringDialogEditor] - [StringPreferenceView]
      * * [SwitchPreferenceViewController] - [SwitchPreferenceView]
-     * * [TimePeriodPreferenceEditor] - [TimePeriodPreferenceView]
-     * * [TimePreferenceEditor] - [TimePreferenceView]
+     * * [TimePeriodActivityEditor] - [TimePeriodPreferenceView]
+     * * [TimeDialogEditor] - [TimePreferenceView]
      *
      * @param view [PreferenceView]
      */
-    @Suppress("weaker")
+    @Suppress("MemberVisibilityCanBePrivate")
     protected fun setupPreferenceView(view: PreferenceView) =
         pref.setupPreferenceView(view)
 
@@ -136,7 +141,7 @@ abstract class PreferenceBaseActivity : BaseActivity(), DialogListener {
      * @param view [PreferenceView]
      * @param editorTag [registerEditor] メソッドの引数 tag に設定した文字列
      */
-    @Suppress("weaker")
+    @Suppress("MemberVisibilityCanBePrivate")
     protected fun setupPreferenceView(view: PreferenceView, editorTag: String) =
         pref.setupPreferenceView(view, editorTag)
 
@@ -163,8 +168,8 @@ abstract class PreferenceBaseActivity : BaseActivity(), DialogListener {
         val pref = createPreferenceActivityController()
         this.pref = pref
 
-        // Default process
-        pref.onCreateActivity(this)
+        // Default process for PreferenceActivityController
+        pref.onCreateActivity(this, this)
 
         // Set up preferences first
         pref.preferences = getTargetPreferences()

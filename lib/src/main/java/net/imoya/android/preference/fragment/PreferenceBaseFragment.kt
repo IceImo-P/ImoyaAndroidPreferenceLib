@@ -19,14 +19,21 @@ package net.imoya.android.preference.fragment
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.view.ViewGroup
 import androidx.annotation.CallSuper
+import androidx.fragment.app.Fragment
 import androidx.preference.PreferenceManager
 import net.imoya.android.dialog.DialogListener
 import net.imoya.android.fragment.BaseFragment
 import net.imoya.android.preference.PreferenceLog
 import net.imoya.android.preference.controller.*
-import net.imoya.android.preference.util.PreferenceFragmentController
+import net.imoya.android.preference.controller.editor.*
+import net.imoya.android.preference.controller.editor.list.*
+import net.imoya.android.preference.controller.editor.time.*
+import net.imoya.android.preference.controller.PreferenceFragmentController
 import net.imoya.android.preference.view.*
+import net.imoya.android.preference.view.list.*
+import net.imoya.android.preference.view.time.*
 
 /**
  * [PreferenceView] を配置する機能を追加した [BaseFragment]
@@ -35,7 +42,7 @@ import net.imoya.android.preference.view.*
  */
 abstract class PreferenceBaseFragment : BaseFragment(), DialogListener {
     /** [PreferenceView] を配置する機能の実装 */
-    private lateinit var pref: PreferenceFragmentController<PreferenceBaseFragment>
+    private lateinit var pref: PreferenceFragmentController
 
     /** [PreferenceView] 自動更新コントローラ */
     @Suppress("unused")
@@ -48,13 +55,18 @@ abstract class PreferenceBaseFragment : BaseFragment(), DialogListener {
         get() = pref.parent
 
     /**
+     * この [Fragment] の最も外側の [ViewGroup] を返します。
+     */
+    protected abstract val rootView: ViewGroup
+
+    /**
      * [PreferenceView] を配置する機能の実装を生成して返します。
      *
      * デフォルトの実装は、 [PreferenceFragmentController] の新しいインスタンスを返します。
      *
      * @return [PreferenceView] を配置する機能の実装
      */
-    protected open fun createPreferenceFragmentController(): PreferenceFragmentController<PreferenceBaseFragment> {
+    protected open fun createPreferenceFragmentController(): PreferenceFragmentController {
         return PreferenceFragmentController()
     }
 
@@ -112,13 +124,13 @@ abstract class PreferenceBaseFragment : BaseFragment(), DialogListener {
      * [PreferenceView] タップ時に起動する、デフォルトの [PreferenceEditor] を設定します。
      *
      * デフォルトの [PreferenceEditor] と、対応する [PreferenceView] の組み合わせは下記の通りです。
-     * * [IntListPreferenceEditor] - [IntListPreferenceView]
-     * * [NumberAndUnitPreferenceEditor] - [NumberAndUnitPreferenceView]
-     * * [StringListPreferenceEditor] - [StringListPreferenceView]
-     * * [StringPreferenceEditor] - [StringPreferenceView]
+     * * [SingleSelectionIntListDialogEditor] - [SingleSelectionIntListPreferenceView]
+     * * [NumberAndUnitDialogEditor] - [NumberAndUnitPreferenceView]
+     * * [SingleSelectionStringListDialogEditor] - [SingleSelectionStringListPreferenceView]
+     * * [StringDialogEditor] - [StringPreferenceView]
      * * [SwitchPreferenceViewController] - [SwitchPreferenceView]
-     * * [TimePeriodPreferenceEditor] - [TimePeriodPreferenceView]
-     * * [TimePreferenceEditor] - [TimePreferenceView]
+     * * [TimePeriodActivityEditor] - [TimePeriodPreferenceView]
+     * * [TimeDialogEditor] - [TimePreferenceView]
      *
      * @param view [PreferenceView]
      */
@@ -165,7 +177,7 @@ abstract class PreferenceBaseFragment : BaseFragment(), DialogListener {
         this.pref = pref
 
         // Default process
-        pref.onCreateFragment(this)
+        pref.onCreateFragment(this, this)
 
         // Set up preferences first
         pref.preferences = getTargetPreferences()
@@ -184,6 +196,7 @@ abstract class PreferenceBaseFragment : BaseFragment(), DialogListener {
     override fun onResume() {
         super.onResume()
 
+        pref.roundTripManager.containerId = rootView.id
         pref.onResume()
     }
 

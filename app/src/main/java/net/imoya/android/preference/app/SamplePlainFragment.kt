@@ -22,25 +22,27 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ScrollView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.preference.PreferenceManager
 import net.imoya.android.dialog.DialogListener
-import net.imoya.android.preference.controller.*
-import net.imoya.android.preference.fragment.PreferenceFragment
-import net.imoya.android.preference.util.PreferenceFragmentController
+import net.imoya.android.preference.controller.editor.SliderNumberDialogEditor
+import net.imoya.android.preference.controller.PreferenceFragmentController
+import net.imoya.android.preference.controller.PreferenceScreenController
 import net.imoya.android.preference.view.OnPreferenceViewClickListener
 import net.imoya.android.preference.view.PreferenceView
-import net.imoya.android.preference.view.TimePeriodPreferenceView
-import net.imoya.android.preference.view.TimePreferenceView
+import net.imoya.android.preference.view.time.TimePeriodPreferenceView
+import net.imoya.android.preference.view.time.TimePreferenceView
 
 /**
- * [PreferenceFragment] implementation sample
+ * [PreferenceFragmentController] implementation sample on [Fragment]
  *
  * @author IceImo-P
  */
-class SamplePlainFragment : Fragment(), DialogListener {
-    /** [PreferenceView] を配置する機能の実装 */
-    private val pref = PreferenceFragmentController<SamplePlainFragment>()
+open class SamplePlainFragment : Fragment(), DialogListener {
+    /** [PreferenceView] のコントローラー */
+    private val pref = PreferenceFragmentController()
 
     /** Custom preference change handler */
     private lateinit var myPreferenceChangeHandler: SharedPreferences.OnSharedPreferenceChangeListener
@@ -50,8 +52,8 @@ class SamplePlainFragment : Fragment(), DialogListener {
 
         AppLog.v(TAG, "onCreate: start")
 
-        // Default process for PreferenceActivityLogic
-        pref.onCreateFragment(this)
+        // Default process for PreferenceFragmentController
+        pref.onCreateFragment(this, this)
 
         // Set up preferences first
         pref.preferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
@@ -60,7 +62,7 @@ class SamplePlainFragment : Fragment(), DialogListener {
         pref.setupDefaultEditors()
 
         // Registering non-default editors
-        pref.registerEditor(KEY_SLIDER_NUMBER_EDITOR, SliderNumberEditor())
+        pref.registerEditor(KEY_SLIDER_NUMBER_EDITOR, SliderNumberDialogEditor())
 
         // Restore editors state (if savedInstanceState exists)
         pref.restoreEditorState(savedInstanceState)
@@ -90,6 +92,10 @@ class SamplePlainFragment : Fragment(), DialogListener {
 
         AppLog.v(TAG, "onViewCreated: start")
 
+        // Set ID of root view
+//        pref.roundTripManager.containerId = R.id.root
+        pref.roundTripManager.containerId = R.id.content_frame
+
         // Set the combination of view and editor
         pref.setupPreferenceView(view.findViewById(R.id.pref_string_1))
         pref.setupPreferenceView(view.findViewById(R.id.pref_string_2))
@@ -97,23 +103,98 @@ class SamplePlainFragment : Fragment(), DialogListener {
         pref.setupPreferenceView(
             view.findViewById(R.id.pref_number_2), KEY_SLIDER_NUMBER_EDITOR
         )
-        pref.setupPreferenceView(view.findViewById(R.id.pref_string_list_1))
-        pref.setupPreferenceView(view.findViewById(R.id.pref_int_list_1))
+        pref.setupPreferenceView(view.findViewById(R.id.pref_string_list_single_dialog))
+        pref.setupPreferenceView(
+            view.findViewById(R.id.pref_string_list_single_activity),
+            PreferenceScreenController.DEFAULT_EDITOR_TAG_SINGLE_SELECTION_STRING_LIST_ACTIVITY
+        )
+        pref.setupPreferenceView(
+            view.findViewById(R.id.pref_string_list_single_fragment),
+            PreferenceScreenController.DEFAULT_EDITOR_TAG_SINGLE_SELECTION_STRING_LIST_FRAGMENT
+        )
+        pref.setupPreferenceView(
+            view.findViewById(R.id.pref_string_list_single_activity_2),
+            PreferenceScreenController.DEFAULT_EDITOR_TAG_SINGLE_SELECTION_STRING_LIST_ACTIVITY
+        )
+        pref.setupPreferenceView(
+            view.findViewById(R.id.pref_string_list_single_fragment_2),
+            PreferenceScreenController.DEFAULT_EDITOR_TAG_SINGLE_SELECTION_STRING_LIST_FRAGMENT
+        )
+        pref.setupPreferenceView(
+            view.findViewById(R.id.pref_string_list_multi_dialog),
+            PreferenceScreenController.DEFAULT_EDITOR_TAG_MULTI_SELECTION_STRING_LIST
+        )
+        pref.setupPreferenceView(
+            view.findViewById(R.id.pref_string_list_multi_activity),
+            PreferenceScreenController.DEFAULT_EDITOR_TAG_MULTI_SELECTION_STRING_LIST_ACTIVITY
+        )
+        pref.setupPreferenceView(
+            view.findViewById(R.id.pref_string_list_multi_fragment),
+            PreferenceScreenController.DEFAULT_EDITOR_TAG_MULTI_SELECTION_STRING_LIST_FRAGMENT
+        )
+        pref.setupPreferenceView(view.findViewById(R.id.pref_int_list_single_dialog))
+        pref.setupPreferenceView(
+            view.findViewById(R.id.pref_int_list_single_activity),
+            PreferenceScreenController.DEFAULT_EDITOR_TAG_SINGLE_SELECTION_INT_LIST_ACTIVITY
+        )
+        pref.setupPreferenceView(
+            view.findViewById(R.id.pref_int_list_single_fragment),
+            PreferenceScreenController.DEFAULT_EDITOR_TAG_SINGLE_SELECTION_INT_LIST_FRAGMENT
+        )
+        pref.setupPreferenceView(
+            view.findViewById(R.id.pref_int_list_single_activity_2),
+            PreferenceScreenController.DEFAULT_EDITOR_TAG_SINGLE_SELECTION_INT_LIST_ACTIVITY
+        )
+        pref.setupPreferenceView(
+            view.findViewById(R.id.pref_int_list_single_fragment_2),
+            PreferenceScreenController.DEFAULT_EDITOR_TAG_SINGLE_SELECTION_INT_LIST_FRAGMENT
+        )
+        pref.setupPreferenceView(view.findViewById(R.id.pref_int_list_multi_dialog))
+        pref.setupPreferenceView(
+            view.findViewById(R.id.pref_int_list_multi_activity),
+            PreferenceScreenController.DEFAULT_EDITOR_TAG_MULTI_SELECTION_INT_LIST_ACTIVITY
+        )
+        pref.setupPreferenceView(
+            view.findViewById(R.id.pref_int_list_multi_fragment),
+            PreferenceScreenController.DEFAULT_EDITOR_TAG_MULTI_SELECTION_INT_LIST_FRAGMENT
+        )
         pref.setupPreferenceView(view.findViewById(R.id.pref_switch_1))
         pref.setupPreferenceView(view.findViewById(R.id.pref_time_1))
+        pref.setupPreferenceView(
+            view.findViewById(R.id.pref_time_2),
+            PreferenceScreenController.DEFAULT_EDITOR_TAG_TIME_FRAGMENT
+        )
+        pref.setupPreferenceView(
+            view.findViewById(R.id.pref_time_3),
+            PreferenceScreenController.DEFAULT_EDITOR_TAG_TIME_ACTIVITY
+        )
         pref.setupPreferenceView(view.findViewById(R.id.pref_time_period_1))
+        pref.setupPreferenceView(
+            view.findViewById(R.id.pref_time_period_2),
+            PreferenceScreenController.DEFAULT_EDITOR_TAG_TIME_PERIOD_FRAGMENT
+        )
 
-        // 「戻る」項目押下時、前の Fragment へ遷移
+        // 「戻る」項目押下時、前の画面へ遷移
         view.findViewById<PreferenceView>(R.id.back).onPreferenceViewClickListener =
-            OnPreferenceViewClickListener { parentFragmentManager.popBackStack() }
+            OnPreferenceViewClickListener { onClickBackButton() }
 
         pref.commitSetupPreferenceViews()
 
+        // Custom logic: Update views if SwitchPreference is changed
         pref.requirePreferences()
             .registerOnSharedPreferenceChangeListener(myPreferenceChangeHandler)
         update24hourView()
 
-        activity?.title = getString(R.string.start_plain_fragment_sample)
+        // Restore ScrollView position
+        if (savedInstanceState != null) {
+            view.findViewById<ScrollView>(R.id.scrollView).scrollY =
+                savedInstanceState.getInt(KEY_SCROLL_POSITION)
+        }
+
+        requireActivity().title = getString(R.string.start_plain_fragment_sample)
+        val actionBar = (requireActivity() as AppCompatActivity).supportActionBar
+        actionBar?.setDisplayHomeAsUpEnabled(true)
+        actionBar?.setHomeAsUpIndicator(null)
 
         AppLog.v(TAG, "onViewCreated: end")
     }
@@ -134,6 +215,12 @@ class SamplePlainFragment : Fragment(), DialogListener {
         super.onSaveInstanceState(outState)
 
         pref.onSaveInstanceState(outState)
+
+        // Save ScrollView position
+        outState.putInt(
+            KEY_SCROLL_POSITION,
+            view?.findViewById<ScrollView>(R.id.scrollView)?.scrollY ?: 0
+        )
     }
 
     override fun onDestroyView() {
@@ -158,12 +245,23 @@ class SamplePlainFragment : Fragment(), DialogListener {
         pref.onDialogResult(requestCode, resultCode, data)
     }
 
+    /**
+     * 前の画面へ遷移します。
+     */
+    protected open fun onClickBackButton() {
+        parentFragmentManager.popBackStack()
+    }
+
     private fun update24hourView() {
         val is24hourView = pref.requirePreferences().getBoolean(
             getString(R.string.pref_switch_1_key), false
         )
         view?.findViewById<TimePreferenceView>(R.id.pref_time_1)?.is24hourView = is24hourView
+        view?.findViewById<TimePreferenceView>(R.id.pref_time_2)?.is24hourView = is24hourView
+        view?.findViewById<TimePreferenceView>(R.id.pref_time_3)?.is24hourView = is24hourView
         view?.findViewById<TimePeriodPreferenceView>(R.id.pref_time_period_1)?.is24hourView =
+            is24hourView
+        view?.findViewById<TimePeriodPreferenceView>(R.id.pref_time_period_2)?.is24hourView =
             is24hourView
         pref.updatePreferenceViews()
     }
@@ -172,9 +270,12 @@ class SamplePlainFragment : Fragment(), DialogListener {
         /** InstanceState key and tag: SliderNumberEditor */
         private const val KEY_SLIDER_NUMBER_EDITOR = "sliderNumberEditor"
 
+        /** InstanceState key: ScrollView position */
+        private const val KEY_SCROLL_POSITION = "scrollPosition"
+
         /**
          * Tag for log
          */
-        const val TAG = "SampleFragment"
+        const val TAG = "SamplePlainFragment"
     }
 }

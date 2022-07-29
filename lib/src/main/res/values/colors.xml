@@ -15,7 +15,9 @@
     limitations under the License.
 -->
 <resources>
-    <color name="imoya_pref_focus_border">#80E0FF</color>
-    <color name="imoya_pref_item_bg_pressed">#6000</color>
-    <color name="imoya_pref_item_bg_default">#FFF</color>
+    <color name="imoya_preference_focus_border">#80E0FF</color>
+    <color name="imoya_preference_item_bg_pressed">#6000</color>
+    <color name="imoya_preference_item_bg_default">#FFF</color>
+
+    <color name="imoya_preference_list_divider">#3000</color>
 </resources>

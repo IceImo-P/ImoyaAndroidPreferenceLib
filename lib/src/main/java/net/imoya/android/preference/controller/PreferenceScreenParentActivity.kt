@@ -16,6 +16,7 @@
 
 package net.imoya.android.preference.controller
 
+import android.app.Activity
 import android.content.Context
 import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.ActivityResultLauncher
@@ -23,6 +24,7 @@ import androidx.activity.result.ActivityResultRegistry
 import androidx.activity.result.contract.ActivityResultContract
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentManager
+import androidx.lifecycle.LifecycleOwner
 import net.imoya.android.dialog.DialogListener
 import java.lang.ref.WeakReference
 
@@ -32,27 +34,57 @@ import java.lang.ref.WeakReference
  * @param activity 親画面の [AppCompatActivity]
  */
 @Suppress("unused")
-open class PreferenceScreenParentActivity<T>(
-    activity: T
-) : PreferenceScreenParent where T : AppCompatActivity, T : DialogListener {
+open class PreferenceScreenParentActivity(
+    activity: AppCompatActivity,
+    listener: DialogListener
+) : PreferenceScreenParent {
     /**
      * 親画面の [AppCompatActivity]
      */
     @JvmField
-    protected val activity: WeakReference<T> = WeakReference(activity)
+    protected val activityRef: WeakReference<AppCompatActivity> = WeakReference(activity)
+
+    /**
+     * [DialogListener]
+     */
+    @JvmField
+    protected val dialogListenerRef = WeakReference(listener)
 
     override val context: Context
         get() = requireActivity().applicationContext
 
-    override val listener: DialogListener?
-        get() = requireActivity()
+    override val listener: DialogListener
+        get() = requireListener()
 
     override val fragmentManager: FragmentManager
         get() = requireActivity().supportFragmentManager
 
-    @Suppress("weaker")
-    fun requireActivity(): T {
-        return activity.get() ?: throw IllegalStateException("Activity is not set")
+    override val lifecycleOwner: LifecycleOwner
+        get() = requireActivity()
+
+    override val activity: Activity
+        get() = requireActivity()
+
+    /**
+     * Returns [AppCompatActivity]
+     *
+     * @return [AppCompatActivity]
+     * @throws IllegalStateException AppCompatActivity is not set
+     */
+    @Suppress("MemberVisibilityCanBePrivate")
+    fun requireActivity(): AppCompatActivity {
+        return activityRef.get() ?: throw IllegalStateException("Activity is not set")
+    }
+
+    /**
+     * Returns [DialogListener]
+     *
+     * @return [DialogListener]
+     * @throws DialogListener is not set
+     */
+    @Suppress("MemberVisibilityCanBePrivate")
+    fun requireListener(): DialogListener {
+        return dialogListenerRef.get() ?: throw IllegalStateException("DialogListener is not set")
     }
 
     override fun <I : Any, O : Any> registerForActivityResult(

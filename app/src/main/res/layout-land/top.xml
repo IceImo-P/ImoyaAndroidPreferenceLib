@@ -58,6 +58,14 @@
                     android:text="@string/start_plain_activity_sample"
                     android:textAllCaps="false" />
 
+                <Button
+                    android:id="@+id/start_plain_activity_and_fragment_sample"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="@dimen/pref_list_item_min_height"
+                    android:text="@string/start_plain_activity_and_fragment_sample"
+                    android:textAllCaps="false" />
+
             </androidx.appcompat.widget.LinearLayoutCompat>
 
             <Space

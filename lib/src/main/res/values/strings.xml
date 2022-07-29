@@ -20,7 +20,16 @@
     <string name="imoya_preference_time_period_value_format">#start# - #end#</string>
     <string name="imoya_preference_time_period_edit_start_title">Start time</string>
     <string name="imoya_preference_time_period_edit_end_title">End time</string>
+    <string name="imoya_preference_time_period_edit_to_start">To start time</string>
+    <string name="imoya_preference_time_period_edit_to_end">To end time</string>
+    <string name="imoya_preference_time_period_edit_save">Save</string>
+    <string name="imoya_preference_time_period_edit_cancel">Cancel</string>
+    <string name="imoya_preference_time_period_edit_value_for_null">(Not set)</string>
 
-    <string name="imoya_preference_dialog_back">Back</string>
-    <string name="imoya_preference_dialog_next">Next</string>
+    <string name="imoya_preference_back">Back</string>
+    <string name="imoya_preference_next">Next</string>
+    <string name="imoya_preference_not_set">(Not set)</string>
+    <string name="imoya_preference_not_selected">(Nothing)</string>
+
+    <string name="imoya_preference_list_item_selected_image_alt">Selected</string>
 </resources>
