@@ -18,13 +18,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="net.imoya.android.preference.app.MainActivity"
-    >
+    tools:context="net.imoya.android.preference.app.MainActivity">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        style="@style/Widget.MaterialComponents.Toolbar.Primary"
+        android:theme="@style/ThemeOverlay.ImoyaAndroidPreferenceLib.ActionBar" />
 
     <FrameLayout
         android:id="@+id/content_frame"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        />
+        android:layout_below="@+id/toolbar" />
 
 </RelativeLayout>

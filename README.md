@@ -5,7 +5,7 @@
 * [android.preference](https://developer.android.com/reference/android/preference/Preference) の便利さをある程度継承しつつ、拡張性と柔軟性を持たせた、設定画面および設定項目ビュー
   * [android.preference](https://developer.android.com/reference/android/preference/Preference) は独自 XML で作成していた設定画面を、レイアウトリソース XML で作成する仕様で実装、通常のビューと設定ビューを混在させた画面の作成が可能
   * デフォルトで定義されている設定項目は、少ないコーディングで既存の AppCompatActivity, Fragment へ組み込み可能
-  * 画面回転、特に編集ダイアログ表示中の画面回転にも対応
+  * 画面回転にも対応
   * 本ライブラリのユーザーが、デフォルトで定義されている設定項目のビューを独自に拡張することや、新しい設定項目のビューを作成することも可能
 
 ## Installation
@@ -76,11 +76,11 @@
     ```groovy
     dependencies {
         // (other dependencies)
-        implementation 'net.imoya.android.dialog:imoya-android-dialog:1.3.0'
-        implementation 'net.imoya.android.fragment:imoya-android-fragment:1.2.0'
-        implementation 'net.imoya.android.log:imoya-android-log:1.1.0'
-        implementation 'net.imoya.android.preference:imoya-android-preference:1.4.1'
-        implementation 'net.imoya.android.util:imoya-android-util:1.6.1'
+        implementation 'net.imoya.android.dialog:imoya-android-dialog:2.0.0'
+        implementation 'net.imoya.android.fragment:imoya-android-fragment:1.4.0'
+        implementation 'net.imoya.android.log:imoya-android-log:1.1.1'
+        implementation 'net.imoya.android.preference:imoya-android-preference:2.0.0'
+        implementation 'net.imoya.android.util:imoya-android-util:1.7.0'
         // (other dependencies)
     }
     ```

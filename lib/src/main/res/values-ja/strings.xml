@@ -18,7 +18,16 @@
     <string name="imoya_preference_time_period_value_format">#start# ～ #end#</string>
     <string name="imoya_preference_time_period_edit_start_title">開始時刻</string>
     <string name="imoya_preference_time_period_edit_end_title">終了時刻</string>
+    <string name="imoya_preference_time_period_edit_to_start">開始時刻へ</string>
+    <string name="imoya_preference_time_period_edit_to_end">終了時刻へ</string>
+    <string name="imoya_preference_time_period_edit_save">保存</string>
+    <string name="imoya_preference_time_period_edit_cancel">キャンセル</string>
+    <string name="imoya_preference_time_period_edit_value_for_null">(未設定)</string>
 
-    <string name="imoya_preference_dialog_back">戻る</string>
-    <string name="imoya_preference_dialog_next">次へ</string>
+    <string name="imoya_preference_back">戻る</string>
+    <string name="imoya_preference_next">次へ</string>
+    <string name="imoya_preference_not_set">(未設定)</string>
+    <string name="imoya_preference_not_selected">(選択なし)</string>
+
+    <string name="imoya_preference_list_item_selected_image_alt">選択中</string>
 </resources>

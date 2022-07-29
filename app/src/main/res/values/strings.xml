@@ -19,6 +19,7 @@
 
     <string name="start_activity_sample" translatable="false">PreferenceActivity Sample</string>
     <string name="start_plain_activity_sample" translatable="false">Plain AppCompatActivity Sample</string>
+    <string name="start_plain_activity_and_fragment_sample" translatable="false">Plain AppCompatActivity and Fragment Sample</string>
     <string name="start_fragment_sample" translatable="false">PreferenceFragment Sample</string>
     <string name="start_plain_fragment_sample" translatable="false">Plain Fragment Sample</string>
     <string name="license" translatable="false">License</string>
@@ -46,13 +47,69 @@
     <string name="pref_number_2_summary" translatable="false">Number preference with slider input</string>
     <string name="pref_number_2_unit" translatable="false">sec.</string>
 
-    <string name="pref_int_list_1_key" translatable="false">int_list_1</string>
-    <string name="pref_int_list_1_title" translatable="false">IntList sample</string>
-    <string name="pref_int_list_1_summary" translatable="false">Description of IntListPreference</string>
+    <string name="pref_int_list_single_dialog_key" translatable="false">int_list_single_dialog</string>
+    <string name="pref_int_list_single_dialog_title" translatable="false">IntList single select sample</string>
+    <string name="pref_int_list_single_dialog_summary" translatable="false">Using dialog</string>
 
-    <string name="pref_string_list_1_key" translatable="false">string_list_1</string>
-    <string name="pref_string_list_1_title" translatable="false">StringList sample</string>
-    <string name="pref_string_list_1_summary" translatable="false">Description of StringListPreference</string>
+    <string name="pref_int_list_single_activity_key" translatable="false">int_list_single_activity</string>
+    <string name="pref_int_list_single_activity_title" translatable="false">IntList single select sample</string>
+    <string name="pref_int_list_single_activity_summary" translatable="false">Using Activity</string>
+
+    <string name="pref_int_list_single_fragment_key" translatable="false">int_list_single_fragment</string>
+    <string name="pref_int_list_single_fragment_title" translatable="false">IntList single select sample</string>
+    <string name="pref_int_list_single_fragment_summary" translatable="false">Using Fragment</string>
+
+    <string name="pref_int_list_single_activity_2_key" translatable="false">int_list_single_activity_2</string>
+    <string name="pref_int_list_single_activity_2_title" translatable="false">IntList single select sample</string>
+    <string name="pref_int_list_single_activity_2_summary" translatable="false">Using Activity (2)</string>
+
+    <string name="pref_int_list_single_fragment_2_key" translatable="false">int_list_single_fragment_2</string>
+    <string name="pref_int_list_single_fragment_2_title" translatable="false">IntList single select sample</string>
+    <string name="pref_int_list_single_fragment_2_summary" translatable="false">Using Fragment (2)</string>
+
+    <string name="pref_int_list_multi_dialog_key" translatable="false">int_list_multi_dialog</string>
+    <string name="pref_int_list_multi_dialog_title" translatable="false">IntList multi select sample</string>
+    <string name="pref_int_list_multi_dialog_summary" translatable="false">Using Dialog</string>
+
+    <string name="pref_int_list_multi_activity_key" translatable="false">int_list_multi_activity</string>
+    <string name="pref_int_list_multi_activity_title" translatable="false">IntList multi select sample</string>
+    <string name="pref_int_list_multi_activity_summary" translatable="false">Using Activity</string>
+
+    <string name="pref_int_list_multi_fragment_key" translatable="false">int_list_multi_fragment</string>
+    <string name="pref_int_list_multi_fragment_title" translatable="false">IntList multi select sample</string>
+    <string name="pref_int_list_multi_fragment_summary" translatable="false">Using Fragment</string>
+
+    <string name="pref_string_list_single_dialog_key" translatable="false">string_list_single_dialog</string>
+    <string name="pref_string_list_single_dialog_title" translatable="false">StringList single select sample</string>
+    <string name="pref_string_list_single_dialog_summary" translatable="false">Using dialog</string>
+
+    <string name="pref_string_list_single_activity_key" translatable="false">string_list_single_activity</string>
+    <string name="pref_string_list_single_activity_title" translatable="false">StringList single select sample</string>
+    <string name="pref_string_list_single_activity_summary" translatable="false">Using Activity</string>
+
+    <string name="pref_string_list_single_fragment_key" translatable="false">string_list_single_fragment</string>
+    <string name="pref_string_list_single_fragment_title" translatable="false">StringList single select sample</string>
+    <string name="pref_string_list_single_fragment_summary" translatable="false">Using Fragment</string>
+
+    <string name="pref_string_list_single_activity_2_key" translatable="false">string_list_single_activity_2</string>
+    <string name="pref_string_list_single_activity_2_title" translatable="false">StringList single select sample</string>
+    <string name="pref_string_list_single_activity_2_summary" translatable="false">Using Activity (2)</string>
+
+    <string name="pref_string_list_single_fragment_2_key" translatable="false">string_list_single_fragment_2</string>
+    <string name="pref_string_list_single_fragment_2_title" translatable="false">StringList single select sample</string>
+    <string name="pref_string_list_single_fragment_2_summary" translatable="false">Using Fragment (2)</string>
+
+    <string name="pref_string_list_multi_dialog_key" translatable="false">string_list_multi_dialog</string>
+    <string name="pref_string_list_multi_dialog_title" translatable="false">StringList multi select sample</string>
+    <string name="pref_string_list_multi_dialog_summary" translatable="false">Using dialog</string>
+
+    <string name="pref_string_list_multi_activity_key" translatable="false">string_list_multi_activity</string>
+    <string name="pref_string_list_multi_activity_title" translatable="false">StringList multi select sample</string>
+    <string name="pref_string_list_multi_activity_summary" translatable="false">Using Activity</string>
+
+    <string name="pref_string_list_multi_fragment_key" translatable="false">string_list_multi_fragment</string>
+    <string name="pref_string_list_multi_fragment_title" translatable="false">StringList multi select sample</string>
+    <string name="pref_string_list_multi_fragment_summary" translatable="false">Using Fragment</string>
 
     <string name="pref_switch_1_key" translatable="false">switch_1</string>
     <string name="pref_switch_1_title" translatable="false">24H display</string>
@@ -62,17 +119,39 @@
     <string name="pref_time_1_title" translatable="false">Time sample</string>
     <string name="pref_time_1_default" translatable="false">0:00</string>
     <string name="pref_time_1_null" translatable="false">(Not set)</string>
+    <string name="pref_time_1_summary" translatable="false">Using dialog</string>
+
+    <string name="pref_time_2_key" translatable="false">time_2</string>
+    <string name="pref_time_2_title" translatable="false">Time sample</string>
+    <string name="pref_time_2_default" translatable="false">0:00</string>
+    <string name="pref_time_2_null" translatable="false">(Not set)</string>
+    <string name="pref_time_2_summary" translatable="false">Using Fragment</string>
+
+    <string name="pref_time_3_key" translatable="false">time_3</string>
+    <string name="pref_time_3_title" translatable="false">Time sample</string>
+    <string name="pref_time_3_default" translatable="false">0:00</string>
+    <string name="pref_time_3_null" translatable="false">(Not set)</string>
+    <string name="pref_time_3_summary" translatable="false">Using Activity</string>
 
     <string name="pref_time_period_1_key" translatable="false">time_period_1</string>
     <string name="pref_time_period_1_title" translatable="false">Time period sample</string>
     <string name="pref_time_period_1_default" translatable="false">0:00</string>
     <string name="pref_time_period_1_null" translatable="false">(Not set)</string>
+    <string name="pref_time_period_1_summary" translatable="false">Using Activity</string>
+
+    <string name="pref_time_period_2_key" translatable="false">time_period_2</string>
+    <string name="pref_time_period_2_title" translatable="false">Time period sample</string>
+    <string name="pref_time_period_2_default" translatable="false">0:00</string>
+    <string name="pref_time_period_2_null" translatable="false">(Not set)</string>
+    <string name="pref_time_period_2_summary" translatable="false">Using Fragment</string>
 
     <string name="license_copyright_preference_layout" translatable="false">Copyright (C) 2015 The Android Open Source Project</string>
     <string name="license_copyright_material_icons" translatable="false">Material design icons by Google</string>
     <string name="license_copyright_imoya_preference" translatable="false">Copyright (C) 2022 IceImo-P</string>
 
-    <string name="app_log_level" translatable="false">i</string>
-    <string name="imoya_android_preference_log_level" translatable="false">i</string>
-    <string name="imoya_android_dialog_log_level" translatable="false">i</string>
+    <string name="app_log_level" translatable="false">v</string>
+    <string name="imoya_android_preference_log_level" translatable="false">v</string>
+    <string name="imoya_android_dialog_log_level" translatable="false">v</string>
+    <string name="imoya_android_fragment_log_level" translatable="false">v</string>
+    <string name="imoya_android_util_log_level" translatable="false">v</string>
 </resources>

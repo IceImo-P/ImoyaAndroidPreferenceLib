@@ -17,6 +17,7 @@
 package net.imoya.android.preference.app
 
 import android.os.Bundle
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 
 /**
@@ -32,6 +33,8 @@ class MainActivity : AppCompatActivity() {
 
         setContentView(R.layout.main_activity)
 
+        setSupportActionBar(findViewById(R.id.toolbar))
+
         // Place MainFragment on first start
         if (savedInstanceState == null) {
             AppLog.v(TAG, "onCreate: Setting up MainFragment")
@@ -41,6 +44,17 @@ class MainActivity : AppCompatActivity() {
         }
 
         AppLog.v(TAG, "onCreate: end")
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        AppLog.v(TAG, "onOptionsItemSelected: start")
+
+        if (item.itemId == android.R.id.home) {
+            supportFragmentManager.popBackStack()
+            return true
+        }
+
+        return super.onOptionsItemSelected(item)
     }
 
     companion object {

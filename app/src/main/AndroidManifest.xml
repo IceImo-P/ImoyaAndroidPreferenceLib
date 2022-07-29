@@ -22,18 +22,34 @@
 
         <activity
             android:name=".SampleActivity"
-            android:label="@string/start_activity_sample"
             android:exported="false"
-            />
+            android:label="@string/start_activity_sample" />
 
-        <activity android:name=".SamplePlainActivity"
-            android:label="@string/start_plain_activity_sample"
+        <activity
+            android:name=".SamplePlainActivity"
             android:exported="false"
-            />
+            android:label="@string/start_plain_activity_sample" />
 
-        <activity android:name="net.imoya.android.preference.activity.TimePeriodInputActivity"
+        <activity
+            android:name=".SamplePlainActivityForFragment"
             android:exported="false"
-            />
+            android:label="@string/start_plain_activity_and_fragment_sample" />
+
+        <activity
+            android:name="net.imoya.android.preference.activity.editor.list.MultiSelectionListEditorActivity"
+            android:exported="false" />
+
+        <activity
+            android:name="net.imoya.android.preference.activity.editor.list.SingleSelectionListEditorActivity"
+            android:exported="false" />
+
+        <activity
+            android:name="net.imoya.android.preference.activity.editor.time.TimeEditorActivity"
+            android:exported="false" />
+
+        <activity
+            android:name="net.imoya.android.preference.activity.editor.time.TimePeriodEditorActivity"
+            android:exported="false" />
 
     </application>
 

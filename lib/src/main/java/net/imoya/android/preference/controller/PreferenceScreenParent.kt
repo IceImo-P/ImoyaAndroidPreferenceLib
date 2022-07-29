@@ -16,10 +16,12 @@
 
 package net.imoya.android.preference.controller
 
+import android.app.Activity
 import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.ActivityResultRegistry
 import androidx.activity.result.contract.ActivityResultContract
+import androidx.fragment.app.Fragment
 import net.imoya.android.dialog.DialogParent
 
 /**
@@ -36,4 +38,11 @@ interface PreferenceScreenParent : DialogParent {
         registry: ActivityResultRegistry,
         callback: ActivityResultCallback<O>
     ): ActivityResultLauncher<I>
+
+    /**
+     * 親画面の [Activity]
+     *
+     * * 設定画面の直接の親が [Fragment] である場合は、その親の [Activity]
+     */
+    val activity: Activity
 }

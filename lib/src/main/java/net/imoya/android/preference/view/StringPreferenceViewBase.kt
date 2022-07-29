@@ -146,7 +146,7 @@ abstract class StringPreferenceViewBase : SingleValuePreferenceView {
     /**
      * 現在の設定値
      */
-    protected var currentValue: String?
+    var currentValue: String?
         get() = mCurrentValue
         set(value) {
             mCurrentValue = value

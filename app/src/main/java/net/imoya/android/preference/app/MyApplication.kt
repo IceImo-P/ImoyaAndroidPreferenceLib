@@ -18,7 +18,9 @@ package net.imoya.android.preference.app
 
 import android.app.Application
 import net.imoya.android.dialog.DialogLog
+import net.imoya.android.fragment.FragmentLog
 import net.imoya.android.preference.PreferenceLog
+import net.imoya.android.util.UtilLog
 
 class MyApplication : Application() {
     override fun onCreate() {
@@ -27,5 +29,7 @@ class MyApplication : Application() {
         AppLog.init(applicationContext)
         PreferenceLog.init(applicationContext)
         DialogLog.init(applicationContext)
+        FragmentLog.init(applicationContext)
+        UtilLog.init(applicationContext)
     }
 }
