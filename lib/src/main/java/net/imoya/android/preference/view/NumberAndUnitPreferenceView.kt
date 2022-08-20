@@ -236,6 +236,7 @@ open class NumberAndUnitPreferenceView : SingleValuePreferenceView {
             field = unit
 
             // 表示へ反映する
+            val unitView = this.unitView
             unitView.text = unit
             ViewUtil.setVisibleOrGone(unitView, unit != null && unit.isNotEmpty())
             invalidate()
@@ -246,13 +247,15 @@ open class NumberAndUnitPreferenceView : SingleValuePreferenceView {
      * 値を表示する [TextView]
      */
     @Suppress("MemberVisibilityCanBePrivate")
-    protected lateinit var valueView: TextView
+    protected open val valueView: TextView
+        get() = findViewById(android.R.id.text1)
 
     /**
      * 単位を表示する [TextView]
      */
     @Suppress("MemberVisibilityCanBePrivate")
-    protected lateinit var unitView: TextView
+    protected open val unitView: TextView
+        get() = findViewById(R.id.unit)
 
     /**
      * コンストラクタ
@@ -296,12 +299,6 @@ open class NumberAndUnitPreferenceView : SingleValuePreferenceView {
     @get:LayoutRes
     override val defaultLayout: Int
         get() = R.layout.imoya_preference_number_unit
-
-    override fun onCreateChildViews() {
-        super.onCreateChildViews()
-        valueView = findViewById(android.R.id.text1)
-        unitView = findViewById(R.id.unit)
-    }
 
     override fun loadAttributes(values: TypedArray) {
         super.loadAttributes(values)

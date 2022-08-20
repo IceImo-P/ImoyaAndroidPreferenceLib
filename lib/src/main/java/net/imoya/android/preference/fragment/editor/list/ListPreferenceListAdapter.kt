@@ -16,13 +16,14 @@
 
 package net.imoya.android.preference.fragment.editor.list
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
+import android.widget.ImageView
 import android.widget.TextView
 import net.imoya.android.preference.R
-import net.imoya.android.preference.fragment.editor.list.ListEditorFragment
 
 /**
  * [ListEditorFragment] に於いて、選択肢の一覧表示に使用する Adapter
@@ -56,15 +57,45 @@ abstract class ListPreferenceListAdapter : BaseAdapter() {
     }
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-        val view = convertView ?: LayoutInflater.from(parent.context).inflate(
-            R.layout.imoya_preference_list_fragment_item, parent, false
-        )
-        val label = labels[position]
+        val view = convertView ?: createItemView(parent.context, parent)
 
         // ラベルを表示
-        view.findViewById<TextView>(android.R.id.title)?.text = label
+        getItemTitleView(view)?.text = labels[position]
 
         return view
+    }
+
+    /**
+     * 項目の [View] を作成して返します。
+     *
+     * @param context [Context]
+     * @param parent Parent view
+     * @return 項目の [View]
+     */
+    protected open fun createItemView(context: Context, parent: ViewGroup): View {
+        return LayoutInflater.from(parent.context).inflate(
+            R.layout.imoya_preference_list_fragment_item, parent, false
+        )
+    }
+
+    /**
+     * 項目のタイトルを表示する [TextView] を返します。
+     *
+     * @param itemView 項目の [View]
+     * @return 項目のタイトルを表示する [TextView]
+     */
+    protected open fun getItemTitleView(itemView: View): TextView? {
+        return itemView.findViewById(android.R.id.title)
+    }
+
+    /**
+     * 項目の選択状態を表すアイコンの [ImageView] を返します。
+     *
+     * @param itemView 項目の [View]
+     * @return 項目の選択状態を表すアイコンの [ImageView]
+     */
+    protected open fun getItemSelectedIconView(itemView: View): ImageView? {
+        return itemView.findViewById(R.id.selected)
     }
 
     companion object {

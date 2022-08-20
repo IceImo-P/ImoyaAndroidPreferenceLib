@@ -20,7 +20,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import net.imoya.android.preference.PreferenceLog
-import net.imoya.android.preference.R
+import java.lang.IllegalStateException
 
 /**
  * [ListEditorFragment] に於いて、選択肢の一覧表示に使用する Adapter
@@ -35,7 +35,8 @@ open class MultiSelectionListPreferenceListAdapter : ListPreferenceListAdapter()
         val view = super.getView(position, convertView, parent)
 
         // 選択中アイコンを表示
-        val selectedIconView: ImageView = view.findViewById(R.id.selected)
+        val selectedIconView: ImageView = getItemSelectedIconView(view)
+            ?: throw IllegalStateException("Selected icon view not found")
         selectedIconView.visibility = if (selectedIndices[position]) {
             PreferenceLog.v(TAG) { "selected: $position" }
             View.VISIBLE

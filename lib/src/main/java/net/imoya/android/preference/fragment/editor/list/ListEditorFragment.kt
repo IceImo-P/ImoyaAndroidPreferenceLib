@@ -22,7 +22,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ListView
-import android.widget.TextView
 import androidx.appcompat.app.ActionBar
 import androidx.fragment.app.Fragment
 import net.imoya.android.preference.PreferenceLog
@@ -50,7 +49,7 @@ abstract class ListEditorFragment : EditorFragment(),
         PreferenceLog.v(TAG, "onViewCreated: start")
 
         // Setup ListView
-        val listView: ListView = view.findViewById(R.id.list)
+        val listView: ListView = this.listView
         listView.adapter = listAdapter
         listView.onItemClickListener = this
 
@@ -66,10 +65,7 @@ abstract class ListEditorFragment : EditorFragment(),
         super.onSaveInstanceState(outState)
 
         // Save ListView scroll position
-        outState.putInt(
-            KEY_SCROLL_POSITION,
-            view?.findViewById<ListView>(R.id.list)?.scrollY ?: 0
-        )
+        outState.putInt(KEY_SCROLL_POSITION, listView.scrollY)
     }
 
     /**
@@ -102,8 +98,7 @@ abstract class ListEditorFragment : EditorFragment(),
 
     override fun setupFakeActionBar(fakeActionBar: View) {
         // Set title
-        fakeActionBar.findViewById<TextView>(R.id.title).text =
-            editorState.title ?: editorState.key
+        titleViewOnFakeActionBar?.text = editorState.title ?: editorState.key
     }
 
     companion object {
@@ -115,6 +110,6 @@ abstract class ListEditorFragment : EditorFragment(),
         /**
          * Tag for log
          */
-        private const val TAG = "ListPreferenceEditorFragment"
+        private const val TAG = "ListEditorFragment"
     }
 }

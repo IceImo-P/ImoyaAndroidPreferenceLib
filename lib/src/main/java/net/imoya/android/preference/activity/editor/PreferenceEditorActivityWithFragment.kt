@@ -19,6 +19,7 @@ package net.imoya.android.preference.activity.editor
 import android.os.Bundle
 import androidx.annotation.CallSuper
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import net.imoya.android.fragment.ArgumentsUtil
 import net.imoya.android.preference.Constants
@@ -58,7 +59,7 @@ abstract class PreferenceEditorActivityWithFragment : AppCompatActivity() {
 
         setContentView(contentViewLayoutId)
 
-        setSupportActionBar(findViewById(R.id.toolbar))
+        setSupportActionBar(toolbar)
 
         // Place first Fragment on first start
         if (savedInstanceState == null) {
@@ -78,7 +79,14 @@ abstract class PreferenceEditorActivityWithFragment : AppCompatActivity() {
         afterFinish()
     }
 
+    protected open val toolbar: Toolbar
+        get() = findViewById(R.id.toolbar)
+
+    /**
+     * 画面終了時の処理
+     */
     protected open fun afterFinish() {
+        // 画面遷移時アニメーションを設定
         overridePendingTransition(
             R.anim.imoya_preference_activity_finish_enter,
             R.anim.imoya_preference_activity_finish_exit

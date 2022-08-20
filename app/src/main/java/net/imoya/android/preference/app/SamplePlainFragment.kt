@@ -27,7 +27,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.preference.PreferenceManager
 import net.imoya.android.dialog.DialogListener
-import net.imoya.android.preference.controller.editor.SliderNumberDialogEditor
 import net.imoya.android.preference.controller.PreferenceFragmentController
 import net.imoya.android.preference.controller.PreferenceScreenController
 import net.imoya.android.preference.view.OnPreferenceViewClickListener
@@ -62,7 +61,7 @@ open class SamplePlainFragment : Fragment(), DialogListener {
         pref.setupDefaultEditors()
 
         // Registering non-default editors
-        pref.registerEditor(KEY_SLIDER_NUMBER_EDITOR, SliderNumberDialogEditor())
+        // - (none)
 
         // Restore editors state (if savedInstanceState exists)
         pref.restoreEditorState(savedInstanceState)
@@ -101,7 +100,8 @@ open class SamplePlainFragment : Fragment(), DialogListener {
         pref.setupPreferenceView(view.findViewById(R.id.pref_string_2))
         pref.setupPreferenceView(view.findViewById(R.id.pref_number_1))
         pref.setupPreferenceView(
-            view.findViewById(R.id.pref_number_2), KEY_SLIDER_NUMBER_EDITOR
+            view.findViewById(R.id.pref_number_2),
+            PreferenceScreenController.DEFAULT_EDITOR_TAG_NUMBER_SLIDER
         )
         pref.setupPreferenceView(view.findViewById(R.id.pref_string_list_single_dialog))
         pref.setupPreferenceView(
@@ -267,9 +267,6 @@ open class SamplePlainFragment : Fragment(), DialogListener {
     }
 
     companion object {
-        /** InstanceState key and tag: SliderNumberEditor */
-        private const val KEY_SLIDER_NUMBER_EDITOR = "sliderNumberEditor"
-
         /** InstanceState key: ScrollView position */
         private const val KEY_SCROLL_POSITION = "scrollPosition"
 
