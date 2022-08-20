@@ -19,12 +19,9 @@ package net.imoya.android.preference.fragment.editor.time
 import android.app.Activity
 import android.os.Bundle
 import android.view.*
-import android.widget.TextView
 import android.widget.TimePicker
 import androidx.appcompat.app.ActionBar
 import net.imoya.android.preference.PreferenceLog
-import net.imoya.android.preference.R
-import net.imoya.android.preference.fragment.editor.EditorFragment
 import net.imoya.android.preference.model.Time
 import net.imoya.android.preference.model.result.time.TimeEditorFragmentResult
 import net.imoya.android.preference.model.state.time.TimeEditorState
@@ -33,7 +30,7 @@ import net.imoya.android.util.TimePickerHelper
 /**
  * [Time] を編集する [androidx.fragment.app.Fragment] のデフォルト実装
  */
-open class TimeEditorFragment : EditorFragment() {
+open class TimeEditorFragment : TimeEditorFragmentBase() {
     /**
      * 起動時のパラメータ、および編集中のデータ
      */
@@ -47,18 +44,10 @@ open class TimeEditorFragment : EditorFragment() {
         editorState = TimeEditorState(getEditorStateBundle(savedInstanceState))
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.imoya_preference_time_editor_fragment, container, false)
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        view.findViewById<View>(R.id.subtitle).visibility = View.GONE
+        subtitleView?.visibility = View.GONE
         setupTimePicker()
     }
 
@@ -79,16 +68,15 @@ open class TimeEditorFragment : EditorFragment() {
 
     override fun setupFakeActionBar(fakeActionBar: View) {
         // Set title
-        fakeActionBar.findViewById<TextView>(R.id.title).text =
-            editorState.title ?: editorState.key
-        fakeActionBar.findViewById<View>(R.id.back).visibility = View.GONE
+        titleViewOnFakeActionBar?.text = editorState.title ?: editorState.key
+        backButtonOnFakeActionBar?.visibility = View.GONE
     }
 
     /**
      * [TimePicker] の時刻を初期設定します。
      */
     protected open fun setupTimePicker() {
-        val picker: TimePicker = requireView().findViewById(R.id.time)
+        val picker: TimePicker = timePicker ?: throw IllegalStateException("TimePicker not found")
         picker.setIs24HourView(editorState.is24hourView)
 
         // state.time が null でない場合はその値を設定し、

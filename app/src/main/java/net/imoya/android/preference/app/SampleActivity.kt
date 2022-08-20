@@ -23,7 +23,6 @@ import android.widget.ScrollView
 import net.imoya.android.dialog.DialogListener
 import net.imoya.android.preference.activity.PreferenceActivity
 import net.imoya.android.preference.controller.PreferenceScreenController
-import net.imoya.android.preference.controller.editor.SliderNumberDialogEditor
 import net.imoya.android.preference.view.OnPreferenceViewClickListener
 import net.imoya.android.preference.view.PreferenceView
 import net.imoya.android.preference.view.time.TimePeriodPreferenceView
@@ -51,7 +50,10 @@ class SampleActivity : PreferenceActivity(), DialogListener {
         setupPreferenceView(findViewById(R.id.pref_string_1))
         setupPreferenceView(findViewById(R.id.pref_string_2))
         setupPreferenceView(findViewById(R.id.pref_number_1))
-        setupPreferenceView(findViewById(R.id.pref_number_2), KEY_SLIDER_NUMBER_EDITOR)
+        setupPreferenceView(
+            findViewById(R.id.pref_number_2),
+            PreferenceScreenController.DEFAULT_EDITOR_TAG_NUMBER_SLIDER
+        )
         setupPreferenceView(findViewById(R.id.pref_string_list_single_dialog))
         setupPreferenceView(
             findViewById(R.id.pref_string_list_single_activity),
@@ -122,12 +124,11 @@ class SampleActivity : PreferenceActivity(), DialogListener {
         AppLog.v(TAG, "onCreate: end")
     }
 
-    override fun onRegisterCustomEditors() {
-        super.onRegisterCustomEditors()
-
-        // Register non-default editors
-        registerEditor(KEY_SLIDER_NUMBER_EDITOR, SliderNumberDialogEditor())
-    }
+//    override fun onRegisterCustomEditors() {
+//        super.onRegisterCustomEditors()
+//
+//        // Register non-default editors
+//    }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
@@ -161,9 +162,6 @@ class SampleActivity : PreferenceActivity(), DialogListener {
     }
 
     companion object {
-        /** InstanceState key and tag: SliderNumberEditor */
-        private const val KEY_SLIDER_NUMBER_EDITOR = "sliderNumberEditor"
-
         /** InstanceState key: ScrollView position */
         private const val KEY_SCROLL_POSITION = "scrollPosition"
 

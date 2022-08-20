@@ -72,7 +72,7 @@ import net.imoya.android.util.ViewUtil
  *  [TextView] を配置してください。
  *  * summary 文言表示のため、IDが &quot;@android:id/summary&quot; ([android.R.id.summary])である
  *  [TextView] を配置してください。
- *  * note 文言表示のため、IDが &quot;@+id/note&quot; ([R.id.note])である [TextView] を配置してください。
+ *  * note 文言表示のため、IDが &quot;@android:id/text2&quot; ([android.R.id.text2])である [TextView] を配置してください。
  */
 open class PreferenceView : LinearLayout, PreferenceItemView {
     /**
@@ -282,7 +282,7 @@ open class PreferenceView : LinearLayout, PreferenceItemView {
         // 各ビューを取得して、フィールドに保持する
         titleView = findViewById(android.R.id.title)
         summaryView = findViewById(android.R.id.summary)
-        noteView = findViewById(R.id.note)
+        noteView = findViewById(android.R.id.text2)
         // this.widgets = (LinearLayout) this.findViewById(android.R.id.widget_frame);
     }
 

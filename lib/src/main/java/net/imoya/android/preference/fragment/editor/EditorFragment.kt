@@ -22,6 +22,8 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import android.widget.Button
+import android.widget.ImageButton
+import android.widget.TextView
 import androidx.annotation.DrawableRes
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
@@ -45,25 +47,25 @@ abstract class EditorFragment : RoundTripClientFragment() {
         // Setup action bar
         val actionBar = if (requireActivity() is AppCompatActivity)
             (requireActivity() as AppCompatActivity).supportActionBar else null
-        val fakeActionBar = view.findViewById<View>(R.id.fake_action_bar)
+        val fakeActionBar = this.fakeActionBar
         if (actionBar != null) {
             PreferenceLog.v(TAG, "onViewCreated: supportActionBar != null")
             PreferenceLog.d(TAG) { "onViewCreated: actionBar = $actionBar" }
-            fakeActionBar.visibility = View.GONE
+            fakeActionBar?.visibility = View.GONE
             setupActionBar(actionBar)
-        } else {
+        } else if (fakeActionBar != null) {
             PreferenceLog.v(TAG, "onViewCreated: supportActionBar == null")
             fakeActionBar.visibility = View.VISIBLE
-            fakeActionBar.findViewById<View>(R.id.back).setOnClickListener { onClickBackButton() }
+            backButtonOnFakeActionBar?.setOnClickListener { onClickBackButton() }
             setupFakeActionBar(fakeActionBar)
         }
 
         // Setup bottom buttons
-        val buttons: View? = view.findViewById(R.id.buttons)
+        val buttons: View? = buttonsView
         if (buttons != null) {
             buttons.visibility = View.VISIBLE
-            buttons.findViewById<Button>(R.id.ok).setOnClickListener { onClickOkButton() }
-            buttons.findViewById<Button>(R.id.cancel).setOnClickListener { onClickBackButton() }
+            okButtonOnButtonsView?.setOnClickListener { onClickOkButton() }
+            cancelButtonOnButtonsView?.setOnClickListener { onClickBackButton() }
         }
 
         PreferenceLog.v(TAG, "onViewCreated: end")
@@ -101,6 +103,42 @@ abstract class EditorFragment : RoundTripClientFragment() {
      * OKボタン押下時の処理
      */
     protected abstract fun onClickOkButton()
+
+    /**
+     * 疑似アクションバーの [View]
+     */
+    protected open val fakeActionBar: View?
+        get() = view?.findViewById(R.id.fake_action_bar)
+
+    /**
+     * [fakeActionBar] 上のタイトル文言 [TextView]
+     */
+    protected open val titleViewOnFakeActionBar: TextView?
+        get() = fakeActionBar?.findViewById(R.id.title)
+
+    /**
+     * [fakeActionBar] 上の戻るボタン
+     */
+    protected open val backButtonOnFakeActionBar: ImageButton?
+        get() = fakeActionBar?.findViewById(R.id.back)
+
+    /**
+     * OK, Cancel ボタンが並ぶ枠の [View]
+     */
+    protected open val buttonsView: View?
+        get() = view?.findViewById(R.id.buttons)
+
+    /**
+     * [buttonsView] 上の OK ボタン
+     */
+    protected open val okButtonOnButtonsView: Button?
+        get() = buttonsView?.findViewById(R.id.ok)
+
+    /**
+     * [buttonsView] 上の Cancel ボタン
+     */
+    protected open val cancelButtonOnButtonsView: Button?
+        get() = buttonsView?.findViewById(R.id.cancel)
 
     /**
      * 戻るボタンへ表示する画像を返します。

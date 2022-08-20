@@ -24,7 +24,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ScrollView
 import androidx.appcompat.app.AppCompatActivity
-import net.imoya.android.preference.controller.editor.SliderNumberDialogEditor
 import net.imoya.android.preference.fragment.PreferenceFragment
 import net.imoya.android.preference.controller.PreferenceScreenController
 import net.imoya.android.preference.view.OnPreferenceViewClickListener
@@ -80,7 +79,10 @@ class SampleFragment : PreferenceFragment() {
         setupPreferenceView(view.findViewById(R.id.pref_string_1))
         setupPreferenceView(view.findViewById(R.id.pref_string_2))
         setupPreferenceView(view.findViewById(R.id.pref_number_1))
-        setupPreferenceView(view.findViewById(R.id.pref_number_2), KEY_SLIDER_NUMBER_EDITOR)
+        setupPreferenceView(
+            view.findViewById(R.id.pref_number_2),
+            PreferenceScreenController.DEFAULT_EDITOR_TAG_NUMBER_SLIDER
+        )
         setupPreferenceView(view.findViewById(R.id.pref_string_list_single_dialog))
         setupPreferenceView(
             view.findViewById(R.id.pref_string_list_single_activity),
@@ -184,12 +186,11 @@ class SampleFragment : PreferenceFragment() {
         return super.onOptionsItemSelected(item)
     }
 
-    override fun onRegisterCustomEditors() {
-        super.onRegisterCustomEditors()
-
-        // Register non-default editors
-        registerEditor(KEY_SLIDER_NUMBER_EDITOR, SliderNumberDialogEditor())
-    }
+//    override fun onRegisterCustomEditors() {
+//        super.onRegisterCustomEditors()
+//
+//        // Register non-default editors
+//    }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
@@ -225,9 +226,6 @@ class SampleFragment : PreferenceFragment() {
     }
 
     companion object {
-        /** InstanceState key and tag: SliderNumberEditor */
-        private const val KEY_SLIDER_NUMBER_EDITOR = "sliderNumberEditor"
-
         /** InstanceState key: ScrollView position */
         private const val KEY_SCROLL_POSITION = "scrollPosition"
 

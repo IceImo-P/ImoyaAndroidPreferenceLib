@@ -24,7 +24,6 @@ import android.widget.ScrollView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.PreferenceManager
 import net.imoya.android.dialog.DialogListener
-import net.imoya.android.preference.controller.editor.SliderNumberDialogEditor
 import net.imoya.android.preference.controller.PreferenceActivityController
 import net.imoya.android.preference.controller.PreferenceScreenController
 import net.imoya.android.preference.view.OnPreferenceViewClickListener
@@ -59,7 +58,7 @@ class SamplePlainActivity : AppCompatActivity(), DialogListener {
         pref.setupDefaultEditors()
 
         // Registering non-default editors
-        pref.registerEditor(KEY_SLIDER_NUMBER_EDITOR, SliderNumberDialogEditor())
+        // - (none)
 
         // Restore editors state (if savedInstanceState exists)
         pref.restoreEditorState(savedInstanceState)
@@ -72,7 +71,10 @@ class SamplePlainActivity : AppCompatActivity(), DialogListener {
         pref.setupPreferenceView(findViewById(R.id.pref_string_1))
         pref.setupPreferenceView(findViewById(R.id.pref_string_2))
         pref.setupPreferenceView(findViewById(R.id.pref_number_1))
-        pref.setupPreferenceView(findViewById(R.id.pref_number_2), KEY_SLIDER_NUMBER_EDITOR)
+        pref.setupPreferenceView(
+            findViewById(R.id.pref_number_2),
+            PreferenceScreenController.DEFAULT_EDITOR_TAG_NUMBER_SLIDER
+        )
         pref.setupPreferenceView(findViewById(R.id.pref_string_list_single_dialog))
         pref.setupPreferenceView(
             findViewById(R.id.pref_string_list_single_activity),
@@ -197,9 +199,6 @@ class SamplePlainActivity : AppCompatActivity(), DialogListener {
     }
 
     companion object {
-        /** InstanceState key and tag: SliderNumberEditor */
-        private const val KEY_SLIDER_NUMBER_EDITOR = "sliderNumberEditor"
-
         /** InstanceState key: ScrollView position */
         private const val KEY_SCROLL_POSITION = "scrollPosition"
 

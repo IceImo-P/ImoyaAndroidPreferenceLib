@@ -22,7 +22,6 @@ import android.view.View
 import android.widget.AdapterView
 import android.widget.ListView
 import androidx.appcompat.app.ActionBar
-import net.imoya.android.preference.R
 import net.imoya.android.preference.model.result.list.MultiSelectionListEditorFragmentResult
 import net.imoya.android.preference.model.state.list.*
 import net.imoya.android.preference.model.state.list.ListEditorState
@@ -71,7 +70,7 @@ open class MultiSelectionListEditorFragment : ListEditorFragment(),
         super.onViewCreated(view, savedInstanceState)
 
         // Setup bottom buttons
-        view.findViewById<View>(R.id.buttons).visibility = View.VISIBLE
+        buttonsView?.visibility = View.VISIBLE
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -92,7 +91,7 @@ open class MultiSelectionListEditorFragment : ListEditorFragment(),
     override fun setupFakeActionBar(fakeActionBar: View) {
         super.setupFakeActionBar(fakeActionBar)
 
-        fakeActionBar.findViewById<View>(R.id.back).visibility = View.GONE
+        backButtonOnFakeActionBar?.visibility = View.GONE
     }
 
     override fun onClickOkButton() {

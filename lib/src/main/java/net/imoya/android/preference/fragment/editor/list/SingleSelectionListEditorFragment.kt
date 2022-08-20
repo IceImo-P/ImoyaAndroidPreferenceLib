@@ -24,7 +24,6 @@ import android.widget.ImageButton
 import android.widget.ListView
 import androidx.appcompat.app.ActionBar
 import net.imoya.android.preference.PreferenceLog
-import net.imoya.android.preference.R
 import net.imoya.android.preference.model.state.list.ListEditorState
 import net.imoya.android.preference.model.result.list.SingleSelectionListEditorFragmentResult
 import net.imoya.android.preference.model.state.list.SingleSelectionListEditorState
@@ -73,10 +72,10 @@ open class SingleSelectionListEditorFragment : ListEditorFragment(),
         super.onViewCreated(view, savedInstanceState)
 
         // Setup bottom buttons
-        val buttons: View = view.findViewById(R.id.buttons)
+        val buttons: View? = buttonsView
         when ((editorState as SingleSelectionListEditorState).singleSelectionType) {
-            SingleSelectionType.ITEM_CLICK -> buttons.visibility = View.GONE
-            else -> buttons.visibility = View.VISIBLE
+            SingleSelectionType.ITEM_CLICK -> buttons?.visibility = View.GONE
+            else -> buttons?.visibility = View.VISIBLE
         }
     }
 
@@ -102,12 +101,12 @@ open class SingleSelectionListEditorFragment : ListEditorFragment(),
     override fun setupFakeActionBar(fakeActionBar: View) {
         super.setupFakeActionBar(fakeActionBar)
 
-        val backButton: ImageButton = fakeActionBar.findViewById(R.id.back)
-//        backButton.setImageDrawable(backButtonImage(fakeActionBar.context))
-        backButton.setImageDrawable(backButtonImage(requireContext()))
+        val backButton: ImageButton? = backButtonOnFakeActionBar
+//        backButton?.setImageDrawable(backButtonImage(fakeActionBar.context))
+        backButton?.setImageDrawable(backButtonImage(requireContext()))
         when ((editorState as SingleSelectionListEditorState).singleSelectionType) {
-            SingleSelectionType.ITEM_CLICK -> backButton.visibility = View.VISIBLE
-            else -> backButton.visibility = View.GONE
+            SingleSelectionType.ITEM_CLICK -> backButton?.visibility = View.VISIBLE
+            else -> backButton?.visibility = View.GONE
         }
     }
 

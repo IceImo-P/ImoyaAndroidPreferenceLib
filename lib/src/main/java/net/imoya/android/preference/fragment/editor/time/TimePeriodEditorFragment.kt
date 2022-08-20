@@ -18,11 +18,7 @@ package net.imoya.android.preference.fragment.editor.time
 
 import android.app.Activity
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import android.widget.Button
-import android.widget.TextView
 import android.widget.TimePicker
 import androidx.appcompat.app.ActionBar
 import net.imoya.android.fragment.ArgumentsUtil
@@ -31,7 +27,6 @@ import net.imoya.android.fragment.roundtrip.RoundTripManagerForFragmentHost
 import net.imoya.android.preference.Constants
 import net.imoya.android.preference.PreferenceLog
 import net.imoya.android.preference.R
-import net.imoya.android.preference.fragment.editor.EditorFragment
 import net.imoya.android.preference.model.Time
 import net.imoya.android.preference.model.TimePeriod
 import net.imoya.android.preference.model.result.time.TimePeriodEditorFragmentResult
@@ -43,7 +38,7 @@ import net.imoya.android.util.TimePickerHelper
 /**
  * [TimePeriod] を編集する [androidx.fragment.app.Fragment] のデフォルト実装
  */
-open class TimePeriodEditorFragment : EditorFragment() {
+open class TimePeriodEditorFragment : TimeEditorFragmentBase() {
     /**
      * 起動時のパラメータ
      */
@@ -91,18 +86,6 @@ open class TimePeriodEditorFragment : EditorFragment() {
             }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(
-            R.layout.imoya_preference_time_editor_fragment,
-            container,
-            false
-        )
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -129,26 +112,25 @@ open class TimePeriodEditorFragment : EditorFragment() {
 
     override fun setupFakeActionBar(fakeActionBar: View) {
         // Set title
-        fakeActionBar.findViewById<TextView>(R.id.title).text =
-            editorState.title ?: editorState.key
-        fakeActionBar.findViewById<View>(R.id.back).visibility = View.GONE
+        titleViewOnFakeActionBar?.text = editorState.title ?: editorState.key
+        backButtonOnFakeActionBar?.visibility = View.GONE
     }
 
     /**
      * 開始時刻入力 UI を初期化します。
      */
     open fun setupStartViews(view: View) {
-        view.findViewById<TextView>(R.id.subtitle).text =
+        subtitleView?.text =
             view.context.getString(R.string.imoya_preference_time_period_edit_start_title)
         setupTimePicker(view, fragmentState.timePeriod.start)
-        val cancelButton = view.findViewById<Button>(R.id.cancel)
-        cancelButton.text =
+        val cancelButton = cancelButtonOnButtonsView
+        cancelButton?.text =
             requireContext().getString(R.string.imoya_preference_time_period_edit_cancel)
-        cancelButton.setOnClickListener { cancel() }
-        val okButton = view.findViewById<Button>(R.id.ok)
-        okButton.text =
+        cancelButton?.setOnClickListener { cancel() }
+        val okButton = okButtonOnButtonsView
+        okButton?.text =
             requireContext().getString(R.string.imoya_preference_time_period_edit_to_end)
-        okButton.setOnClickListener { toEndTime() }
+        okButton?.setOnClickListener { toEndTime() }
 
         // 終了時刻のコールバック処理
         roundTripManagerForEndTime.setResultListener(REQUEST_KEY_END_TIME) { requestKey: String, bundle: Bundle ->
@@ -168,15 +150,15 @@ open class TimePeriodEditorFragment : EditorFragment() {
      * 終了時刻入力 UI を初期化します。
      */
     open fun setupEndViews(view: View) {
-        view.findViewById<TextView>(R.id.subtitle).text =
+        subtitleView?.text =
             view.context.getString(R.string.imoya_preference_time_period_edit_end_title)
         setupTimePicker(view, fragmentState.timePeriod.end)
-        val cancelButton = view.findViewById<Button>(R.id.cancel)
-        cancelButton.text =
+        val cancelButton = cancelButtonOnButtonsView
+        cancelButton?.text =
             requireContext().getString(R.string.imoya_preference_time_period_edit_to_start)
-        cancelButton.setOnClickListener { toStartTime() }
-        val okButton = view.findViewById<Button>(R.id.ok)
-        okButton.text =
+        cancelButton?.setOnClickListener { toStartTime() }
+        val okButton = okButtonOnButtonsView
+        okButton?.text =
             requireContext().getString(R.string.imoya_preference_time_period_edit_save)
     }
 
@@ -187,7 +169,7 @@ open class TimePeriodEditorFragment : EditorFragment() {
      * @param time 初期表示する [Time]
      */
     open fun setupTimePicker(view: View, time: Time) {
-        val picker: TimePicker = view.findViewById(R.id.time)
+        val picker: TimePicker = timePicker ?: throw IllegalStateException("TimePicker not found")
         picker.setIs24HourView(editorState.is24hourView)
         TimePickerHelper(picker).setHourAndMinute(time.hour, time.minute)
         picker.setOnTimeChangedListener { _, hourOfDay, minute ->

@@ -146,7 +146,8 @@ open class SwitchPreferenceView : SingleValuePreferenceView {
      * ビュー上のスイッチを表す [CompoundButton]
      */
     @Suppress("MemberVisibilityCanBePrivate")
-    protected lateinit var compoundButton: CompoundButton
+    protected open val compoundButton: CompoundButton
+        get() = findViewById(R.id.check)
 
     /**
      * 現在のON/OFF状態
@@ -227,11 +228,6 @@ open class SwitchPreferenceView : SingleValuePreferenceView {
     @get:LayoutRes
     override val defaultLayout: Int
         get() = R.layout.imoya_preference_switch
-
-    override fun onCreateChildViews() {
-        super.onCreateChildViews()
-        compoundButton = findViewById(R.id.check)
-    }
 
     override fun loadAttributes(values: TypedArray) {
         PreferenceLog.v(TAG, "loadAttributes: start")

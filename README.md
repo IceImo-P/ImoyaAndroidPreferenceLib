@@ -76,7 +76,7 @@
     ```groovy
     dependencies {
         // (other dependencies)
-        implementation 'net.imoya.android.dialog:imoya-android-dialog:2.0.0'
+        implementation 'net.imoya.android.dialog:imoya-android-dialog:2.1.0'
         implementation 'net.imoya.android.fragment:imoya-android-fragment:1.4.0'
         implementation 'net.imoya.android.log:imoya-android-log:1.1.1'
         implementation 'net.imoya.android.preference:imoya-android-preference:2.0.0'
