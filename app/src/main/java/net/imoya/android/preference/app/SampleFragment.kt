@@ -18,12 +18,11 @@ package net.imoya.android.preference.app
 
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.MenuItem
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.ScrollView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.MenuHost
+import androidx.core.view.MenuProvider
 import net.imoya.android.preference.fragment.PreferenceFragment
 import net.imoya.android.preference.controller.PreferenceScreenController
 import net.imoya.android.preference.view.OnPreferenceViewClickListener
@@ -74,6 +73,22 @@ class SampleFragment : PreferenceFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         AppLog.v(TAG, "onViewCreated: start")
+
+        // Setup menu
+        (requireActivity() as MenuHost).addMenuProvider(object : MenuProvider {
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {}
+
+            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                return when (menuItem.itemId) {
+                    android.R.id.home -> {
+                        // Home ボタン押下時は前の画面へ戻る
+                        parentFragmentManager.popBackStack()
+                        true
+                    }
+                    else -> false
+                }
+            }
+        })
 
         // Set the combination of view and editor
         setupPreferenceView(view.findViewById(R.id.pref_string_1))
@@ -177,14 +192,14 @@ class SampleFragment : PreferenceFragment() {
         AppLog.v(TAG, "onViewCreated: end")
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == android.R.id.home) {
-            parentFragmentManager.popBackStack()
-            return true
-        }
-
-        return super.onOptionsItemSelected(item)
-    }
+//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+//        if (item.itemId == android.R.id.home) {
+//            parentFragmentManager.popBackStack()
+//            return true
+//        }
+//
+//        return super.onOptionsItemSelected(item)
+//    }
 
 //    override fun onRegisterCustomEditors() {
 //        super.onRegisterCustomEditors()

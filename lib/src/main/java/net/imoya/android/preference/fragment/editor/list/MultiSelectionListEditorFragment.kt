@@ -84,7 +84,6 @@ open class MultiSelectionListEditorFragment : ListEditorFragment(),
 
         actionBar.setDisplayHomeAsUpEnabled(true)
         actionBar.setHomeAsUpIndicator(backButtonImage(actionBar.themedContext))
-        setHasOptionsMenu(false)
         actionBar.setDisplayHomeAsUpEnabled(false)
     }
 

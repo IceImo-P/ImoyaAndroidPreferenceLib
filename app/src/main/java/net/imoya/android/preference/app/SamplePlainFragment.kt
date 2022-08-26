@@ -19,11 +19,11 @@ package net.imoya.android.preference.app
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.ScrollView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.MenuHost
+import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.preference.PreferenceManager
 import net.imoya.android.dialog.DialogListener
@@ -90,6 +90,22 @@ open class SamplePlainFragment : Fragment(), DialogListener {
         super.onViewCreated(view, savedInstanceState)
 
         AppLog.v(TAG, "onViewCreated: start")
+
+        // Setup menu
+        (requireActivity() as MenuHost).addMenuProvider(object : MenuProvider {
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {}
+
+            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                return when (menuItem.itemId) {
+                    android.R.id.home -> {
+                        // Home ボタン押下時は前の画面へ戻る
+                        parentFragmentManager.popBackStack()
+                        true
+                    }
+                    else -> false
+                }
+            }
+        })
 
         // Set ID of root view
 //        pref.roundTripManager.containerId = R.id.root

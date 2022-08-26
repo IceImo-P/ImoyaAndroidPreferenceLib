@@ -89,7 +89,6 @@ open class SingleSelectionListEditorFragment : ListEditorFragment(),
         super.setupActionBar(actionBar)
 
         actionBar.setHomeAsUpIndicator(null)
-        setHasOptionsMenu(false)
         when ((editorState as SingleSelectionListEditorState).singleSelectionType) {
             SingleSelectionType.ITEM_CLICK -> {
                 actionBar.setDisplayHomeAsUpEnabled(true)
