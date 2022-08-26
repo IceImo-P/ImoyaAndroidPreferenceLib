@@ -19,6 +19,8 @@ package net.imoya.android.preference.fragment.editor
 import android.content.Context
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.widget.Button
@@ -27,6 +29,8 @@ import android.widget.TextView
 import androidx.annotation.DrawableRes
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.MenuHost
+import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import net.imoya.android.fragment.roundtrip.RoundTripClientFragment
 import net.imoya.android.preference.Constants
@@ -60,6 +64,9 @@ abstract class EditorFragment : RoundTripClientFragment() {
             setupFakeActionBar(fakeActionBar)
         }
 
+        // Setup menu
+        (requireActivity() as MenuHost).addMenuProvider(createMenuProvider())
+
         // Setup bottom buttons
         val buttons: View? = buttonsView
         if (buttons != null) {
@@ -71,11 +78,48 @@ abstract class EditorFragment : RoundTripClientFragment() {
         PreferenceLog.v(TAG, "onViewCreated: end")
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            android.R.id.home -> onClickBackButton()
+    /**
+     * この [Fragment] で使用する [MenuProvider] を返します。
+     *
+     * @return [MenuProvider]
+     */
+    protected open fun createMenuProvider(): MenuProvider {
+        return object : MenuProvider {
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                this@EditorFragment.onCreateMenu(menu, menuInflater)
+            }
+
+            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                return this@EditorFragment.onMenuItemSelected(menuItem)
+            }
         }
-        return super.onOptionsItemSelected(item)
+    }
+
+    /**
+     * この [Fragment] で使用するメニューを生成します。
+     *
+     * @param menu the menu to inflate the new menu items into
+     * @param menuInflater the inflater to be used to inflate the updated menu
+     */
+    protected open fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+        // デフォルトではメニュー無し(HomeButton のみ)
+    }
+
+    /**
+     * メニュー項目押下時の処理
+     *
+     * @param menuItem 押下された項目
+     * @return 処理した場合は true, その他の場合は false
+     */
+    protected open fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+        return when (menuItem.itemId) {
+            android.R.id.home -> {
+                // Home ボタンは戻るボタン扱いとする
+                onClickBackButton()
+                true
+            }
+            else -> false
+        }
     }
 
     /**
