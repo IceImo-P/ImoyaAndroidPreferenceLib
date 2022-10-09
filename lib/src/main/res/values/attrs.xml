@@ -40,6 +40,9 @@
         <attr name="minValue" format="integer" />
         <attr name="maxValue" format="integer" />
         <attr name="is24HourView" format="boolean" />
+        <attr name="android:showText" format="boolean" />
+        <attr name="android:textOn" format="string" />
+        <attr name="android:textOff" format="string" />
     </declare-styleable>
     <declare-styleable name="PreferenceCategoryView">
         <attr name="android:layout" />

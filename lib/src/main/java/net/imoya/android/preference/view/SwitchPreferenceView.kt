@@ -27,6 +27,7 @@ import android.view.View
 import android.widget.CompoundButton
 import android.widget.Switch
 import androidx.annotation.LayoutRes
+import androidx.appcompat.widget.SwitchCompat
 import net.imoya.android.preference.PreferenceLog
 import net.imoya.android.preference.R
 
@@ -46,7 +47,19 @@ import net.imoya.android.preference.R
  * Layout XML上で指定可能な attributes は、[PreferenceView],
  * [SingleValuePreferenceView] に以下を加えたものとなります:
  *  * android:defaultValue([android.R.attr.defaultValue])
- * - このビューに表示する設定値が未保存の場合に使用する、デフォルト値の boolean を指定します。
+ *    * このビューに表示する設定値が未保存の場合に使用する、デフォルト値の boolean を指定します。
+ *  * android:showText([android.R.attr.showText])
+ *    * このビューに表示するスイッチが [SwitchCompat] の場合、
+ * [SwitchCompat.setShowText] へ設定する値を指定します。
+ *    * このビューに表示するスイッチが [SwitchCompat] でない場合は無視されます。
+ *  * android:textOn([android.R.attr.textOn])
+ *    * このビューに表示するスイッチが [SwitchCompat] の場合、
+ * [SwitchCompat.setTextOn] へ設定する値を指定します。
+ *    * このビューに表示するスイッチが [SwitchCompat] でない場合は無視されます。
+ *  * android:textOff([android.R.attr.textOff])
+ *    * このビューに表示するスイッチが [SwitchCompat] の場合、
+ * [SwitchCompat.setTextOff] へ設定する値を指定します。
+ *    * このビューに表示するスイッチが [SwitchCompat] でない場合は無視されます。
  *
  *  # カスタムレイアウト
  *
@@ -181,6 +194,66 @@ open class SwitchPreferenceView : SingleValuePreferenceView {
         }
 
     /**
+     * スイッチのテキスト表示フラグ
+     */
+    @Suppress("unused", "MemberVisibilityCanBePrivate")
+    var showText: Boolean
+        get() {
+            val sw = compoundButton
+            return if (sw is SwitchCompat) {
+                sw.showText
+            } else {
+                false
+            }
+        }
+        set(value) {
+            val sw = compoundButton
+            if (sw is SwitchCompat) {
+                sw.showText = value
+            }
+        }
+
+    /**
+     * スイッチ ON 時に [SwitchCompat] へ表示するテキスト
+     */
+    @Suppress("unused")
+    var textOn: String
+        get() {
+            val sw = compoundButton
+            return if (sw is SwitchCompat) {
+                sw.textOn?.toString() ?: ""
+            } else {
+                ""
+            }
+        }
+        set(value) {
+            val sw = compoundButton
+            if (sw is SwitchCompat) {
+                sw.textOn = value
+            }
+        }
+
+    /**
+     * スイッチ OFF 時に [SwitchCompat] へ表示するテキスト
+     */
+    @Suppress("unused")
+    var textOff: String
+        get() {
+            val sw = compoundButton
+            return if (sw is SwitchCompat) {
+                sw.textOff?.toString() ?: ""
+            } else {
+                ""
+            }
+        }
+        set(value) {
+            val sw = compoundButton
+            if (sw is SwitchCompat) {
+                sw.textOff = value
+            }
+        }
+
+    /**
      * コンストラクタ
      *
      * @param context [Context]
@@ -236,6 +309,11 @@ open class SwitchPreferenceView : SingleValuePreferenceView {
             R.styleable.PreferenceView_android_defaultValue, false
         )
         PreferenceLog.v(TAG) { "loadAttributes: defaultValue = $mDefaultValue" }
+        this.showText = values.getBoolean(
+            R.styleable.PreferenceView_android_showText, false
+        )
+        this.textOn = values.getString(R.styleable.PreferenceView_android_textOn) ?: ""
+        this.textOff = values.getString(R.styleable.PreferenceView_android_textOff) ?: ""
     }
 
     override fun createSavedState(superState: Parcelable?): SavedState {

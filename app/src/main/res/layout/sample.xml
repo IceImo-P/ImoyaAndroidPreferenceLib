@@ -249,6 +249,17 @@
                 android:title="@string/pref_category_title_2" />
 
             <net.imoya.android.preference.view.SwitchPreferenceView
+                android:id="@+id/pref_switch_2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:key="@string/pref_switch_2_key"
+                android:summary="@string/pref_switch_2_summary"
+                android:title="@string/pref_switch_2_title"
+                android:showText="true"
+                android:textOn="@string/pref_switch_2_textOn"
+                android:textOff="@string/pref_switch_2_textOff" />
+
+            <net.imoya.android.preference.view.SwitchPreferenceView
                 android:id="@+id/pref_switch_1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

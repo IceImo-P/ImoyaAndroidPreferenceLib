@@ -115,6 +115,12 @@
     <string name="pref_switch_1_title" translatable="false">24H display</string>
     <string name="pref_switch_1_summary" translatable="false">Description of SwitchPreference</string>
 
+    <string name="pref_switch_2_key" translatable="false">switch_2</string>
+    <string name="pref_switch_2_title" translatable="false">Switch with text</string>
+    <string name="pref_switch_2_summary" translatable="false">Description of SwitchPreference</string>
+    <string name="pref_switch_2_textOn" translatable="false">ON</string>
+    <string name="pref_switch_2_textOff" translatable="false">OFF</string>
+
     <string name="pref_time_1_key" translatable="false">time_1</string>
     <string name="pref_time_1_title" translatable="false">Time sample</string>
     <string name="pref_time_1_default" translatable="false">0:00</string>
