@@ -155,6 +155,7 @@ class SampleActivity : PreferenceActivity(), DialogListener {
             getString(R.string.pref_switch_1_key), false
         )
         findViewById<TimePreferenceView>(R.id.pref_time_1)?.is24hourView = is24hourView
+        findViewById<TimePreferenceView>(R.id.pref_time_2)?.is24hourView = is24hourView
         findViewById<TimePreferenceView>(R.id.pref_time_3)?.is24hourView = is24hourView
         findViewById<TimePeriodPreferenceView>(R.id.pref_time_period_1)?.is24hourView =
             is24hourView
