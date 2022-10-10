@@ -233,6 +233,7 @@ class SampleFragment : PreferenceFragment() {
         )
         view?.findViewById<TimePreferenceView>(R.id.pref_time_1)?.is24hourView = is24hourView
         view?.findViewById<TimePreferenceView>(R.id.pref_time_2)?.is24hourView = is24hourView
+        view?.findViewById<TimePreferenceView>(R.id.pref_time_3)?.is24hourView = is24hourView
         view?.findViewById<TimePeriodPreferenceView>(R.id.pref_time_period_1)?.is24hourView =
             is24hourView
         view?.findViewById<TimePeriodPreferenceView>(R.id.pref_time_period_2)?.is24hourView =

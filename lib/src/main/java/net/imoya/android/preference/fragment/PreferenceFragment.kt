@@ -189,6 +189,7 @@ abstract class PreferenceFragment : Fragment(), DialogListener {
         super.onResume()
 
         pref.roundTripManager.containerId = rootView.id
+        pref.onResume()
     }
 
     @CallSuper
