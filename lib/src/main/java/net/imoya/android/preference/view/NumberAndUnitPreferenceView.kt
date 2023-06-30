@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 IceImo-P
+ * Copyright (C) 2022-2023 IceImo-P
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -163,9 +163,10 @@ open class NumberAndUnitPreferenceView : SingleValuePreferenceView {
     /**
      * 現在の設定値
      */
-    @Suppress("unused", "MemberVisibilityCanBePrivate")
+    @Suppress("unused")
     var currentValue: Int
         get() = mCurrentValue
+        @Suppress("unused")
         set(value) {
             mCurrentValue = value
 
@@ -186,6 +187,7 @@ open class NumberAndUnitPreferenceView : SingleValuePreferenceView {
      */
     var defaultValue: Int
         get() = mDefaultValue
+        @Suppress("unused")
         set(value) {
             mDefaultValue = value
         }
@@ -204,6 +206,7 @@ open class NumberAndUnitPreferenceView : SingleValuePreferenceView {
             PreferenceLog.v(TAG) { "getMinValue: value = $mMinValue" }
             return mMinValue
         }
+        @Suppress("unused")
         set(value) {
             PreferenceLog.v(TAG) { "setMinValue: value = $value" }
             mMinValue = value
@@ -223,6 +226,7 @@ open class NumberAndUnitPreferenceView : SingleValuePreferenceView {
             PreferenceLog.v(TAG) { "getMaxValue: value = $mMaxValue" }
             return mMaxValue
         }
+        @Suppress("unused")
         set(value) {
             PreferenceLog.v(TAG) { "setMaxValue: value = $value" }
             mMaxValue = value
@@ -238,7 +242,7 @@ open class NumberAndUnitPreferenceView : SingleValuePreferenceView {
             // 表示へ反映する
             val unitView = this.unitView
             unitView.text = unit
-            ViewUtil.setVisibleOrGone(unitView, unit != null && unit.isNotEmpty())
+            ViewUtil.setVisibleOrGone(unitView, !unit.isNullOrEmpty())
             invalidate()
             requestLayout()
         }
@@ -246,14 +250,12 @@ open class NumberAndUnitPreferenceView : SingleValuePreferenceView {
     /**
      * 値を表示する [TextView]
      */
-    @Suppress("MemberVisibilityCanBePrivate")
     protected open val valueView: TextView
         get() = findViewById(android.R.id.text1)
 
     /**
      * 単位を表示する [TextView]
      */
-    @Suppress("MemberVisibilityCanBePrivate")
     protected open val unitView: TextView
         get() = findViewById(R.id.unit)
 

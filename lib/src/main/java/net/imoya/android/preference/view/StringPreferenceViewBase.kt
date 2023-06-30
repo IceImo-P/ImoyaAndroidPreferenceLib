@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 IceImo-P
+ * Copyright (C) 2022-2023 IceImo-P
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -148,6 +148,7 @@ abstract class StringPreferenceViewBase : SingleValuePreferenceView {
      */
     var currentValue: String?
         get() = mCurrentValue
+        @Suppress("unused")
         set(value) {
             mCurrentValue = value
             invalidate()
@@ -163,9 +164,9 @@ abstract class StringPreferenceViewBase : SingleValuePreferenceView {
     /**
      * デフォルト値
      */
-    @Suppress("MemberVisibilityCanBePrivate")
     protected var defaultValue: String?
         get() = mDefaultValue
+        @Suppress("unused")
         set(value) {
             mDefaultValue = value
         }
@@ -181,6 +182,7 @@ abstract class StringPreferenceViewBase : SingleValuePreferenceView {
      */
     protected var valueForNull: String?
         get() = mValueForNull
+        @Suppress("unused")
         set(value) {
             mValueForNull = value
         }

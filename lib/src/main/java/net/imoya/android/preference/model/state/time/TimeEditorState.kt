@@ -24,6 +24,7 @@ import androidx.annotation.CallSuper
 import net.imoya.android.preference.controller.editor.time.TimeDialogEditor
 import net.imoya.android.preference.model.state.ScreenEditorState
 import net.imoya.android.preference.model.Time
+import net.imoya.android.util.BundleUtil
 
 /**
  * [TimeDialogEditor] の状態オブジェクト
@@ -52,8 +53,9 @@ open class TimeEditorState : ScreenEditorState {
      * @param bundle [Bundle]
      */
     constructor(bundle: Bundle) : super(bundle) {
-        time = bundle.getParcelable(KEY_TIME)
-        timeForNull = bundle.getParcelable(KEY_TIME_FOR_NULL) ?: Time(0, 0, 0)
+        time = BundleUtil.getParcelable(bundle, KEY_TIME, Time::class.java)
+        timeForNull = BundleUtil.getParcelable(bundle, KEY_TIME_FOR_NULL, Time::class.java)
+            ?: Time(0, 0, 0)
         is24hourView = bundle.getBoolean(KEY_IS_24_HOUR_VIEW)
     }
 

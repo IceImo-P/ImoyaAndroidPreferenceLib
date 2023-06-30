@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 IceImo-P
+ * Copyright (C) 2022-2023 IceImo-P
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,7 +31,6 @@ import net.imoya.android.preference.view.list.SingleSelectionStringListPreferenc
  * * 選択画面は [SingleSelectionListEditorActivity] を使用します。
  * * [SingleSelectionStringListPreferenceView] と組み合わせて使用することを想定しています。
  */
-@Suppress("unused")
 open class SingleSelectionStringListActivityEditor(
     /**
      * 設定画面の親画面
@@ -46,6 +45,9 @@ open class SingleSelectionStringListActivityEditor(
     override fun isCompatibleView(view: PreferenceView): Boolean {
         return view is SingleSelectionStringListPreferenceView
     }
+
+    override val instanceStateClass: Class<out ScreenEditorState>
+        get() = SingleSelectionStringListEditorState::class.java
 
     override fun createState(): ScreenEditorState {
         return SingleSelectionStringListEditorState()

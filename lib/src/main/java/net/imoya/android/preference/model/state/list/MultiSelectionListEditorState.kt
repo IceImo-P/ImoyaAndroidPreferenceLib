@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 IceImo-P
+ * Copyright (C) 2022-2023 IceImo-P
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,6 +35,7 @@ open class MultiSelectionListEditorState : ListEditorState {
      */
     var checkedList: BooleanArray = BooleanArray(0)
 
+    @Suppress("unused")
     constructor() : super()
 
     /**
@@ -42,6 +43,7 @@ open class MultiSelectionListEditorState : ListEditorState {
      *
      * @param bundle [Bundle]
      */
+    @Suppress("unused")
     constructor(bundle: Bundle) : super(bundle) {
         checkedList = bundle.getBooleanArray(KEY_SELECTED_INDICES)
             ?: throw IllegalArgumentException("SelectedIndices not found")
@@ -52,6 +54,7 @@ open class MultiSelectionListEditorState : ListEditorState {
      *
      * @param parcel [Parcel]
      */
+    @Suppress("unused")
     protected constructor(parcel: Parcel) : super(parcel) {
         checkedList = parcel.createBooleanArray()
             ?: throw IllegalArgumentException("SelectedIndices not found")
@@ -79,6 +82,7 @@ open class MultiSelectionListEditorState : ListEditorState {
         /**
          * [Parcelable] 対応用 [Creator]
          */
+        @Suppress("unused")
         @JvmField
         val CREATOR: Creator<MultiSelectionListEditorState> = object :
             Creator<MultiSelectionListEditorState> {

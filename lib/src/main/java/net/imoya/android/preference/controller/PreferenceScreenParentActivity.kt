@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 IceImo-P
+ * Copyright (C) 2022-2023 IceImo-P
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,7 +33,6 @@ import java.lang.ref.WeakReference
  *
  * @param activity 親画面の [AppCompatActivity]
  */
-@Suppress("unused")
 open class PreferenceScreenParentActivity(
     activity: AppCompatActivity,
     listener: DialogListener
@@ -71,7 +70,6 @@ open class PreferenceScreenParentActivity(
      * @return [AppCompatActivity]
      * @throws IllegalStateException AppCompatActivity is not set
      */
-    @Suppress("MemberVisibilityCanBePrivate")
     fun requireActivity(): AppCompatActivity {
         return activityRef.get() ?: throw IllegalStateException("Activity is not set")
     }
@@ -94,6 +92,7 @@ open class PreferenceScreenParentActivity(
         return requireActivity().registerForActivityResult(contract, callback)
     }
 
+    @Suppress("unused")
     override fun <I : Any, O : Any> registerForActivityResult(
         contract: ActivityResultContract<I, O>,
         registry: ActivityResultRegistry,

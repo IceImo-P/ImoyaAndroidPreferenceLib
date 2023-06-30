@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 IceImo-P
+ * Copyright (C) 2022-2023 IceImo-P
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -60,6 +60,9 @@ open class StringDialogEditor(
     override fun isCompatibleView(view: PreferenceView): Boolean {
         return view is StringPreferenceView
     }
+
+    override val instanceStateClass: Class<out ScreenEditorState>
+        get() = StringEditorState::class.java
 
     override fun createState(): ScreenEditorState {
         return StringEditorState()

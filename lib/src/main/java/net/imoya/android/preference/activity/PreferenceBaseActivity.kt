@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 IceImo-P
+ * Copyright (C) 2022-2023 IceImo-P
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -106,7 +106,7 @@ abstract class PreferenceBaseActivity : BaseActivity(), DialogListener {
      *            この文字列は、 instanceState の保存キーとしても使用されます。
      * @param editor 使用する [PreferenceEditor]
      */
-    @Suppress("MemberVisibilityCanBePrivate")
+    @Suppress("unused", "MemberVisibilityCanBePrivate")
     protected fun registerEditor(tag: String, editor: PreferenceEditor) =
         pref.registerEditor(tag, editor)
 
@@ -126,7 +126,7 @@ abstract class PreferenceBaseActivity : BaseActivity(), DialogListener {
      *
      * @param view [PreferenceView]
      */
-    @Suppress("MemberVisibilityCanBePrivate")
+    @Suppress("unused", "MemberVisibilityCanBePrivate")
     protected fun setupPreferenceView(view: PreferenceView) =
         pref.setupPreferenceView(view)
 
@@ -141,7 +141,7 @@ abstract class PreferenceBaseActivity : BaseActivity(), DialogListener {
      * @param view [PreferenceView]
      * @param editorTag [registerEditor] メソッドの引数 tag に設定した文字列
      */
-    @Suppress("MemberVisibilityCanBePrivate")
+    @Suppress("unused", "MemberVisibilityCanBePrivate")
     protected fun setupPreferenceView(view: PreferenceView, editorTag: String) =
         pref.setupPreferenceView(view, editorTag)
 

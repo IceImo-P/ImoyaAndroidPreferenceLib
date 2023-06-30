@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 IceImo-P
+ * Copyright (C) 2022-2023 IceImo-P
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,7 +33,6 @@ import net.imoya.android.preference.view.PreferenceView
  * * 選択画面は [SingleChoiceDialog] を使用します。
  * * [SingleSelectionIntListPreferenceView] と組み合わせて使用することを想定しています。
  */
-@Suppress("unused")
 open class SingleSelectionIntListDialogEditor(
     /**
      * 設定ダイアログの親画面
@@ -52,6 +51,9 @@ open class SingleSelectionIntListDialogEditor(
     override fun isCompatibleView(view: PreferenceView): Boolean {
         return view is SingleSelectionIntListPreferenceView
     }
+
+    override val instanceStateClass: Class<out ScreenEditorState>
+        get() = SingleSelectionIntListEditorState::class.java
 
     override fun createState(): ScreenEditorState {
         return SingleSelectionIntListEditorState()

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 IceImo-P
+ * Copyright (C) 2022-2023 IceImo-P
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -56,6 +56,9 @@ class TimePeriodFragmentEditor(
         return view is TimePeriodPreferenceView
     }
 
+    override val instanceStateClass: Class<out ScreenEditorState>
+        get() = TimePeriodEditorState::class.java
+
     override fun createState(): ScreenEditorState {
         return TimePeriodEditorState()
     }
@@ -69,7 +72,7 @@ class TimePeriodFragmentEditor(
         try {
             val timeString = preferences?.getString(state.key, null)
             editorState.timePeriod =
-                if (timeString != null && timeString.isNotEmpty()) TimePeriod.parse(timeString)
+                if (!timeString.isNullOrEmpty()) TimePeriod.parse(timeString)
                 else null
         } catch (e: Exception) {
             editorState.timePeriod = null

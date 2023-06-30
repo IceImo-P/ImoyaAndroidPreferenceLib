@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 IceImo-P
+ * Copyright (C) 2022-2023 IceImo-P
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,7 +34,6 @@ import net.imoya.android.preference.view.time.TimePreferenceView
  * * 設定画面は [TimeInputDialog] を使用します。
  * * [TimePreferenceView] と組み合わせて使用することを想定しています。
  */
-@Suppress("unused")
 open class TimeDialogEditor(
     /**
      * 設定ダイアログの親画面
@@ -52,6 +51,9 @@ open class TimeDialogEditor(
     override fun isCompatibleView(view: PreferenceView): Boolean {
         return view is TimePreferenceView
     }
+
+    override val instanceStateClass: Class<out ScreenEditorState>
+        get() = ScreenEditorState::class.java
 
     override fun createState(): ScreenEditorState {
         return ScreenEditorState()

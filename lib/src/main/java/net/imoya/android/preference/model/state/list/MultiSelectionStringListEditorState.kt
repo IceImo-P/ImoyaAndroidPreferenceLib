@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 IceImo-P
+ * Copyright (C) 2022-2023 IceImo-P
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -50,6 +50,7 @@ open class MultiSelectionStringListEditorState : MultiSelectionListEditorState {
      *
      * @param parcel [Parcel]
      */
+    @Suppress("unused")
     protected constructor(parcel: Parcel) : super(parcel) {
         entryValues =
             parcel.createStringArray() ?: throw RuntimeException("EntryValues not found")
@@ -77,6 +78,7 @@ open class MultiSelectionStringListEditorState : MultiSelectionListEditorState {
         /**
          * [Parcelable] 対応用 [Creator]
          */
+        @Suppress("unused")
         @JvmField
         val CREATOR: Creator<MultiSelectionStringListEditorState> = object : Creator<MultiSelectionStringListEditorState> {
             /**

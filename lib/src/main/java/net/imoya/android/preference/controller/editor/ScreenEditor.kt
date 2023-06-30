@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 IceImo-P
+ * Copyright (C) 2022-2023 IceImo-P
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -39,6 +39,9 @@ abstract class ScreenEditor(
 ) : PreferenceEditor(preferences), OnPreferenceViewClickListener {
     /** 状態オブジェクト */
     protected lateinit var state: ScreenEditorState
+
+    /** The class of [instanceState]  */
+    abstract val instanceStateClass: Class<out ScreenEditorState>
 
     /**
      * 状態オブジェクトの新しいインスタンスを生成して返します。

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 IceImo-P
+ * Copyright (C) 2022-2023 IceImo-P
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,7 +33,6 @@ import net.imoya.android.preference.view.PreferenceView
  * * 編集画面はダイアログを使用します。
  * * [NumberAndUnitPreferenceView] と組み合わせて使用することを想定しています。
  */
-@Suppress("unused")
 open class SliderNumberDialogEditor(
     /**
      * 設定ダイアログの親画面
@@ -49,6 +48,7 @@ open class SliderNumberDialogEditor(
     requestCode: Int = Constants.DEFAULT_REQUEST_CODE
 ) : NumberAndUnitDialogEditor(parent, preferences, requestCode) {
 
+    @Suppress("unused")
     override fun showDialog(view: PreferenceView) {
         val currentPreferences = checkPreferences()
         val currentParent = checkParent()
@@ -71,6 +71,7 @@ open class SliderNumberDialogEditor(
             .show()
     }
 
+    @Suppress("unused")
     override fun saveInput(resultCode: Int, data: Intent?) {
         if (data == null) throw IllegalArgumentException("data is null")
         val currentPreferences = checkPreferences()

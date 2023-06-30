@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 IceImo-P
+ * Copyright (C) 2022-2023 IceImo-P
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -71,6 +71,7 @@ open class MultiSelectionIntListPreferenceView : MultiSelectionListPreferenceVie
          *
          * @param superState [View] の状態
          */
+        @Suppress("unused")
         constructor(superState: Parcelable?) : super(superState)
 
         /**
@@ -78,6 +79,7 @@ open class MultiSelectionIntListPreferenceView : MultiSelectionListPreferenceVie
          *
          * @param parcel [Parcel]
          */
+        @Suppress("unused")
         protected constructor(parcel: Parcel) : this(parcel, null)
 
         /**
@@ -86,6 +88,7 @@ open class MultiSelectionIntListPreferenceView : MultiSelectionListPreferenceVie
          * @param parcel [Parcel]
          * @param loader [ClassLoader]
          */
+        @Suppress("unused")
         protected constructor(parcel: Parcel, loader: ClassLoader?) : super(parcel, loader) {
             entryValues = parcel.createIntArray()
                 ?: throw RuntimeException("parcel.createIntArray returns null")
@@ -102,6 +105,7 @@ open class MultiSelectionIntListPreferenceView : MultiSelectionListPreferenceVie
             /**
              * [Parcelable] 対応用 [Creator]
              */
+            @Suppress("unused")
             @JvmField
             val CREATOR: Creator<SavedState> = object : Creator<SavedState> {
                 /**
@@ -141,9 +145,10 @@ open class MultiSelectionIntListPreferenceView : MultiSelectionListPreferenceVie
     /**
      * 現在の選択状態
      */
-    @Suppress("unused", "MemberVisibilityCanBePrivate")
+    @Suppress("unused")
     var currentSelection: BooleanArray
         get() = mCurrentSelection
+        @Suppress("unused")
         set(value) {
             mCurrentSelection = value
         }
@@ -153,6 +158,7 @@ open class MultiSelectionIntListPreferenceView : MultiSelectionListPreferenceVie
      *
      * @param context [Context]
      */
+    @Suppress("unused")
     constructor(context: Context) : this(context, null)
 
     /**
@@ -161,6 +167,7 @@ open class MultiSelectionIntListPreferenceView : MultiSelectionListPreferenceVie
      * @param context [Context]
      * @param attrs [AttributeSet]
      */
+    @Suppress("unused")
     constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, 0)
 
     /**
@@ -170,6 +177,7 @@ open class MultiSelectionIntListPreferenceView : MultiSelectionListPreferenceVie
      * @param attrs [AttributeSet]
      * @param defStyleAttr 適用するスタイル属性値
      */
+    @Suppress("unused")
     constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int)
             : super(context, attrs, defStyleAttr)
 

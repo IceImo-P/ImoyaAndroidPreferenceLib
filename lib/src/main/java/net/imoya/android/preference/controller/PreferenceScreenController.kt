@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 IceImo-P
+ * Copyright (C) 2022-2023 IceImo-P
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,6 +29,7 @@ import net.imoya.android.preference.controller.editor.*
 import net.imoya.android.preference.controller.editor.list.*
 import net.imoya.android.preference.controller.editor.time.*
 import net.imoya.android.preference.view.PreferenceView
+import net.imoya.android.util.BundleUtil
 
 /**
  * [AppCompatActivity] または [Fragment] へ
@@ -67,7 +68,6 @@ abstract class PreferenceScreenController : DialogListener {
      *
      * @return New instance of [PreferenceViewUpdater]
      */
-    @Suppress("MemberVisibilityCanBePrivate")
     open fun createPreferenceViewUpdater(): PreferenceViewUpdater {
         return PreferenceViewUpdater()
     }
@@ -145,7 +145,11 @@ abstract class PreferenceScreenController : DialogListener {
             editors.entries.forEach {
                 val editor = it.value
                 if (editor is ScreenEditor) {
-                    editor.instanceState = savedInstanceState.getParcelable(it.key)
+                    editor.instanceState = BundleUtil.getParcelable(
+                        savedInstanceState,
+                        it.key,
+                        editor.instanceStateClass
+                    )
                 }
             }
         }
@@ -189,7 +193,6 @@ abstract class PreferenceScreenController : DialogListener {
      * @param view     設定項目のビュー([PreferenceView])
      * @param editor   ビューをタップした時の処理を実装する [PreferenceEditor]
      */
-    @Suppress("MemberVisibilityCanBePrivate")
     protected open fun setupPreferenceView(view: PreferenceView, editor: PreferenceEditor) {
         if (editor is DialogEditor) {
             editor.registerDialogCallback()
@@ -229,18 +232,54 @@ abstract class PreferenceScreenController : DialogListener {
         registerEditor(DEFAULT_EDITOR_TAG_STRING, StringDialogEditor())
         registerEditor(DEFAULT_EDITOR_TAG_NUMBER, NumberAndUnitDialogEditor())
         registerEditor(DEFAULT_EDITOR_TAG_NUMBER_SLIDER, SliderNumberDialogEditor())
-        registerEditor(DEFAULT_EDITOR_TAG_SINGLE_SELECTION_INT_LIST, SingleSelectionIntListDialogEditor())
-        registerEditor(DEFAULT_EDITOR_TAG_SINGLE_SELECTION_INT_LIST_ACTIVITY, SingleSelectionIntListActivityEditor(parent))
-        registerEditor(DEFAULT_EDITOR_TAG_SINGLE_SELECTION_INT_LIST_FRAGMENT, SingleSelectionIntListFragmentEditor())
-        registerEditor(DEFAULT_EDITOR_TAG_SINGLE_SELECTION_STRING_LIST, SingleSelectionStringListDialogEditor())
-        registerEditor(DEFAULT_EDITOR_TAG_SINGLE_SELECTION_STRING_LIST_ACTIVITY, SingleSelectionStringListActivityEditor(parent))
-        registerEditor(DEFAULT_EDITOR_TAG_SINGLE_SELECTION_STRING_LIST_FRAGMENT, SingleSelectionStringListFragmentEditor())
-        registerEditor(DEFAULT_EDITOR_TAG_MULTI_SELECTION_INT_LIST, MultiSelectionIntListDialogEditor())
-        registerEditor(DEFAULT_EDITOR_TAG_MULTI_SELECTION_INT_LIST_ACTIVITY, MultiSelectionIntListActivityEditor(parent))
-        registerEditor(DEFAULT_EDITOR_TAG_MULTI_SELECTION_INT_LIST_FRAGMENT, MultiSelectionIntListFragmentEditor())
-        registerEditor(DEFAULT_EDITOR_TAG_MULTI_SELECTION_STRING_LIST, MultiSelectionStringListDialogEditor())
-        registerEditor(DEFAULT_EDITOR_TAG_MULTI_SELECTION_STRING_LIST_ACTIVITY, MultiSelectionStringListActivityEditor(parent))
-        registerEditor(DEFAULT_EDITOR_TAG_MULTI_SELECTION_STRING_LIST_FRAGMENT, MultiSelectionStringListFragmentEditor())
+        registerEditor(
+            DEFAULT_EDITOR_TAG_SINGLE_SELECTION_INT_LIST,
+            SingleSelectionIntListDialogEditor()
+        )
+        registerEditor(
+            DEFAULT_EDITOR_TAG_SINGLE_SELECTION_INT_LIST_ACTIVITY,
+            SingleSelectionIntListActivityEditor(parent)
+        )
+        registerEditor(
+            DEFAULT_EDITOR_TAG_SINGLE_SELECTION_INT_LIST_FRAGMENT,
+            SingleSelectionIntListFragmentEditor()
+        )
+        registerEditor(
+            DEFAULT_EDITOR_TAG_SINGLE_SELECTION_STRING_LIST,
+            SingleSelectionStringListDialogEditor()
+        )
+        registerEditor(
+            DEFAULT_EDITOR_TAG_SINGLE_SELECTION_STRING_LIST_ACTIVITY,
+            SingleSelectionStringListActivityEditor(parent)
+        )
+        registerEditor(
+            DEFAULT_EDITOR_TAG_SINGLE_SELECTION_STRING_LIST_FRAGMENT,
+            SingleSelectionStringListFragmentEditor()
+        )
+        registerEditor(
+            DEFAULT_EDITOR_TAG_MULTI_SELECTION_INT_LIST,
+            MultiSelectionIntListDialogEditor()
+        )
+        registerEditor(
+            DEFAULT_EDITOR_TAG_MULTI_SELECTION_INT_LIST_ACTIVITY,
+            MultiSelectionIntListActivityEditor(parent)
+        )
+        registerEditor(
+            DEFAULT_EDITOR_TAG_MULTI_SELECTION_INT_LIST_FRAGMENT,
+            MultiSelectionIntListFragmentEditor()
+        )
+        registerEditor(
+            DEFAULT_EDITOR_TAG_MULTI_SELECTION_STRING_LIST,
+            MultiSelectionStringListDialogEditor()
+        )
+        registerEditor(
+            DEFAULT_EDITOR_TAG_MULTI_SELECTION_STRING_LIST_ACTIVITY,
+            MultiSelectionStringListActivityEditor(parent)
+        )
+        registerEditor(
+            DEFAULT_EDITOR_TAG_MULTI_SELECTION_STRING_LIST_FRAGMENT,
+            MultiSelectionStringListFragmentEditor()
+        )
         registerEditor(DEFAULT_EDITOR_TAG_TIME, TimeDialogEditor())
         registerEditor(DEFAULT_EDITOR_TAG_TIME, TimeDialogEditor())
         registerEditor(DEFAULT_EDITOR_TAG_TIME_ACTIVITY, TimeActivityEditor(parent))
@@ -304,40 +343,52 @@ abstract class PreferenceScreenController : DialogListener {
         const val DEFAULT_EDITOR_TAG_NUMBER_SLIDER = "ImoyaDefaultEditorNumberSlider"
 
         /** InstanceState key and tag: [SingleSelectionIntListDialogEditor] */
-        const val DEFAULT_EDITOR_TAG_SINGLE_SELECTION_INT_LIST = "ImoyaDefaultEditorSingleSelectionIntList"
+        const val DEFAULT_EDITOR_TAG_SINGLE_SELECTION_INT_LIST =
+            "ImoyaDefaultEditorSingleSelectionIntList"
 
         /** InstanceState key and tag: [SingleSelectionIntListActivityEditor] */
-        const val DEFAULT_EDITOR_TAG_SINGLE_SELECTION_INT_LIST_ACTIVITY = "ImoyaDefaultEditorSingleSelectionIntListActivity"
+        const val DEFAULT_EDITOR_TAG_SINGLE_SELECTION_INT_LIST_ACTIVITY =
+            "ImoyaDefaultEditorSingleSelectionIntListActivity"
 
         /** InstanceState key and tag: [SingleSelectionIntListFragmentEditor] */
-        const val DEFAULT_EDITOR_TAG_SINGLE_SELECTION_INT_LIST_FRAGMENT = "ImoyaDefaultEditorSingleSelectionIntListFragment"
+        const val DEFAULT_EDITOR_TAG_SINGLE_SELECTION_INT_LIST_FRAGMENT =
+            "ImoyaDefaultEditorSingleSelectionIntListFragment"
 
         /** InstanceState key and tag: [SingleSelectionStringListDialogEditor] */
-        const val DEFAULT_EDITOR_TAG_SINGLE_SELECTION_STRING_LIST = "ImoyaDefaultEditorSingleSelectionStringList"
+        const val DEFAULT_EDITOR_TAG_SINGLE_SELECTION_STRING_LIST =
+            "ImoyaDefaultEditorSingleSelectionStringList"
 
         /** InstanceState key and tag: [SingleSelectionStringListActivityEditor] */
-        const val DEFAULT_EDITOR_TAG_SINGLE_SELECTION_STRING_LIST_ACTIVITY = "ImoyaDefaultEditorSingleSelectionStringListActivity"
+        const val DEFAULT_EDITOR_TAG_SINGLE_SELECTION_STRING_LIST_ACTIVITY =
+            "ImoyaDefaultEditorSingleSelectionStringListActivity"
 
         /** InstanceState key and tag: [SingleSelectionStringListFragmentEditor] */
-        const val DEFAULT_EDITOR_TAG_SINGLE_SELECTION_STRING_LIST_FRAGMENT = "ImoyaDefaultEditorSingleSelectionStringListFragment"
+        const val DEFAULT_EDITOR_TAG_SINGLE_SELECTION_STRING_LIST_FRAGMENT =
+            "ImoyaDefaultEditorSingleSelectionStringListFragment"
 
         /** InstanceState key and tag: [MultiSelectionIntListDialogEditor] */
-        const val DEFAULT_EDITOR_TAG_MULTI_SELECTION_INT_LIST = "ImoyaDefaultEditorMultiSelectionIntList"
+        const val DEFAULT_EDITOR_TAG_MULTI_SELECTION_INT_LIST =
+            "ImoyaDefaultEditorMultiSelectionIntList"
 
         /** InstanceState key and tag: [MultiSelectionIntListActivityEditor] */
-        const val DEFAULT_EDITOR_TAG_MULTI_SELECTION_INT_LIST_ACTIVITY = "ImoyaDefaultEditorMultiSelectionIntListActivity"
+        const val DEFAULT_EDITOR_TAG_MULTI_SELECTION_INT_LIST_ACTIVITY =
+            "ImoyaDefaultEditorMultiSelectionIntListActivity"
 
         /** InstanceState key and tag: [MultiSelectionIntListFragmentEditor] */
-        const val DEFAULT_EDITOR_TAG_MULTI_SELECTION_INT_LIST_FRAGMENT = "ImoyaDefaultEditorMultiSelectionIntListFragment"
+        const val DEFAULT_EDITOR_TAG_MULTI_SELECTION_INT_LIST_FRAGMENT =
+            "ImoyaDefaultEditorMultiSelectionIntListFragment"
 
         /** InstanceState key and tag: [MultiSelectionStringListDialogEditor] */
-        const val DEFAULT_EDITOR_TAG_MULTI_SELECTION_STRING_LIST = "ImoyaDefaultEditorMultiSelectionStringList"
+        const val DEFAULT_EDITOR_TAG_MULTI_SELECTION_STRING_LIST =
+            "ImoyaDefaultEditorMultiSelectionStringList"
 
         /** InstanceState key and tag: [MultiSelectionStringListActivityEditor] */
-        const val DEFAULT_EDITOR_TAG_MULTI_SELECTION_STRING_LIST_ACTIVITY = "ImoyaDefaultEditorMultiSelectionStringListActivity"
+        const val DEFAULT_EDITOR_TAG_MULTI_SELECTION_STRING_LIST_ACTIVITY =
+            "ImoyaDefaultEditorMultiSelectionStringListActivity"
 
         /** InstanceState key and tag: [MultiSelectionStringListFragmentEditor] */
-        const val DEFAULT_EDITOR_TAG_MULTI_SELECTION_STRING_LIST_FRAGMENT = "ImoyaDefaultEditorMultiSelectionStringListFragment"
+        const val DEFAULT_EDITOR_TAG_MULTI_SELECTION_STRING_LIST_FRAGMENT =
+            "ImoyaDefaultEditorMultiSelectionStringListFragment"
 
         /** InstanceState key and tag: [TimeDialogEditor] */
         const val DEFAULT_EDITOR_TAG_TIME = "ImoyaDefaultEditorTime"

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 IceImo-P
+ * Copyright (C) 2022-2023 IceImo-P
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,7 +26,7 @@ import net.imoya.android.preference.view.PreferenceView
  */
 @Suppress("unused")
 open class PreferenceViewUpdater : OnSharedPreferenceChangeListener {
-    @Suppress("MemberVisibilityCanBePrivate")
+
     var views: Array<PreferenceView> = arrayOf()
 
     fun clearViews() {

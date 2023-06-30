@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 IceImo-P
+ * Copyright (C) 2022-2023 IceImo-P
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,7 +24,6 @@ import net.imoya.android.preference.view.PreferenceView
  *
  * 設定項目タップにより設定値を変更し、結果を [SharedPreferences] へ保存するコントローラ共通部分を実装します。
  */
-@Suppress("unused")
 abstract class PreferenceEditor(
     /**
      * [SharedPreferences] to read current value and write result
@@ -57,11 +56,4 @@ abstract class PreferenceEditor(
     protected fun checkPreferences(): SharedPreferences {
         return preferences ?: throw IllegalStateException("preferences is not set")
     }
-
-//    companion object {
-//        /**
-//         * Tag for log
-//         */
-//        private const val TAG = "PreferenceEditor"
-//    }
 }

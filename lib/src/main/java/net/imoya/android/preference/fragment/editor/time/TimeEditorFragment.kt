@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 IceImo-P
+ * Copyright (C) 2022-2023 IceImo-P
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,7 +34,6 @@ open class TimeEditorFragment : TimeEditorFragmentBase() {
     /**
      * 起動時のパラメータ、および編集中のデータ
      */
-    @Suppress("MemberVisibilityCanBePrivate")
     lateinit var editorState: TimeEditorState
 
     override fun onCreate(savedInstanceState: Bundle?) {

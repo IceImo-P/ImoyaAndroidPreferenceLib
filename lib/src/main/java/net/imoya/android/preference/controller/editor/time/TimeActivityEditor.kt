@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 IceImo-P
+ * Copyright (C) 2022-2023 IceImo-P
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,6 +28,7 @@ import net.imoya.android.preference.model.result.time.TimeEditorFragmentResult
 import net.imoya.android.preference.model.state.time.TimeEditorState
 import net.imoya.android.preference.view.PreferenceView
 import net.imoya.android.preference.view.time.TimePreferenceView
+import net.imoya.android.util.IntentUtil
 
 /**
  * [Time] 設定値編集コントローラ
@@ -35,7 +36,6 @@ import net.imoya.android.preference.view.time.TimePreferenceView
  * * 設定画面は [TimeEditorActivity] を使用します。
  * * [TimePreferenceView] と組み合わせて使用することを想定しています。
  */
-@Suppress("unused")
 open class TimeActivityEditor(
     /**
      * 設定画面の親画面
@@ -57,6 +57,7 @@ open class TimeActivityEditor(
          * @param key    Key of [SharedPreferences]
          * @param value  User-input [Time] (or null)
          */
+        @Suppress("unused")
         fun onEdit(editor: TimeActivityEditor, key: String, value: Time?)
     }
 
@@ -69,6 +70,9 @@ open class TimeActivityEditor(
     override fun isCompatibleView(view: PreferenceView): Boolean {
         return view is TimePreferenceView
     }
+
+    override val instanceStateClass: Class<out ScreenEditorState>
+        get() = TimeEditorState::class.java
 
     override fun createState(): ScreenEditorState {
         return TimeEditorState()
@@ -107,8 +111,8 @@ open class TimeActivityEditor(
     override fun saveInput(resultCode: Int, data: Intent?) {
         if (data == null) throw IllegalArgumentException("data is null")
         val key = checkKey()
-        val period = data.getParcelableExtra<Time>(
-            TimeEditorFragmentResult.KEY_SELECTED_TIME
+        val period = IntentUtil.getParcelableExtra(
+            data, TimeEditorFragmentResult.KEY_SELECTED_TIME, Time::class.java
         ) ?: throw IllegalArgumentException("time is null")
 
         checkPreferences().edit()

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 IceImo-P
+ * Copyright (C) 2022-2023 IceImo-P
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,6 +28,7 @@ import net.imoya.android.preference.model.result.time.TimePeriodEditorFragmentRe
 import net.imoya.android.preference.model.state.time.TimePeriodEditorState
 import net.imoya.android.preference.view.PreferenceView
 import net.imoya.android.preference.view.time.TimePeriodPreferenceView
+import net.imoya.android.util.IntentUtil
 
 /**
  * [TimePeriod] 設定値編集コントローラ
@@ -56,6 +57,7 @@ open class TimePeriodActivityEditor(
          * @param key    Key of [SharedPreferences]
          * @param value  User-input [TimePeriod] (or null)
          */
+        @Suppress("unused")
         fun onEdit(editor: TimePeriodActivityEditor, key: String, value: TimePeriod?)
     }
 
@@ -68,6 +70,9 @@ open class TimePeriodActivityEditor(
     override fun isCompatibleView(view: PreferenceView): Boolean {
         return view is TimePeriodPreferenceView
     }
+
+    override val instanceStateClass: Class<out ScreenEditorState>
+        get() = TimePeriodEditorState::class.java
 
     override fun createState(): ScreenEditorState {
         return TimePeriodEditorState()
@@ -82,7 +87,7 @@ open class TimePeriodActivityEditor(
         try {
             val timeString = preferences?.getString(state.key, null)
             editorState.timePeriod =
-                if (timeString != null && timeString.isNotEmpty()) TimePeriod.parse(timeString)
+                if (!timeString.isNullOrEmpty()) TimePeriod.parse(timeString)
                 else null
         } catch (e: Exception) {
             editorState.timePeriod = null
@@ -107,8 +112,8 @@ open class TimePeriodActivityEditor(
     override fun saveInput(resultCode: Int, data: Intent?) {
         if (data == null) throw IllegalArgumentException("data is null")
         val key = checkKey()
-        val period = data.getParcelableExtra<TimePeriod>(
-            TimePeriodEditorFragmentResult.KEY_SELECTED_TIME_PERIOD
+        val period = IntentUtil.getParcelableExtra(
+            data, TimePeriodEditorFragmentResult.KEY_SELECTED_TIME_PERIOD, TimePeriod::class.java
         ) ?: throw IllegalArgumentException("timePeriod is null")
 
         checkPreferences().edit()

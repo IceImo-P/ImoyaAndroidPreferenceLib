@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 IceImo-P
+ * Copyright (C) 2022-2023 IceImo-P
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -151,9 +151,10 @@ open class SingleSelectionStringListPreferenceView : SingleSelectionListPreferen
     /**
      * 現在の設定値
      */
-    @Suppress("unused", "MemberVisibilityCanBePrivate")
+    @Suppress("unused")
     var currentValue: String?
         get() = mCurrentValue
+        @Suppress("unused")
         set(value) {
             mCurrentValue = value
         }
@@ -167,9 +168,10 @@ open class SingleSelectionStringListPreferenceView : SingleSelectionListPreferen
     /**
      * デフォルト値
      */
-    @Suppress("MemberVisibilityCanBePrivate")
+    @Suppress("unused")
     var defaultValue: String?
         get() = mDefaultValue
+        @Suppress("unused")
         set(value) {
             mDefaultValue = value
         }

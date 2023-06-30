@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 IceImo-P
+ * Copyright (C) 2022-2023 IceImo-P
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -43,7 +43,7 @@ data class TimePeriod(
      * @return 値が有効である場合は true, その他の場合は false
      * @see [Time.isValid]
      */
-    @Suppress("unused")
+    @Suppress("MemberVisibilityCanBePrivate")
     fun isValid(): Boolean = start.isValid() && end.isValid()
 
     /**
@@ -87,6 +87,7 @@ data class TimePeriod(
      *
      * @param other 他のインスタンス
      */
+    @Suppress("unused")
     fun copyFrom(other: TimePeriod) {
         this.start = other.start.copy()
         this.end = other.end.copy()
