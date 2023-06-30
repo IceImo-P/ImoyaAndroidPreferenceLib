@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 IceImo-P
+ * Copyright (C) 2022-2023 IceImo-P
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,6 +25,7 @@ import net.imoya.android.preference.controller.editor.time.TimePeriodActivityEdi
 import net.imoya.android.preference.model.state.ScreenEditorState
 import net.imoya.android.preference.model.Time
 import net.imoya.android.preference.model.TimePeriod
+import net.imoya.android.util.BundleUtil
 
 /**
  * [TimePeriodActivityEditor] の状態オブジェクト
@@ -55,9 +56,10 @@ open class TimePeriodEditorState : ScreenEditorState {
      * @param bundle [Bundle]
      */
     constructor(bundle: Bundle) : super(bundle) {
-        timePeriod = bundle.getParcelable(KEY_TIME_PERIOD)
-        timePeriodForNull = bundle.getParcelable(KEY_TIME_PERIOD_FOR_NULL)
-            ?: TimePeriod(Time(0, 0, 0), Time(0, 0, 0))
+        timePeriod = BundleUtil.getParcelable(bundle, KEY_TIME_PERIOD, TimePeriod::class.java)
+        timePeriodForNull =
+            BundleUtil.getParcelable(bundle, KEY_TIME_PERIOD_FOR_NULL, TimePeriod::class.java)
+                ?: TimePeriod(Time(0, 0, 0), Time(0, 0, 0))
         is24hourView = bundle.getBoolean(KEY_IS_24_HOUR_VIEW)
     }
 

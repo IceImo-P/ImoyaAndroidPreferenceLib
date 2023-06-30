@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 IceImo-P
+ * Copyright (C) 2022-2023 IceImo-P
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,6 +35,7 @@ open class ListEditorState : ScreenEditorState {
      */
     var entries: Array<String> = arrayOf()
 
+    @Suppress("unused")
     constructor() : super()
 
     /**
@@ -42,6 +43,7 @@ open class ListEditorState : ScreenEditorState {
      *
      * @param bundle [Bundle]
      */
+    @Suppress("unused")
     constructor(bundle: Bundle) : super(bundle) {
         entries = bundle.getStringArray(KEY_LABELS) ?: arrayOf()
     }
@@ -51,6 +53,7 @@ open class ListEditorState : ScreenEditorState {
      *
      * @param parcel [Parcel]
      */
+    @Suppress("unused")
     protected constructor(parcel: Parcel) : super(parcel) {
         entries =
             parcel.createStringArray() ?: throw RuntimeException("entries is null")
@@ -78,6 +81,7 @@ open class ListEditorState : ScreenEditorState {
         /**
          * [Parcelable] 対応用 [Creator]
          */
+        @Suppress("unused")
         @JvmField
         val CREATOR: Creator<ListEditorState> = object :
             Creator<ListEditorState> {

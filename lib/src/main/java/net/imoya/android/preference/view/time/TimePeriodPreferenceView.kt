@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 IceImo-P
+ * Copyright (C) 2022-2023 IceImo-P
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -60,7 +60,6 @@ class TimePeriodPreferenceView : TimePreferenceViewBase {
      * @param defStyleAttr 適用するスタイル属性値
      * @param defStyleRes 適用するスタイルのリソースID
      */
-    @Suppress("unused")
 //    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     constructor(
         context: Context,

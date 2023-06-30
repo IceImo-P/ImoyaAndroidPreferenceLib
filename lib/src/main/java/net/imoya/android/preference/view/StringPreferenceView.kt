@@ -124,6 +124,7 @@ open class StringPreferenceView : StringPreferenceViewBase {
      */
     var maxLength: Int
         get() = mMaxLength
+        @Suppress("unused")
         set(value) {
             mMaxLength = value
         }

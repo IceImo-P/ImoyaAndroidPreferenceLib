@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 IceImo-P
+ * Copyright (C) 2022-2023 IceImo-P
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -59,7 +59,6 @@ class TimePreferenceView : TimePreferenceViewBase {
      * @param defStyleAttr 適用するスタイル属性値
      * @param defStyleRes 適用するスタイルのリソースID
      */
-    @Suppress("unused")
 //    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int, defStyleRes: Int)
             : super(context, attrs, defStyleAttr, defStyleRes)
@@ -77,7 +76,7 @@ class TimePreferenceView : TimePreferenceViewBase {
 
     private fun getTime(s: String?): Time? {
         return try {
-            if (s != null && s.isNotEmpty()) Time.parse(s) else null
+            if (!s.isNullOrEmpty()) Time.parse(s) else null
         } catch (e: Exception) {
             PreferenceLog.v(TAG, "getTime: Exception", e)
             null

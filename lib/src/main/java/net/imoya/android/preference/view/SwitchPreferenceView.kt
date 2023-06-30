@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 IceImo-P
+ * Copyright (C) 2022-2023 IceImo-P
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -158,7 +158,6 @@ open class SwitchPreferenceView : SingleValuePreferenceView {
     /**
      * ビュー上のスイッチを表す [CompoundButton]
      */
-    @Suppress("MemberVisibilityCanBePrivate")
     protected open val compoundButton: CompoundButton
         get() = findViewById(R.id.check)
 
@@ -171,9 +170,10 @@ open class SwitchPreferenceView : SingleValuePreferenceView {
     /**
      * 現在のON/OFF状態
      */
-    @Suppress("unused", "MemberVisibilityCanBePrivate")
+    @Suppress("unused")
     var currentValue: Boolean
         get() = mCurrentValue
+        @Suppress("unused")
         set(value) {
             mCurrentValue = value
         }
@@ -187,8 +187,10 @@ open class SwitchPreferenceView : SingleValuePreferenceView {
     /**
      * デフォルト値
      */
+    @Suppress("unused")
     var defaultValue: Boolean
         get() = mDefaultValue
+        @Suppress("unused")
         set(value) {
             mDefaultValue = value
         }
@@ -216,7 +218,7 @@ open class SwitchPreferenceView : SingleValuePreferenceView {
     /**
      * スイッチ ON 時に [SwitchCompat] へ表示するテキスト
      */
-    @Suppress("unused")
+    @Suppress("unused", "MemberVisibilityCanBePrivate")
     var textOn: String
         get() {
             val sw = compoundButton
@@ -236,7 +238,7 @@ open class SwitchPreferenceView : SingleValuePreferenceView {
     /**
      * スイッチ OFF 時に [SwitchCompat] へ表示するテキスト
      */
-    @Suppress("unused")
+    @Suppress("unused", "MemberVisibilityCanBePrivate")
     var textOff: String
         get() {
             val sw = compoundButton
@@ -287,7 +289,6 @@ open class SwitchPreferenceView : SingleValuePreferenceView {
      * @param defStyleAttr 適用するスタイル属性値
      * @param defStyleRes 適用するスタイルのリソースID
      */
-    @Suppress("unused")
 //    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     constructor(
         context: Context,

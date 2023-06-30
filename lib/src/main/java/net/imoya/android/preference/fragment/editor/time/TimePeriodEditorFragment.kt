@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 IceImo-P
+ * Copyright (C) 2022-2023 IceImo-P
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -42,25 +42,27 @@ open class TimePeriodEditorFragment : TimeEditorFragmentBase() {
     /**
      * 起動時のパラメータ
      */
-    @Suppress("MemberVisibilityCanBePrivate")
     lateinit var editorState: TimePeriodEditorState
 
     /**
      * 編集中のデータ
      */
-    @Suppress("MemberVisibilityCanBePrivate")
     lateinit var fragmentState: TimePeriodEditorFragmentState
 
     /**
      * "Host" が指定した、 "client" を表示する領域となる [View] の ID
      */
+    @Suppress("unused")
     open val containerId: Int
+        @Suppress("unused")
         get() = roundTripContainerId
 
     /**
      * 終了時刻入力画面の [androidx.fragment.app.Fragment]
      */
+    @Suppress("unused")
     open val endTimeFragment: TimePeriodEditorFragment
+        @Suppress("unused")
         get() = TimePeriodEditorFragment()
 
     /**

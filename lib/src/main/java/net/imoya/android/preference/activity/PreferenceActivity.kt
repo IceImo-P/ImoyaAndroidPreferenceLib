@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 IceImo-P
+ * Copyright (C) 2022-2023 IceImo-P
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -105,6 +105,7 @@ abstract class PreferenceActivity : AppCompatActivity(), DialogListener {
      *            この文字列は、 instanceState の保存キーとしても使用されます。
      * @param editor 使用する [PreferenceEditor]
      */
+    @Suppress("unused", "MemberVisibilityCanBePrivate")
     protected fun registerEditor(tag: String, editor: PreferenceEditor) =
         pref.registerEditor(tag, editor)
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 IceImo-P
+ * Copyright (C) 2022-2023 IceImo-P
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -50,6 +50,7 @@ open class MultiSelectionIntListEditorState : MultiSelectionListEditorState {
      *
      * @param parcel [Parcel]
      */
+    @Suppress("unused")
     protected constructor(parcel: Parcel) : super(parcel) {
         entryValues =
             parcel.createIntArray() ?: throw RuntimeException("entryValues is null")
@@ -76,6 +77,7 @@ open class MultiSelectionIntListEditorState : MultiSelectionListEditorState {
         /**
          * [Parcelable] 対応用 [Creator]
          */
+        @Suppress("unused")
         @JvmField
         val CREATOR: Creator<MultiSelectionIntListEditorState> =
             object : Creator<MultiSelectionIntListEditorState> {

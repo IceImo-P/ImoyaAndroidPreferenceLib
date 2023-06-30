@@ -20,6 +20,7 @@ import net.imoya.android.preference.controller.editor.DialogEditor
 import net.imoya.android.preference.controller.editor.PreferenceEditor
 import net.imoya.android.preference.view.PreferenceView
 
+@Suppress("unused")
 object PreferenceViewUtil {
     /**
      * 設定項目のビューと、ビューをタップした時の処理の連携を初期化します。

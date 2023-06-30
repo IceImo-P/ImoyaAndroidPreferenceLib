@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 IceImo-P
+ * Copyright (C) 2022-2023 IceImo-P
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,7 +31,6 @@ import net.imoya.android.preference.view.list.MultiSelectionStringListPreference
  * * 選択画面は [MultiSelectionListEditorActivity] を使用します。
  * * [MultiSelectionStringListPreferenceView] と組み合わせて使用することを想定しています。
  */
-@Suppress("unused")
 open class MultiSelectionStringListActivityEditor(
     /**
      * 設定画面の親画面
@@ -46,6 +45,9 @@ open class MultiSelectionStringListActivityEditor(
     override fun isCompatibleView(view: PreferenceView): Boolean {
         return view is MultiSelectionStringListPreferenceView
     }
+
+    override val instanceStateClass: Class<out ScreenEditorState>
+        get() = MultiSelectionStringListEditorState::class.java
 
     override fun createState(): ScreenEditorState {
         return MultiSelectionStringListEditorState()

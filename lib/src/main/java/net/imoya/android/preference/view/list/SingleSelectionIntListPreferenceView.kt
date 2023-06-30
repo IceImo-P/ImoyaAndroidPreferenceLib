@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 IceImo-P
+ * Copyright (C) 2022-2023 IceImo-P
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -151,9 +151,10 @@ open class SingleSelectionIntListPreferenceView : SingleSelectionListPreferenceV
     /**
      * 現在の設定値
      */
-    @Suppress("unused", "MemberVisibilityCanBePrivate")
+    @Suppress("unused")
     var currentValue: Int
         get() = mCurrentValue
+        @Suppress("unused")
         set(value) {
             mCurrentValue = value
         }
@@ -167,9 +168,10 @@ open class SingleSelectionIntListPreferenceView : SingleSelectionListPreferenceV
     /**
      * デフォルト値
      */
-    @Suppress("MemberVisibilityCanBePrivate")
+    @Suppress("unused")
     var defaultValue: Int
         get() = mDefaultValue
+        @Suppress("unused")
         set(value) {
             mDefaultValue = value
         }
@@ -207,7 +209,6 @@ open class SingleSelectionIntListPreferenceView : SingleSelectionListPreferenceV
      * @param defStyleAttr 適用するスタイル属性値
      * @param defStyleRes 適用するスタイルのリソースID
      */
-    @Suppress("unused")
 //    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     constructor(
         context: Context, attrs: AttributeSet?, defStyleAttr: Int, defStyleRes: Int

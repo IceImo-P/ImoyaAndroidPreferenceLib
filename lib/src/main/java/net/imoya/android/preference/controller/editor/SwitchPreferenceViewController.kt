@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 IceImo-P
+ * Copyright (C) 2022-2023 IceImo-P
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,7 +17,6 @@
 package net.imoya.android.preference.controller.editor
 
 import android.content.SharedPreferences
-import net.imoya.android.preference.controller.editor.PreferenceEditor
 import net.imoya.android.preference.view.OnPreferenceChangeListener
 import net.imoya.android.preference.view.PreferenceView
 import net.imoya.android.preference.view.SwitchPreferenceView
@@ -30,7 +29,6 @@ import net.imoya.android.preference.view.SwitchPreferenceView
  * * [SharedPreferences] へ保存する値は Boolean 型で、スイッチONへ変更した場合に true,
  *   OFFへ変更した場合に false を保存します。
  */
-@Suppress("unused")
 open class SwitchPreferenceViewController(preferences: SharedPreferences? = null) :
     PreferenceEditor(preferences), OnPreferenceChangeListener {
 

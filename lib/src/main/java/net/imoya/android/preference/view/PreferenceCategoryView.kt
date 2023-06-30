@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 IceImo-P
+ * Copyright (C) 2022-2023 IceImo-P
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -71,7 +71,6 @@ open class PreferenceCategoryView : FrameLayout, PreferenceItemView {
     /**
      * 再起動時に保存する状態オブジェクト定義
      */
-    @Suppress("ProtectedInFinal")
     protected open class SavedState : BaseSavedState {
         /**
          * ビューの title 文言
@@ -144,7 +143,7 @@ open class PreferenceCategoryView : FrameLayout, PreferenceItemView {
     /**
      * title 表示用 [View]
      */
-    @Suppress("ProtectedInFinal")
+    @Suppress("MemberVisibilityCanBePrivate")
     protected var titleView: TextView? = null
 
     /**

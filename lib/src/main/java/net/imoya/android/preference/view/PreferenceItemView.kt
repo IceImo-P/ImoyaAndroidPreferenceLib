@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 IceImo-P
+ * Copyright (C) 2022-2023 IceImo-P
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,5 +29,6 @@ fun interface PreferenceItemView {
      * @param key 更新された項目のキー
      * @return 処理を行った場合は true, そうでない場合は false
      */
+    @Suppress("unused")
     fun onPreferenceChange(sharedPreferences: SharedPreferences, key: String): Boolean
 }

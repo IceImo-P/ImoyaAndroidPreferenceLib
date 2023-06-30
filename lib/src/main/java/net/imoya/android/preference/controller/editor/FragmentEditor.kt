@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 IceImo-P
+ * Copyright (C) 2022-2023 IceImo-P
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -82,6 +82,7 @@ abstract class FragmentEditor(
      * @param tag      最初の "client" への画面遷移に設定するタグ。
      *                 Round-trip (往復)ナビゲーション中に発生する画面遷移の中で、重複しない文字列を指定します。
      */
+    @Suppress("unused")
     protected open fun startPreferenceFragment(
         fragment: RoundTripClientFragment,
         tag: String = Constants.TAG_FIRST_CLIENT

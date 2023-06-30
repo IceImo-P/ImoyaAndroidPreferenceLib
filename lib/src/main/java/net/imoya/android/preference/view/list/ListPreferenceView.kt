@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 IceImo-P
+ * Copyright (C) 2022-2023 IceImo-P
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -73,6 +73,7 @@ abstract class ListPreferenceView : SingleValuePreferenceView {
          *
          * @param superState [View] の状態
          */
+        @Suppress("unused")
         constructor(superState: Parcelable?) : super(superState) {
             entries = arrayOf()
             defaultLabel = ""
@@ -83,6 +84,7 @@ abstract class ListPreferenceView : SingleValuePreferenceView {
          *
          * @param parcel [Parcel]
          */
+        @Suppress("unused")
         constructor(parcel: Parcel) : this(parcel, null)
 
         /**
@@ -91,6 +93,7 @@ abstract class ListPreferenceView : SingleValuePreferenceView {
          * @param parcel [Parcel]
          * @param loader [ClassLoader]
          */
+        @Suppress("unused")
         constructor(parcel: Parcel, loader: ClassLoader?) : super(parcel, loader) {
             entries = parcel.createStringArray() ?: arrayOf()
             defaultLabel = parcel.readString() ?: ""
@@ -106,6 +109,7 @@ abstract class ListPreferenceView : SingleValuePreferenceView {
             /**
              * [Parcelable] 対応用 [Creator]
              */
+            @Suppress("unused")
             @JvmField
             val CREATOR: Creator<SavedState> = object : Creator<SavedState> {
                 /**
@@ -144,7 +148,6 @@ abstract class ListPreferenceView : SingleValuePreferenceView {
     /**
      * 選択中の項目を表示する [TextView]
      */
-    @Suppress("MemberVisibilityCanBePrivate")
     protected lateinit var selectionView: TextView
 
     /**
@@ -152,6 +155,7 @@ abstract class ListPreferenceView : SingleValuePreferenceView {
      *
      * @param context [Context]
      */
+    @Suppress("unused")
     constructor(context: Context) : this(context, null)
 
     /**
@@ -160,6 +164,7 @@ abstract class ListPreferenceView : SingleValuePreferenceView {
      * @param context [Context]
      * @param attrs [AttributeSet]
      */
+    @Suppress("unused")
     constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, 0)
 
     /**
@@ -169,6 +174,7 @@ abstract class ListPreferenceView : SingleValuePreferenceView {
      * @param attrs [AttributeSet]
      * @param defStyleAttr 適用するスタイル属性値
      */
+    @Suppress("unused")
     constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int)
             : super(context, attrs, defStyleAttr)
 
@@ -181,6 +187,7 @@ abstract class ListPreferenceView : SingleValuePreferenceView {
      * @param defStyleRes 適用するスタイルのリソースID
      */
 //    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    @Suppress("unused")
     constructor(
         context: Context, attrs: AttributeSet?, defStyleAttr: Int, defStyleRes: Int
     ) : super(context, attrs, defStyleAttr, defStyleRes)
