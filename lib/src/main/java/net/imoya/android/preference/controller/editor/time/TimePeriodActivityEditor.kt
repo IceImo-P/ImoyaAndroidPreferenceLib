@@ -18,6 +18,7 @@ package net.imoya.android.preference.controller.editor.time
 
 import android.content.Intent
 import android.content.SharedPreferences
+import androidx.core.content.IntentCompat
 import net.imoya.android.preference.Constants
 import net.imoya.android.preference.activity.editor.time.TimePeriodEditorActivity
 import net.imoya.android.preference.controller.editor.ActivityEditor
@@ -28,7 +29,6 @@ import net.imoya.android.preference.model.result.time.TimePeriodEditorFragmentRe
 import net.imoya.android.preference.model.state.time.TimePeriodEditorState
 import net.imoya.android.preference.view.PreferenceView
 import net.imoya.android.preference.view.time.TimePeriodPreferenceView
-import net.imoya.android.util.IntentUtil
 
 /**
  * [TimePeriod] 設定値編集コントローラ
@@ -57,7 +57,6 @@ open class TimePeriodActivityEditor(
          * @param key    Key of [SharedPreferences]
          * @param value  User-input [TimePeriod] (or null)
          */
-        @Suppress("unused")
         fun onEdit(editor: TimePeriodActivityEditor, key: String, value: TimePeriod?)
     }
 
@@ -112,7 +111,7 @@ open class TimePeriodActivityEditor(
     override fun saveInput(resultCode: Int, data: Intent?) {
         if (data == null) throw IllegalArgumentException("data is null")
         val key = checkKey()
-        val period = IntentUtil.getParcelableExtra(
+        val period = IntentCompat.getParcelableExtra(
             data, TimePeriodEditorFragmentResult.KEY_SELECTED_TIME_PERIOD, TimePeriod::class.java
         ) ?: throw IllegalArgumentException("timePeriod is null")
 

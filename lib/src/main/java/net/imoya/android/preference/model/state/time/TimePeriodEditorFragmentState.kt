@@ -21,10 +21,10 @@ import android.os.Parcel
 import android.os.Parcelable
 import android.os.Parcelable.Creator
 import androidx.annotation.CallSuper
+import androidx.core.os.BundleCompat
+import androidx.core.os.ParcelCompat
 import net.imoya.android.preference.fragment.editor.time.TimePeriodEditorFragment
 import net.imoya.android.preference.model.TimePeriod
-import net.imoya.android.util.BundleUtil
-import net.imoya.android.util.ParcelUtil
 
 /**
  * [TimePeriodEditorFragment] の状態オブジェクト
@@ -72,7 +72,7 @@ open class TimePeriodEditorFragmentState : Parcelable {
      * @param bundle [Bundle]
      */
     constructor(bundle: Bundle) {
-        timePeriod = BundleUtil.getParcelable(bundle, KEY_TIME_PERIOD, TimePeriod::class.java)
+        timePeriod = BundleCompat.getParcelable(bundle, KEY_TIME_PERIOD, TimePeriod::class.java)
             ?: throw IllegalArgumentException("TimePeriod not found")
         step = Step.from(bundle.getInt(KEY_STEP))
     }
@@ -84,7 +84,7 @@ open class TimePeriodEditorFragmentState : Parcelable {
      */
     protected constructor(parcel: Parcel) {
         step = Step.from(parcel.readInt())
-        timePeriod = ParcelUtil.readParcelable(parcel, javaClass.classLoader!!, TimePeriod::class.java)
+        timePeriod = ParcelCompat.readParcelable(parcel, javaClass.classLoader!!, TimePeriod::class.java)
             ?: throw IllegalArgumentException("TimePeriod not found")
     }
 

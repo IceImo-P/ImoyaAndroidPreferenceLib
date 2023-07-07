@@ -18,10 +18,10 @@ package net.imoya.android.preference.model.result.time
 
 import android.os.Bundle
 import androidx.annotation.CallSuper
+import androidx.core.os.BundleCompat
 import net.imoya.android.preference.fragment.editor.time.TimeEditorFragment
 import net.imoya.android.preference.model.result.EditorFragmentResult
 import net.imoya.android.preference.model.Time
-import net.imoya.android.util.BundleUtil
 
 /**
  * [TimeEditorFragment] の結果オブジェクト
@@ -48,7 +48,7 @@ class TimeEditorFragmentResult : EditorFragmentResult {
      * @param bundle [Bundle]
      */
     constructor(bundle: Bundle) : super(bundle) {
-        selectedTime = BundleUtil.getParcelable(bundle, KEY_SELECTED_TIME, Time::class.java)
+        selectedTime = BundleCompat.getParcelable(bundle, KEY_SELECTED_TIME, Time::class.java)
     }
 
     @CallSuper

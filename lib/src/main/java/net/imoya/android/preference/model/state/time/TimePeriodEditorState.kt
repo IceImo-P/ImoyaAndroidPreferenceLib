@@ -21,11 +21,11 @@ import android.os.Parcel
 import android.os.Parcelable
 import android.os.Parcelable.Creator
 import androidx.annotation.CallSuper
+import androidx.core.os.BundleCompat
 import net.imoya.android.preference.controller.editor.time.TimePeriodActivityEditor
 import net.imoya.android.preference.model.state.ScreenEditorState
 import net.imoya.android.preference.model.Time
 import net.imoya.android.preference.model.TimePeriod
-import net.imoya.android.util.BundleUtil
 
 /**
  * [TimePeriodActivityEditor] の状態オブジェクト
@@ -56,9 +56,9 @@ open class TimePeriodEditorState : ScreenEditorState {
      * @param bundle [Bundle]
      */
     constructor(bundle: Bundle) : super(bundle) {
-        timePeriod = BundleUtil.getParcelable(bundle, KEY_TIME_PERIOD, TimePeriod::class.java)
+        timePeriod = BundleCompat.getParcelable(bundle, KEY_TIME_PERIOD, TimePeriod::class.java)
         timePeriodForNull =
-            BundleUtil.getParcelable(bundle, KEY_TIME_PERIOD_FOR_NULL, TimePeriod::class.java)
+            BundleCompat.getParcelable(bundle, KEY_TIME_PERIOD_FOR_NULL, TimePeriod::class.java)
                 ?: TimePeriod(Time(0, 0, 0), Time(0, 0, 0))
         is24hourView = bundle.getBoolean(KEY_IS_24_HOUR_VIEW)
     }
