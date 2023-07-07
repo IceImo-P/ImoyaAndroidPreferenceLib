@@ -20,6 +20,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.os.BundleCompat
 import androidx.fragment.app.Fragment
 import net.imoya.android.dialog.DialogListener
 import net.imoya.android.dialog.DialogUtil
@@ -29,7 +30,6 @@ import net.imoya.android.preference.controller.editor.*
 import net.imoya.android.preference.controller.editor.list.*
 import net.imoya.android.preference.controller.editor.time.*
 import net.imoya.android.preference.view.PreferenceView
-import net.imoya.android.util.BundleUtil
 
 /**
  * [AppCompatActivity] または [Fragment] へ
@@ -145,7 +145,7 @@ abstract class PreferenceScreenController : DialogListener {
             editors.entries.forEach {
                 val editor = it.value
                 if (editor is ScreenEditor) {
-                    editor.instanceState = BundleUtil.getParcelable(
+                    editor.instanceState = BundleCompat.getParcelable(
                         savedInstanceState,
                         it.key,
                         editor.instanceStateClass
