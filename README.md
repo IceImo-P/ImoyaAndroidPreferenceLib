@@ -76,11 +76,11 @@
     ```groovy
     dependencies {
         // (other dependencies)
-        implementation 'net.imoya.android.dialog:imoya-android-dialog:2.2.2'
-        implementation 'net.imoya.android.fragment:imoya-android-fragment:1.6.0'
-        implementation 'net.imoya.android.log:imoya-android-log:1.3.1'
-        implementation 'net.imoya.android.preference:imoya-android-preference:2.4.1'
-        implementation 'net.imoya.android.util:imoya-android-util:1.12.0'
+        implementation 'net.imoya.android.dialog:imoya-android-dialog:2.2.3'
+        implementation 'net.imoya.android.fragment:imoya-android-fragment:1.6.1'
+        implementation 'net.imoya.android.log:imoya-android-log:1.3.2'
+        implementation 'net.imoya.android.preference:imoya-android-preference:2.4.2'
+        implementation 'net.imoya.android.util:imoya-android-util:1.14.0'
         // (other dependencies)
     }
     ```
