@@ -22,6 +22,7 @@ import android.os.Parcelable
 import android.os.Parcelable.Creator
 import androidx.annotation.CallSuper
 import net.imoya.android.preference.controller.editor.list.ListDialogEditor
+import net.imoya.android.preference.util.PreferenceViewSavedStateUtil
 
 /**
  * [ListDialogEditor] の状態オブジェクト
@@ -52,7 +53,7 @@ open class SingleSelectionStringListEditorState :
      */
     protected constructor(parcel: Parcel) : super(parcel) {
         entryValues =
-            parcel.createStringArray() ?: throw RuntimeException("EntryValues not found")
+            PreferenceViewSavedStateUtil.createStringArray(parcel, TAG) ?: arrayOf()
     }
 
     @CallSuper
@@ -99,5 +100,10 @@ open class SingleSelectionStringListEditorState :
                 return arrayOfNulls(size)
             }
         }
+
+        /**
+         * Tag for log
+         */
+        private const val TAG = "SSelStrListEditorState"
     }
 }

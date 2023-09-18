@@ -29,6 +29,7 @@ import androidx.annotation.CallSuper
 import androidx.annotation.LayoutRes
 import net.imoya.android.preference.PreferenceLog
 import net.imoya.android.preference.R
+import net.imoya.android.preference.util.PreferenceViewSavedStateUtil
 import net.imoya.android.util.ViewUtil
 
 /**
@@ -105,15 +106,15 @@ open class NumberAndUnitPreferenceView : SingleValuePreferenceView {
         /**
          * [Parcel] の内容で初期化するコンストラクタ
          *
-         * @param source [Parcel]
+         * @param parcel [Parcel]
          * @param loader [ClassLoader]
          */
-        protected constructor(source: Parcel, loader: ClassLoader?) : super(source, loader) {
-            currentValue = source.readInt()
-            defaultValue = source.readInt()
-            minValue = source.readInt()
-            maxValue = source.readInt()
-            unit = source.readString()
+        protected constructor(parcel: Parcel, loader: ClassLoader?) : super(parcel, loader) {
+            currentValue = PreferenceViewSavedStateUtil.readInt(parcel, TAG)
+            defaultValue = PreferenceViewSavedStateUtil.readInt(parcel, TAG)
+            minValue = PreferenceViewSavedStateUtil.readInt(parcel, TAG)
+            maxValue = PreferenceViewSavedStateUtil.readInt(parcel, TAG, 100)
+            unit = PreferenceViewSavedStateUtil.readStringOrNull(parcel, TAG)
         }
 
         override fun writeToParcel(out: Parcel, flags: Int) {

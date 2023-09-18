@@ -22,6 +22,7 @@ import android.os.Parcelable
 import android.os.Parcelable.Creator
 import androidx.annotation.CallSuper
 import net.imoya.android.preference.controller.editor.list.SingleSelectionIntListDialogEditor
+import net.imoya.android.preference.util.PreferenceViewSavedStateUtil
 
 /**
  * [SingleSelectionIntListDialogEditor] の状態オブジェクト
@@ -51,7 +52,7 @@ open class SingleSelectionIntListEditorState : SingleSelectionListEditorState {
      */
     protected constructor(parcel: Parcel) : super(parcel) {
         entryValues =
-            parcel.createIntArray() ?: throw RuntimeException("entryValues is null")
+            PreferenceViewSavedStateUtil.createIntArray(parcel, TAG) ?: intArrayOf()
     }
 
     override fun writeToParcel(dest: Parcel, flags: Int) {
@@ -97,5 +98,10 @@ open class SingleSelectionIntListEditorState : SingleSelectionListEditorState {
                 return arrayOfNulls(size)
             }
         }
+
+        /**
+         * Tag for log
+         */
+        private const val TAG = "SSelIntListEditorState"
     }
 }

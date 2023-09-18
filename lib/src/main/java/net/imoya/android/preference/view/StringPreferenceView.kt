@@ -27,6 +27,7 @@ import android.view.View
 import android.widget.TextView
 import net.imoya.android.preference.PreferenceLog
 import net.imoya.android.preference.R
+import net.imoya.android.preference.util.PreferenceViewSavedStateUtil
 
 /**
  * 文字列値設定項目ビュー
@@ -81,7 +82,7 @@ open class StringPreferenceView : StringPreferenceViewBase {
          * @param loader [ClassLoader]
          */
         protected constructor(parcel: Parcel, loader: ClassLoader?) : super(parcel, loader) {
-            maxLength = parcel.readInt()
+            maxLength = PreferenceViewSavedStateUtil.readInt(parcel, TAG)
         }
 
         companion object {

@@ -22,9 +22,9 @@ import android.os.Parcelable
 import android.os.Parcelable.Creator
 import androidx.annotation.CallSuper
 import androidx.core.os.BundleCompat
-import androidx.core.os.ParcelCompat
 import net.imoya.android.preference.fragment.editor.time.TimePeriodEditorFragment
 import net.imoya.android.preference.model.TimePeriod
+import net.imoya.android.preference.util.PreferenceViewSavedStateUtil
 
 /**
  * [TimePeriodEditorFragment] の状態オブジェクト
@@ -83,9 +83,9 @@ open class TimePeriodEditorFragmentState : Parcelable {
      * @param parcel [Parcel]
      */
     protected constructor(parcel: Parcel) {
-        step = Step.from(parcel.readInt())
-        timePeriod = ParcelCompat.readParcelable(parcel, javaClass.classLoader!!, TimePeriod::class.java)
-            ?: throw IllegalArgumentException("TimePeriod not found")
+        step = Step.from(PreferenceViewSavedStateUtil.readInt(parcel, TAG))
+        timePeriod = PreferenceViewSavedStateUtil.readParcelable(
+            parcel, TAG, javaClass.classLoader!!, TimePeriod::class.java, TimePeriod())
     }
 
     @CallSuper
@@ -141,5 +141,10 @@ open class TimePeriodEditorFragmentState : Parcelable {
                 return arrayOfNulls(size)
             }
         }
+
+        /**
+         * Tag for log
+         */
+        private const val TAG = "TimePeriodEditorFragmentState"
     }
 }

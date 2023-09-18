@@ -21,6 +21,7 @@ import android.os.Parcelable
 import android.os.Parcelable.Creator
 import android.text.InputType
 import net.imoya.android.preference.controller.editor.StringDialogEditor
+import net.imoya.android.preference.util.PreferenceViewSavedStateUtil
 
 /**
  * [StringDialogEditor] の状態オブジェクト
@@ -49,9 +50,9 @@ open class StringEditorState : ScreenEditorState {
      * @param parcel [Parcel]
      */
     protected constructor(parcel: Parcel) : super(parcel) {
-        hint = parcel.readString()
-        inputType = parcel.readInt()
-        maxLength = parcel.readInt()
+        hint = PreferenceViewSavedStateUtil.readString(parcel, TAG)
+        inputType = PreferenceViewSavedStateUtil.readInt(parcel, TAG, InputType.TYPE_CLASS_TEXT)
+        maxLength = PreferenceViewSavedStateUtil.readInt(parcel, TAG, Int.MAX_VALUE)
     }
 
     override fun writeToParcel(dest: Parcel, flags: Int) {
@@ -88,4 +89,10 @@ open class StringEditorState : ScreenEditorState {
                 return arrayOfNulls(size)
             }
         }
-    }}
+
+        /**
+         * Tag for log
+         */
+        private const val TAG = "StringEditorState"
+    }
+}

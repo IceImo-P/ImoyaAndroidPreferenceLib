@@ -19,6 +19,7 @@ package net.imoya.android.preference.model
 import android.os.Parcel
 import android.os.Parcelable
 import android.os.Parcelable.Creator
+import net.imoya.android.preference.util.PreferenceViewSavedStateUtil
 import java.util.Locale
 
 /**
@@ -127,9 +128,9 @@ data class Time(
             override fun createFromParcel(parcel: Parcel): Time =
                 parcel.let {
                     Time(
-                        it.readByte().toInt(),
-                        it.readByte().toInt(),
-                        it.readByte().toInt()
+                        PreferenceViewSavedStateUtil.readByte(it, TAG).toInt(),
+                        PreferenceViewSavedStateUtil.readByte(it, TAG).toInt(),
+                        PreferenceViewSavedStateUtil.readByte(it, TAG).toInt()
                     )
                 }
 
@@ -141,5 +142,10 @@ data class Time(
              */
             override fun newArray(size: Int): Array<Time?> = arrayOfNulls(size)
         }
+
+        /**
+         * Tag for log
+         */
+        private const val TAG = "Time"
     }
 }

@@ -25,6 +25,7 @@ import net.imoya.android.preference.controller.editor.list.ListActivityEditor
 import net.imoya.android.preference.controller.editor.list.ListDialogEditor
 import net.imoya.android.preference.controller.editor.list.ListFragmentEditor
 import net.imoya.android.preference.type.SingleSelectionType
+import net.imoya.android.preference.util.PreferenceViewSavedStateUtil
 
 /**
  * [ListDialogEditor], [ListFragmentEditor], [ListActivityEditor] の状態オブジェクト
@@ -58,8 +59,14 @@ open class SingleSelectionListEditorState : ListEditorState {
      * @param parcel [Parcel]
      */
     protected constructor(parcel: Parcel) : super(parcel) {
-        selectedIndex = parcel.readInt()
-        singleSelectionType = SingleSelectionType.from(parcel.readInt())
+        selectedIndex = PreferenceViewSavedStateUtil.readInt(parcel, TAG, -1)
+        singleSelectionType = SingleSelectionType.from(
+            PreferenceViewSavedStateUtil.readInt(
+                parcel,
+                TAG,
+                SingleSelectionType.OK_CANCEL.id
+            )
+        )
     }
 
     @CallSuper
@@ -114,5 +121,10 @@ open class SingleSelectionListEditorState : ListEditorState {
                 return arrayOfNulls(size)
             }
         }
+
+        /**
+         * Tag for log
+         */
+        private const val TAG = "SSelListEditorState"
     }
 }

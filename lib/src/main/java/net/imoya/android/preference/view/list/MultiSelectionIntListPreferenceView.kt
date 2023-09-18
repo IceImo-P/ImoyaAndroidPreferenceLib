@@ -28,6 +28,7 @@ import android.widget.TextView
 import net.imoya.android.log.LogUtil
 import net.imoya.android.preference.PreferenceLog
 import net.imoya.android.preference.R
+import net.imoya.android.preference.util.PreferenceViewSavedStateUtil
 import net.imoya.android.preference.view.PreferenceView
 import net.imoya.android.preference.view.SingleValuePreferenceView
 
@@ -90,9 +91,9 @@ open class MultiSelectionIntListPreferenceView : MultiSelectionListPreferenceVie
          */
         @Suppress("unused")
         protected constructor(parcel: Parcel, loader: ClassLoader?) : super(parcel, loader) {
-            entryValues = parcel.createIntArray()
-                ?: throw RuntimeException("parcel.createIntArray returns null")
-            currentSelection = parcel.createBooleanArray() ?: booleanArrayOf()
+            entryValues = PreferenceViewSavedStateUtil.createIntArray(parcel, TAG) ?: intArrayOf()
+            currentSelection =
+                PreferenceViewSavedStateUtil.createBooleanArray(parcel, TAG) ?: booleanArrayOf()
         }
 
         override fun writeToParcel(out: Parcel, flags: Int) {

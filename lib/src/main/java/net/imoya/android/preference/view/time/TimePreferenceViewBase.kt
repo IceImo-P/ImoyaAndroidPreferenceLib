@@ -26,6 +26,7 @@ import android.view.View
 import net.imoya.android.preference.PreferenceLog
 import net.imoya.android.preference.R
 import net.imoya.android.preference.model.Time
+import net.imoya.android.preference.util.PreferenceViewSavedStateUtil
 import net.imoya.android.preference.view.PreferenceView
 import net.imoya.android.preference.view.StringPreferenceViewBase
 
@@ -72,17 +73,14 @@ abstract class TimePreferenceViewBase : StringPreferenceViewBase {
          * @param parcel [Parcel]
          */
         protected constructor(parcel: Parcel, loader: ClassLoader?) : super(parcel, loader) {
-            val flags = parcel.createBooleanArray()
-            if (flags == null || flags.isEmpty()) {
-                throw RuntimeException("parcel.createBooleanArray returns null or empty array")
-            }
-            is24HourView = flags[0]
+            val flags = PreferenceViewSavedStateUtil.createBooleanArray(parcel, TAG)
+            is24HourView = if (flags != null && flags.isNotEmpty()) flags[0] else false
             timeForNull = try {
-                Time.parse(parcel.readString() ?: "0:00")
+                Time.parse(PreferenceViewSavedStateUtil.readStringOrNull(parcel, TAG) ?: "0:00")
             } catch (e: Exception) {
                 Time(0, 0, 0)
             }
-            defaultLabel = parcel.readString() ?: ""
+            defaultLabel = PreferenceViewSavedStateUtil.readString(parcel, TAG)
         }
 
         override fun writeToParcel(out: Parcel, flags: Int) {

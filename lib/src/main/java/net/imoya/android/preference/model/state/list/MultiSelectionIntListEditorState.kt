@@ -22,6 +22,7 @@ import android.os.Parcelable
 import android.os.Parcelable.Creator
 import androidx.annotation.CallSuper
 import net.imoya.android.preference.controller.editor.list.MultiSelectionIntListDialogEditor
+import net.imoya.android.preference.util.PreferenceViewSavedStateUtil
 
 /**
  * [MultiSelectionIntListDialogEditor] の状態オブジェクト
@@ -53,7 +54,7 @@ open class MultiSelectionIntListEditorState : MultiSelectionListEditorState {
     @Suppress("unused")
     protected constructor(parcel: Parcel) : super(parcel) {
         entryValues =
-            parcel.createIntArray() ?: throw RuntimeException("entryValues is null")
+            PreferenceViewSavedStateUtil.createIntArray(parcel, TAG) ?: intArrayOf()
     }
 
     override fun writeToParcel(dest: Parcel, flags: Int) {
@@ -101,5 +102,10 @@ open class MultiSelectionIntListEditorState : MultiSelectionListEditorState {
                     return arrayOfNulls(size)
                 }
             }
+
+        /**
+         * Tag for log
+         */
+        private const val TAG = "MSelIntListEditorState"
     }
 }

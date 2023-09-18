@@ -25,6 +25,7 @@ import net.imoya.android.preference.controller.editor.list.ListActivityEditor
 import net.imoya.android.preference.controller.editor.list.ListDialogEditor
 import net.imoya.android.preference.controller.editor.list.ListFragmentEditor
 import net.imoya.android.preference.model.state.ScreenEditorState
+import net.imoya.android.preference.util.PreferenceViewSavedStateUtil
 
 /**
  * [ListDialogEditor], [ListFragmentEditor], [ListActivityEditor] の状態オブジェクト
@@ -56,7 +57,7 @@ open class ListEditorState : ScreenEditorState {
     @Suppress("unused")
     protected constructor(parcel: Parcel) : super(parcel) {
         entries =
-            parcel.createStringArray() ?: throw RuntimeException("entries is null")
+            PreferenceViewSavedStateUtil.createStringArray(parcel, TAG) ?: arrayOf()
     }
 
     @CallSuper
@@ -105,5 +106,10 @@ open class ListEditorState : ScreenEditorState {
                 return arrayOfNulls(size)
             }
         }
+
+        /**
+         * Tag for log
+         */
+        private const val TAG = "ListEditorState"
     }
 }

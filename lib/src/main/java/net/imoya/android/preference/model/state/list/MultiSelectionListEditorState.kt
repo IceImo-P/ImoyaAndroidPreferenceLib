@@ -24,6 +24,7 @@ import androidx.annotation.CallSuper
 import net.imoya.android.preference.controller.editor.list.MultiSelectionListActivityEditor
 import net.imoya.android.preference.controller.editor.list.MultiSelectionListDialogEditor
 import net.imoya.android.preference.controller.editor.list.MultiSelectionListFragmentEditor
+import net.imoya.android.preference.util.PreferenceViewSavedStateUtil
 
 /**
  * [MultiSelectionListDialogEditor], [MultiSelectionListFragmentEditor],
@@ -56,8 +57,8 @@ open class MultiSelectionListEditorState : ListEditorState {
      */
     @Suppress("unused")
     protected constructor(parcel: Parcel) : super(parcel) {
-        checkedList = parcel.createBooleanArray()
-            ?: throw IllegalArgumentException("SelectedIndices not found")
+        checkedList = PreferenceViewSavedStateUtil.createBooleanArray(parcel, TAG)
+            ?: BooleanArray(0)
     }
 
     @CallSuper
@@ -106,5 +107,10 @@ open class MultiSelectionListEditorState : ListEditorState {
                 return arrayOfNulls(size)
             }
         }
+
+        /**
+         * Tag for log
+         */
+        private const val TAG = "MSelListEditorState"
     }
 }

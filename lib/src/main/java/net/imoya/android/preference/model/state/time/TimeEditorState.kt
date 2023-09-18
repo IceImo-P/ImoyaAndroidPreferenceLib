@@ -25,6 +25,7 @@ import androidx.core.os.BundleCompat
 import net.imoya.android.preference.controller.editor.time.TimeDialogEditor
 import net.imoya.android.preference.model.state.ScreenEditorState
 import net.imoya.android.preference.model.Time
+import net.imoya.android.preference.util.PreferenceViewSavedStateUtil
 
 /**
  * [TimeDialogEditor] の状態オブジェクト
@@ -65,15 +66,15 @@ open class TimeEditorState : ScreenEditorState {
      * @param parcel [Parcel]
      */
     protected constructor(parcel: Parcel) : super(parcel) {
-        val hour = parcel.readByte()
-        val minute = parcel.readByte()
-        val second = parcel.readByte()
+        val hour = PreferenceViewSavedStateUtil.readByte(parcel, TAG)
+        val minute = PreferenceViewSavedStateUtil.readByte(parcel, TAG)
+        val second = PreferenceViewSavedStateUtil.readByte(parcel, TAG)
         time = if (hour >= 0) Time(hour.toInt(), minute.toInt(), second.toInt()) else null
-        val hourForNull = parcel.readByte()
-        val minuteForNull = parcel.readByte()
-        val secondForNull = parcel.readByte()
+        val hourForNull = PreferenceViewSavedStateUtil.readByte(parcel, TAG)
+        val minuteForNull = PreferenceViewSavedStateUtil.readByte(parcel, TAG)
+        val secondForNull = PreferenceViewSavedStateUtil.readByte(parcel, TAG)
         timeForNull = Time(hourForNull.toInt(), minuteForNull.toInt(), secondForNull.toInt())
-        is24hourView = parcel.readByte().toInt() == 1
+        is24hourView = PreferenceViewSavedStateUtil.readByte(parcel, TAG).toInt() == 1
     }
 
     @CallSuper
@@ -146,5 +147,10 @@ open class TimeEditorState : ScreenEditorState {
                 return arrayOfNulls(size)
             }
         }
+
+        /**
+         * Tag for log
+         */
+        private const val TAG = "TimeEditorState"
     }
 }

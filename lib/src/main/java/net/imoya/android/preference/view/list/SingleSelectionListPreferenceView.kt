@@ -30,6 +30,7 @@ import net.imoya.android.log.LogUtil
 import net.imoya.android.preference.PreferenceLog
 import net.imoya.android.preference.R
 import net.imoya.android.preference.type.SingleSelectionType
+import net.imoya.android.preference.util.PreferenceViewSavedStateUtil
 import net.imoya.android.preference.view.PreferenceView
 import net.imoya.android.preference.view.SingleValuePreferenceView
 
@@ -88,7 +89,8 @@ abstract class SingleSelectionListPreferenceView : ListPreferenceView {
          * @param loader [ClassLoader]
          */
         constructor(parcel: Parcel, loader: ClassLoader?) : super(parcel, loader) {
-            singleSelectionType = SingleSelectionType.from(parcel.readInt())
+            singleSelectionType =
+                SingleSelectionType.from(PreferenceViewSavedStateUtil.readInt(parcel, TAG, 1))
         }
 
         override fun writeToParcel(out: Parcel, flags: Int) {
