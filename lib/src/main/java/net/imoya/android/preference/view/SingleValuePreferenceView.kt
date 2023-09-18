@@ -29,6 +29,7 @@ import android.view.View
 import androidx.annotation.CallSuper
 import net.imoya.android.preference.PreferenceLog
 import net.imoya.android.preference.R
+import net.imoya.android.preference.util.PreferenceViewSavedStateUtil
 
 /**
  * [SharedPreferences] に於ける、1件の設定項目を表すビュー
@@ -71,8 +72,7 @@ abstract class SingleValuePreferenceView : PreferenceView {
          */
         @TargetApi(Build.VERSION_CODES.N)
         protected constructor(parcel: Parcel, loader: ClassLoader?) : super(parcel, loader) {
-            preferenceKey =
-                parcel.readString() ?: throw RuntimeException("parcel.readString returns null")
+            preferenceKey = PreferenceViewSavedStateUtil.readString(parcel, TAG)
         }
 
         companion object {

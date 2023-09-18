@@ -26,6 +26,7 @@ import net.imoya.android.preference.controller.editor.time.TimePeriodActivityEdi
 import net.imoya.android.preference.model.state.ScreenEditorState
 import net.imoya.android.preference.model.Time
 import net.imoya.android.preference.model.TimePeriod
+import net.imoya.android.preference.util.PreferenceViewSavedStateUtil
 
 /**
  * [TimePeriodActivityEditor] の状態オブジェクト
@@ -69,21 +70,29 @@ open class TimePeriodEditorState : ScreenEditorState {
      * @param parcel [Parcel]
      */
     protected constructor(parcel: Parcel) : super(parcel) {
-        val startHour = parcel.readByte()
-        val startMinute = parcel.readByte()
-        val startSecond = parcel.readByte()
-        val endHour = parcel.readByte()
-        val endMinute = parcel.readByte()
-        val endSecond = parcel.readByte()
+        val startHour = PreferenceViewSavedStateUtil.readByte(parcel, TAG)
+        val startMinute = PreferenceViewSavedStateUtil.readByte(parcel, TAG)
+        val startSecond = PreferenceViewSavedStateUtil.readByte(parcel, TAG)
+        val endHour = PreferenceViewSavedStateUtil.readByte(parcel, TAG)
+        val endMinute = PreferenceViewSavedStateUtil.readByte(parcel, TAG)
+        val endSecond = PreferenceViewSavedStateUtil.readByte(parcel, TAG)
         timePeriod = if (startHour >= 0) TimePeriod(
             Time(startHour.toInt(), startMinute.toInt(), startSecond.toInt()),
             Time(endHour.toInt(), endMinute.toInt(), endSecond.toInt()),
         ) else null
         timePeriodForNull = TimePeriod(
-            Time(parcel.readByte().toInt(), parcel.readByte().toInt(), parcel.readByte().toInt()),
-            Time(parcel.readByte().toInt(), parcel.readByte().toInt(), parcel.readByte().toInt()),
+            Time(
+                PreferenceViewSavedStateUtil.readByte(parcel, TAG).toInt(),
+                PreferenceViewSavedStateUtil.readByte(parcel, TAG).toInt(),
+                PreferenceViewSavedStateUtil.readByte(parcel, TAG).toInt()
+            ),
+            Time(
+                PreferenceViewSavedStateUtil.readByte(parcel, TAG).toInt(),
+                PreferenceViewSavedStateUtil.readByte(parcel, TAG).toInt(),
+                PreferenceViewSavedStateUtil.readByte(parcel, TAG).toInt()
+            ),
         )
-        is24hourView = parcel.readByte().toInt() == 1
+        is24hourView = PreferenceViewSavedStateUtil.readByte(parcel, TAG).toInt() == 1
     }
 
     @CallSuper
@@ -165,5 +174,10 @@ open class TimePeriodEditorState : ScreenEditorState {
                 return arrayOfNulls(size)
             }
         }
+
+        /**
+         * Tag for log
+         */
+        private const val TAG = "TimePeriodEditorState"
     }
 }

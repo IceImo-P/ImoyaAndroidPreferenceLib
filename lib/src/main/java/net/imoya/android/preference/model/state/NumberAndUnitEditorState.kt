@@ -20,6 +20,7 @@ import android.os.Parcel
 import android.os.Parcelable
 import android.os.Parcelable.Creator
 import net.imoya.android.preference.controller.editor.NumberAndUnitDialogEditor
+import net.imoya.android.preference.util.PreferenceViewSavedStateUtil
 
 /**
  * [NumberAndUnitDialogEditor] の状態オブジェクト
@@ -58,11 +59,11 @@ open class NumberAndUnitEditorState : ScreenEditorState {
      * @param parcel [Parcel]
      */
     protected constructor(parcel: Parcel) : super(parcel) {
-        defaultValue = parcel.readInt()
-        minValue = parcel.readInt()
-        maxValue = parcel.readInt()
-        unit = parcel.readString()
-        hint = parcel.readString()
+        defaultValue = PreferenceViewSavedStateUtil.readInt(parcel, TAG)
+        minValue = PreferenceViewSavedStateUtil.readInt(parcel, TAG, Int.MIN_VALUE)
+        maxValue = PreferenceViewSavedStateUtil.readInt(parcel, TAG, Int.MAX_VALUE)
+        unit = PreferenceViewSavedStateUtil.readStringOrNull(parcel, TAG)
+        hint = PreferenceViewSavedStateUtil.readStringOrNull(parcel, TAG)
     }
 
     override fun writeToParcel(dest: Parcel, flags: Int) {
@@ -101,5 +102,10 @@ open class NumberAndUnitEditorState : ScreenEditorState {
                 return arrayOfNulls(size)
             }
         }
+
+        /**
+         * Tag for log
+         */
+        private const val TAG = "NumAndUnitEditorState"
     }
 }

@@ -30,6 +30,7 @@ import androidx.annotation.LayoutRes
 import androidx.appcompat.widget.SwitchCompat
 import net.imoya.android.preference.PreferenceLog
 import net.imoya.android.preference.R
+import net.imoya.android.preference.util.PreferenceViewSavedStateUtil
 
 /**
  * スイッチ付き設定項目ビュー
@@ -108,12 +109,11 @@ open class SwitchPreferenceView : SingleValuePreferenceView {
          * @param parcel [Parcel]
          */
         protected constructor(parcel: Parcel, loader: ClassLoader? = null) : super(parcel, loader) {
-            val booleans = parcel.createBooleanArray()
-            if (booleans == null || booleans.size < 2) {
-                throw RuntimeException("Invalid parcel content")
+            val booleans = PreferenceViewSavedStateUtil.createBooleanArray(parcel, TAG)
+            if (booleans != null && booleans.size >= 2) {
+                currentValue = booleans[0]
+                defaultValue = booleans[1]
             }
-            currentValue = booleans[0]
-            defaultValue = booleans[1]
         }
 
         override fun writeToParcel(out: Parcel, flags: Int) {

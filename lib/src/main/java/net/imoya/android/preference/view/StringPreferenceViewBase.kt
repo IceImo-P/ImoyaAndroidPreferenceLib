@@ -28,6 +28,7 @@ import android.widget.TextView
 import androidx.annotation.LayoutRes
 import net.imoya.android.preference.PreferenceLog
 import net.imoya.android.preference.R
+import net.imoya.android.preference.util.PreferenceViewSavedStateUtil
 
 /**
  * 文字列値設定項目ビュー
@@ -95,9 +96,9 @@ abstract class StringPreferenceViewBase : SingleValuePreferenceView {
          * @param loader [ClassLoader]
          */
         protected constructor(parcel: Parcel, loader: ClassLoader?) : super(parcel, loader) {
-            currentValue = parcel.readString()
-            defaultValue = parcel.readString()
-            valueForNull = parcel.readString()
+            currentValue = PreferenceViewSavedStateUtil.readStringOrNull(parcel, TAG)
+            defaultValue = PreferenceViewSavedStateUtil.readStringOrNull(parcel, TAG)
+            valueForNull = PreferenceViewSavedStateUtil.readStringOrNull(parcel, TAG)
         }
 
         override fun writeToParcel(out: Parcel, flags: Int) {

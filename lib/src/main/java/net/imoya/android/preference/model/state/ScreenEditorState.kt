@@ -22,6 +22,7 @@ import android.os.Parcelable
 import android.os.Parcelable.Creator
 import androidx.annotation.CallSuper
 import net.imoya.android.preference.controller.editor.ScreenEditor
+import net.imoya.android.preference.util.PreferenceViewSavedStateUtil
 
 /**
  * [ScreenEditor] の状態オブジェクト
@@ -55,8 +56,8 @@ open class ScreenEditorState : Parcelable {
      * @param parcel [Parcel]
      */
     protected constructor(parcel: Parcel) {
-        key = parcel.readString()
-        title = parcel.readString()
+        key = PreferenceViewSavedStateUtil.readString(parcel, TAG)
+        title = PreferenceViewSavedStateUtil.readString(parcel, TAG)
     }
 
     /**
@@ -123,5 +124,10 @@ open class ScreenEditorState : Parcelable {
                 return arrayOfNulls(size)
             }
         }
+
+        /**
+         * Tag for log
+         */
+        private const val TAG = "ScreenEditorState"
     }
 }

@@ -22,6 +22,7 @@ import android.os.Parcelable
 import android.os.Parcelable.Creator
 import androidx.annotation.CallSuper
 import net.imoya.android.preference.controller.editor.list.MultiSelectionStringListDialogEditor
+import net.imoya.android.preference.util.PreferenceViewSavedStateUtil
 
 /**
  * [MultiSelectionStringListDialogEditor] の状態オブジェクト
@@ -53,7 +54,7 @@ open class MultiSelectionStringListEditorState : MultiSelectionListEditorState {
     @Suppress("unused")
     protected constructor(parcel: Parcel) : super(parcel) {
         entryValues =
-            parcel.createStringArray() ?: throw RuntimeException("EntryValues not found")
+            PreferenceViewSavedStateUtil.createStringArray(parcel, TAG) ?: arrayOf()
     }
 
     @CallSuper
@@ -101,5 +102,10 @@ open class MultiSelectionStringListEditorState : MultiSelectionListEditorState {
                 return arrayOfNulls(size)
             }
         }
+
+        /**
+         * Tag for log
+         */
+        private const val TAG = "MSelStringListEditorState"
     }
 }

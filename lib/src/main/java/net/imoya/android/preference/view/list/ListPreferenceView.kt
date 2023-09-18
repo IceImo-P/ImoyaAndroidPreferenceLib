@@ -29,6 +29,7 @@ import androidx.annotation.LayoutRes
 import net.imoya.android.log.LogUtil
 import net.imoya.android.preference.PreferenceLog
 import net.imoya.android.preference.R
+import net.imoya.android.preference.util.PreferenceViewSavedStateUtil
 import net.imoya.android.preference.view.PreferenceView
 import net.imoya.android.preference.view.SingleValuePreferenceView
 
@@ -95,8 +96,8 @@ abstract class ListPreferenceView : SingleValuePreferenceView {
          */
         @Suppress("unused")
         constructor(parcel: Parcel, loader: ClassLoader?) : super(parcel, loader) {
-            entries = parcel.createStringArray() ?: arrayOf()
-            defaultLabel = parcel.readString() ?: ""
+            entries = PreferenceViewSavedStateUtil.createStringArray(parcel, TAG) ?: arrayOf()
+            defaultLabel = PreferenceViewSavedStateUtil.readString(parcel, TAG)
         }
 
         override fun writeToParcel(out: Parcel, flags: Int) {

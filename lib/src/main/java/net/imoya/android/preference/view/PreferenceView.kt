@@ -37,6 +37,7 @@ import androidx.annotation.RequiresApi
 import androidx.core.widget.TextViewCompat
 import net.imoya.android.preference.PreferenceLog
 import net.imoya.android.preference.R
+import net.imoya.android.preference.util.PreferenceViewSavedStateUtil
 import net.imoya.android.util.ViewUtil
 
 /**
@@ -109,12 +110,9 @@ open class PreferenceView : LinearLayout, PreferenceItemView {
          */
         @RequiresApi(Build.VERSION_CODES.N)
         protected constructor(parcel: Parcel, loader: ClassLoader?) : super(parcel, loader) {
-            title = parcel.readString()
-                ?: throw IllegalStateException("parcel.readString() returns null")
-            summary = parcel.readString()
-                ?: throw IllegalStateException("parcel.readString() returns null")
-            note = parcel.readString()
-                ?: throw IllegalStateException("parcel.readString() returns null")
+            title = PreferenceViewSavedStateUtil.readString(parcel, TAG)
+            summary = PreferenceViewSavedStateUtil.readString(parcel, TAG)
+            note = PreferenceViewSavedStateUtil.readString(parcel, TAG)
         }
 
         /**

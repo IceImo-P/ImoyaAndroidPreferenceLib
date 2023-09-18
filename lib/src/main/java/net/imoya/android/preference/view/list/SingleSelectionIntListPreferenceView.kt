@@ -28,6 +28,7 @@ import android.widget.TextView
 import net.imoya.android.log.LogUtil
 import net.imoya.android.preference.PreferenceLog
 import net.imoya.android.preference.R
+import net.imoya.android.preference.util.PreferenceViewSavedStateUtil
 import net.imoya.android.preference.view.PreferenceView
 import net.imoya.android.preference.view.SingleValuePreferenceView
 
@@ -95,10 +96,9 @@ open class SingleSelectionIntListPreferenceView : SingleSelectionListPreferenceV
          * @param loader [ClassLoader]
          */
         protected constructor(parcel: Parcel, loader: ClassLoader?) : super(parcel, loader) {
-            entryValues = parcel.createIntArray()
-                ?: throw RuntimeException("parcel.createIntArray returns null")
-            currentValue = parcel.readInt()
-            defaultValue = parcel.readInt()
+            entryValues = PreferenceViewSavedStateUtil.createIntArray(parcel, TAG) ?: intArrayOf()
+            currentValue = PreferenceViewSavedStateUtil.readInt(parcel, TAG)
+            defaultValue = PreferenceViewSavedStateUtil.readInt(parcel, TAG, -1)
         }
 
         override fun writeToParcel(out: Parcel, flags: Int) {

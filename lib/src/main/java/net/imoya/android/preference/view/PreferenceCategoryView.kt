@@ -33,6 +33,7 @@ import androidx.annotation.LayoutRes
 import androidx.core.widget.TextViewCompat
 import net.imoya.android.preference.PreferenceLog
 import net.imoya.android.preference.R
+import net.imoya.android.preference.util.PreferenceViewSavedStateUtil
 import net.imoya.android.util.ViewUtil
 
 /**
@@ -90,7 +91,7 @@ open class PreferenceCategoryView : FrameLayout, PreferenceItemView {
          * @param parcel [Parcel]
          */
         constructor(parcel: Parcel) : super(parcel) {
-            title = parcel.readString() ?: ""
+            title = PreferenceViewSavedStateUtil.readString(parcel, TAG)
         }
 
         /**
