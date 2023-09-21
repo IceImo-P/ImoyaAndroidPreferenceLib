@@ -53,7 +53,6 @@ abstract class MultiSelectionListPreferenceView : ListPreferenceView {
      *
      * @param context [Context]
      */
-    @Suppress("unused")
     constructor(context: Context) : this(context, null)
 
     /**
@@ -62,7 +61,6 @@ abstract class MultiSelectionListPreferenceView : ListPreferenceView {
      * @param context [Context]
      * @param attrs [AttributeSet]
      */
-    @Suppress("unused")
     constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, 0)
 
     /**
@@ -72,7 +70,6 @@ abstract class MultiSelectionListPreferenceView : ListPreferenceView {
      * @param attrs [AttributeSet]
      * @param defStyleAttr 適用するスタイル属性値
      */
-    @Suppress("unused")
     constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int)
             : super(context, attrs, defStyleAttr)
 
@@ -85,7 +82,6 @@ abstract class MultiSelectionListPreferenceView : ListPreferenceView {
      * @param defStyleRes 適用するスタイルのリソースID
      */
 //    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    @Suppress("unused")
     constructor(
         context: Context, attrs: AttributeSet?, defStyleAttr: Int, defStyleRes: Int
     ) : super(context, attrs, defStyleAttr, defStyleRes)
@@ -179,6 +175,6 @@ abstract class MultiSelectionListPreferenceView : ListPreferenceView {
         /**
          * Tag for log
          */
-        private const val TAG = "ListPreferenceView"
+        private const val TAG = "MSelListPrefView"
     }
 }

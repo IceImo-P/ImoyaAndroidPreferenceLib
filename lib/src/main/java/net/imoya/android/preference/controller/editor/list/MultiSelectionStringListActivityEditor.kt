@@ -100,6 +100,6 @@ open class MultiSelectionStringListActivityEditor(
 //        /**
 //         * Tag for log
 //         */
-//        private const val TAG = "MSelStrListFPrefEditor"
+//        private const val TAG = "MSelStrListAPrefEditor"
     }
 }

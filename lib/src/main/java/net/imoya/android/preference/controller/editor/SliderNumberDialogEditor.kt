@@ -48,7 +48,6 @@ open class SliderNumberDialogEditor(
     requestCode: Int = Constants.DEFAULT_REQUEST_CODE
 ) : NumberAndUnitDialogEditor(parent, preferences, requestCode) {
 
-    @Suppress("unused")
     override fun showDialog(view: PreferenceView) {
         val currentPreferences = checkPreferences()
         val currentParent = checkParent()
@@ -71,7 +70,6 @@ open class SliderNumberDialogEditor(
             .show()
     }
 
-    @Suppress("unused")
     override fun saveInput(resultCode: Int, data: Intent?) {
         if (data == null) throw IllegalArgumentException("data is null")
         val currentPreferences = checkPreferences()

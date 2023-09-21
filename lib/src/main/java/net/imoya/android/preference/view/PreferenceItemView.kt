@@ -29,6 +29,5 @@ fun interface PreferenceItemView {
      * @param key 更新された項目のキー
      * @return 処理を行った場合は true, そうでない場合は false
      */
-    @Suppress("unused")
     fun onPreferenceChange(sharedPreferences: SharedPreferences, key: String): Boolean
 }

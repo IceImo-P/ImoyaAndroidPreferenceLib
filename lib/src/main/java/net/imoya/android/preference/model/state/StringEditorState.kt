@@ -16,6 +16,7 @@
 
 package net.imoya.android.preference.model.state
 
+import android.os.Bundle
 import android.os.Parcel
 import android.os.Parcelable
 import android.os.Parcelable.Creator
@@ -50,19 +51,37 @@ open class StringEditorState : ScreenEditorState {
      * @param parcel [Parcel]
      */
     protected constructor(parcel: Parcel) : super(parcel) {
-        hint = PreferenceViewSavedStateUtil.readString(parcel, TAG)
-        inputType = PreferenceViewSavedStateUtil.readInt(parcel, TAG, InputType.TYPE_CLASS_TEXT)
-        maxLength = PreferenceViewSavedStateUtil.readInt(parcel, TAG, Int.MAX_VALUE)
+        val bundle = PreferenceViewSavedStateUtil.readBundle(parcel, TAG, javaClass.classLoader)
+        hint = bundle.getString(KEY_HINT)
+        inputType = bundle.getInt(KEY_INPUT_TYPE, InputType.TYPE_CLASS_TEXT)
+        maxLength = bundle.getInt(KEY_MAX_LENGTH, Int.MAX_VALUE)
     }
 
     override fun writeToParcel(dest: Parcel, flags: Int) {
         super.writeToParcel(dest, flags)
-        dest.writeString(hint)
-        dest.writeInt(inputType)
-        dest.writeInt(maxLength)
+        val bundle = Bundle()
+        bundle.putString(KEY_HINT ,hint)
+        bundle.putInt(KEY_INPUT_TYPE, inputType)
+        bundle.putInt(KEY_MAX_LENGTH, maxLength)
+        dest.writeBundle(bundle)
     }
 
     companion object {
+        /**
+         * Key at [Bundle] : [hint]
+         */
+        const val KEY_HINT = "hint"
+
+        /**
+         * Key at [Bundle] : [inputType]
+         */
+        const val KEY_INPUT_TYPE = "inTyp"
+
+        /**
+         * Key at [Bundle] : [maxLength]
+         */
+        const val KEY_MAX_LENGTH = "maxLen"
+
         /**
          * [Parcelable] 対応用 [Creator]
          */

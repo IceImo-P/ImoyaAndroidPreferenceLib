@@ -111,7 +111,7 @@ abstract class PreferenceFragment : Fragment(), DialogListener {
      *            この文字列は、 instanceState の保存キーとしても使用されます。
      * @param editor 使用する [PreferenceEditor]
      */
-    @Suppress("unused", "MemberVisibilityCanBePrivate")
+    @Suppress("MemberVisibilityCanBePrivate")
     protected fun registerEditor(tag: String, editor: PreferenceEditor) =
         pref.registerEditor(tag, editor)
 

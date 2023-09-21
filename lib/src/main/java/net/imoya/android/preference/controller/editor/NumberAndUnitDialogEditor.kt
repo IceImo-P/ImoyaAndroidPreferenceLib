@@ -118,6 +118,6 @@ open class NumberAndUnitDialogEditor(
         /**
          * Tag for log
          */
-        private const val TAG = "NumberAndUnitPreferenceEditor"
+        private const val TAG = "NumberAndUnitPrefEditor"
     }
 }

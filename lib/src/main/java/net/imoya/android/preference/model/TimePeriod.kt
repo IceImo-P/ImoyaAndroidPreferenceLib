@@ -77,7 +77,6 @@ data class TimePeriod(
      * @param second    秒(0～59)
      * @return 指定の時刻が範囲内の場合は true, 範囲外である場合は false
      */
-    @Suppress("unused")
     fun isInPeriod(hourOfDay: Int, minute: Int, second: Int = 0): Boolean {
         return isInPeriod(Time(hourOfDay, minute, second))
     }

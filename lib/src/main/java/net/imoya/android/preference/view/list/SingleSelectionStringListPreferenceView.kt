@@ -19,6 +19,7 @@ package net.imoya.android.preference.view.list
 import android.content.Context
 import android.content.SharedPreferences
 import android.content.res.TypedArray
+import android.os.Bundle
 import android.os.Parcel
 import android.os.Parcelable
 import android.os.Parcelable.Creator
@@ -87,7 +88,12 @@ open class SingleSelectionStringListPreferenceView : SingleSelectionListPreferen
          *
          * @param parcel [Parcel]
          */
-        protected constructor(parcel: Parcel) : this(parcel, null)
+        protected constructor(parcel: Parcel) : super(parcel) {
+            val bundle = PreferenceViewSavedStateUtil.readBundle(parcel, TAG, javaClass.classLoader)
+            entryValues = bundle.getStringArray(KEY_ENTRY_VALUES) ?: arrayOf()
+            currentValue = bundle.getString(KEY_CURRENT_VALUE, TAG)
+            defaultValue = bundle.getString(KEY_DEFAULT_VALUE, TAG)
+        }
 
         /**
          * [Parcel] の内容で初期化するコンストラクタ
@@ -96,19 +102,37 @@ open class SingleSelectionStringListPreferenceView : SingleSelectionListPreferen
          * @param loader [ClassLoader]
          */
         protected constructor(parcel: Parcel, loader: ClassLoader?) : super(parcel, loader) {
-            entryValues = PreferenceViewSavedStateUtil.createStringArray(parcel, TAG) ?: arrayOf()
-            currentValue = PreferenceViewSavedStateUtil.readStringOrNull(parcel, TAG)
-            defaultValue = PreferenceViewSavedStateUtil.readStringOrNull(parcel, TAG)
+            val bundle = PreferenceViewSavedStateUtil.readBundle(parcel, TAG, loader)
+            entryValues = bundle.getStringArray(KEY_ENTRY_VALUES) ?: arrayOf()
+            currentValue = bundle.getString(KEY_CURRENT_VALUE, TAG)
+            defaultValue = bundle.getString(KEY_DEFAULT_VALUE, TAG)
         }
 
-        override fun writeToParcel(out: Parcel, flags: Int) {
-            super.writeToParcel(out, flags)
-            out.writeStringArray(entryValues)
-            out.writeString(currentValue)
-            out.writeString(defaultValue)
+        override fun writeToParcel(dest: Parcel, flags: Int) {
+            super.writeToParcel(dest, flags)
+            val bundle = Bundle()
+            bundle.putStringArray(KEY_ENTRY_VALUES, entryValues)
+            bundle.putString(KEY_CURRENT_VALUE, currentValue)
+            bundle.putString(KEY_DEFAULT_VALUE, defaultValue)
+            dest.writeBundle(bundle)
         }
 
         companion object {
+            /**
+             * Key at [Bundle] : [entryValues]
+             */
+            const val KEY_ENTRY_VALUES = "values"
+
+            /**
+             * Key at [Bundle] : [currentValue]
+             */
+            const val KEY_CURRENT_VALUE = "cur"
+
+            /**
+             * Key at [Bundle] : [defaultValue]
+             */
+            const val KEY_DEFAULT_VALUE = "def"
+
             /**
              * [Parcelable] 対応用 [Creator]
              */
@@ -151,10 +175,8 @@ open class SingleSelectionStringListPreferenceView : SingleSelectionListPreferen
     /**
      * 現在の設定値
      */
-    @Suppress("unused")
     var currentValue: String?
         get() = mCurrentValue
-        @Suppress("unused")
         set(value) {
             mCurrentValue = value
         }
@@ -168,10 +190,8 @@ open class SingleSelectionStringListPreferenceView : SingleSelectionListPreferen
     /**
      * デフォルト値
      */
-    @Suppress("unused")
     var defaultValue: String?
         get() = mDefaultValue
-        @Suppress("unused")
         set(value) {
             mDefaultValue = value
         }
@@ -293,6 +313,6 @@ open class SingleSelectionStringListPreferenceView : SingleSelectionListPreferen
         /**
          * Tag for log
          */
-        private const val TAG = "StringListPreferenceView"
+        private const val TAG = "SSelStringListPrefView"
     }
 }

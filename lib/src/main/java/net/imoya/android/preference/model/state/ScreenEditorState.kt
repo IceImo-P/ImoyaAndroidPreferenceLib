@@ -56,8 +56,9 @@ open class ScreenEditorState : Parcelable {
      * @param parcel [Parcel]
      */
     protected constructor(parcel: Parcel) {
-        key = PreferenceViewSavedStateUtil.readString(parcel, TAG)
-        title = PreferenceViewSavedStateUtil.readString(parcel, TAG)
+        val bundle = PreferenceViewSavedStateUtil.readBundle(parcel, TAG, javaClass.classLoader)
+        key = bundle.getString(KEY_KEY)
+        title = bundle.getString(KEY_TITLE)
     }
 
     /**
@@ -68,8 +69,10 @@ open class ScreenEditorState : Parcelable {
      */
     @CallSuper
     override fun writeToParcel(dest: Parcel, flags: Int) {
-        dest.writeString(key)
-        dest.writeString(title)
+        val bundle = Bundle()
+        bundle.putString(KEY_KEY, key)
+        bundle.putString(KEY_TITLE, title)
+        dest.writeBundle(bundle)
     }
 
     override fun describeContents() = 0

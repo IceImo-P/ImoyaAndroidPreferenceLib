@@ -81,6 +81,6 @@ abstract class MultiSelectionListActivityEditor(
 //        /**
 //         * Tag for log
 //         */
-//        private const val TAG = "MSelListActivityEditor"
+//        private const val TAG = "MSelListAPrefEditor"
 //    }
 }

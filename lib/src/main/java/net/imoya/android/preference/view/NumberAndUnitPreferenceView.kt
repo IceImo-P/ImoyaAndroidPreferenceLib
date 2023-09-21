@@ -19,6 +19,7 @@ package net.imoya.android.preference.view
 import android.content.Context
 import android.content.SharedPreferences
 import android.content.res.TypedArray
+import android.os.Bundle
 import android.os.Parcel
 import android.os.Parcelable
 import android.os.Parcelable.Creator
@@ -101,7 +102,14 @@ open class NumberAndUnitPreferenceView : SingleValuePreferenceView {
          *
          * @param parcel [Parcel]
          */
-        protected constructor(parcel: Parcel) : this(parcel, null)
+        protected constructor(parcel: Parcel) : super(parcel) {
+            val bundle = PreferenceViewSavedStateUtil.readBundle(parcel, TAG, javaClass.classLoader)
+            currentValue = bundle.getInt(KEY_CURRENT_VALUE, 0)
+            defaultValue = bundle.getInt(KEY_DEFAULT_VALUE, 0)
+            minValue = bundle.getInt(KEY_MIN_VALUE, 0)
+            maxValue = bundle.getInt(KEY_MAX_VALUE, 100)
+            unit = bundle.getString(KEY_UNIT)
+        }
 
         /**
          * [Parcel] の内容で初期化するコンストラクタ
@@ -110,23 +118,51 @@ open class NumberAndUnitPreferenceView : SingleValuePreferenceView {
          * @param loader [ClassLoader]
          */
         protected constructor(parcel: Parcel, loader: ClassLoader?) : super(parcel, loader) {
-            currentValue = PreferenceViewSavedStateUtil.readInt(parcel, TAG)
-            defaultValue = PreferenceViewSavedStateUtil.readInt(parcel, TAG)
-            minValue = PreferenceViewSavedStateUtil.readInt(parcel, TAG)
-            maxValue = PreferenceViewSavedStateUtil.readInt(parcel, TAG, 100)
-            unit = PreferenceViewSavedStateUtil.readStringOrNull(parcel, TAG)
+            val bundle = PreferenceViewSavedStateUtil.readBundle(parcel, TAG, loader)
+            currentValue = bundle.getInt(KEY_CURRENT_VALUE, 0)
+            defaultValue = bundle.getInt(KEY_DEFAULT_VALUE, 0)
+            minValue = bundle.getInt(KEY_MIN_VALUE, 0)
+            maxValue = bundle.getInt(KEY_MAX_VALUE, 100)
+            unit = bundle.getString(KEY_UNIT)
         }
 
-        override fun writeToParcel(out: Parcel, flags: Int) {
-            super.writeToParcel(out, flags)
-            out.writeInt(currentValue)
-            out.writeInt(defaultValue)
-            out.writeInt(minValue)
-            out.writeInt(maxValue)
-            out.writeString(unit)
+        override fun writeToParcel(dest: Parcel, flags: Int) {
+            super.writeToParcel(dest, flags)
+            val bundle = Bundle()
+            bundle.putInt(KEY_CURRENT_VALUE, currentValue)
+            bundle.putInt(KEY_DEFAULT_VALUE, defaultValue)
+            bundle.putInt(KEY_MIN_VALUE, minValue)
+            bundle.putInt(KEY_MAX_VALUE, maxValue)
+            bundle.putString(KEY_UNIT, unit)
+            dest.writeBundle(bundle)
         }
 
         companion object {
+            /**
+             * Key at [Bundle] : [currentValue]
+             */
+            const val KEY_CURRENT_VALUE = "cur"
+
+            /**
+             * Key at [Bundle] : [defaultValue]
+             */
+            const val KEY_DEFAULT_VALUE = "def"
+
+            /**
+             * Key at [Bundle] : [minValue]
+             */
+            const val KEY_MIN_VALUE = "min"
+
+            /**
+             * Key at [Bundle] : [maxValue]
+             */
+            const val KEY_MAX_VALUE = "max"
+
+            /**
+             * Key at [Bundle] : [unit]
+             */
+            const val KEY_UNIT = "unit"
+
             /**
              * [Parcelable] 対応用 [Creator]
              */
@@ -164,10 +200,8 @@ open class NumberAndUnitPreferenceView : SingleValuePreferenceView {
     /**
      * 現在の設定値
      */
-    @Suppress("unused")
     var currentValue: Int
         get() = mCurrentValue
-        @Suppress("unused")
         set(value) {
             mCurrentValue = value
 
@@ -188,7 +222,6 @@ open class NumberAndUnitPreferenceView : SingleValuePreferenceView {
      */
     var defaultValue: Int
         get() = mDefaultValue
-        @Suppress("unused")
         set(value) {
             mDefaultValue = value
         }
@@ -207,7 +240,6 @@ open class NumberAndUnitPreferenceView : SingleValuePreferenceView {
             PreferenceLog.v(TAG) { "getMinValue: value = $mMinValue" }
             return mMinValue
         }
-        @Suppress("unused")
         set(value) {
             PreferenceLog.v(TAG) { "setMinValue: value = $value" }
             mMinValue = value
@@ -227,7 +259,6 @@ open class NumberAndUnitPreferenceView : SingleValuePreferenceView {
             PreferenceLog.v(TAG) { "getMaxValue: value = $mMaxValue" }
             return mMaxValue
         }
-        @Suppress("unused")
         set(value) {
             PreferenceLog.v(TAG) { "setMaxValue: value = $value" }
             mMaxValue = value
@@ -372,6 +403,6 @@ open class NumberAndUnitPreferenceView : SingleValuePreferenceView {
         /**
          * Tag for log
          */
-        private const val TAG = "NumberAndUnitPreferenceView"
+        private const val TAG = "NumAndUnitPrefView"
     }
 }

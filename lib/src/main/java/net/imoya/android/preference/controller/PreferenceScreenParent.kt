@@ -33,7 +33,6 @@ interface PreferenceScreenParent : DialogParent {
         callback: ActivityResultCallback<O>
     ): ActivityResultLauncher<I>
 
-    @Suppress("unused")
     fun <I : Any, O : Any> registerForActivityResult(
         contract: ActivityResultContract<I, O>,
         registry: ActivityResultRegistry,

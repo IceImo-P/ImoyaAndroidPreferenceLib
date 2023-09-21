@@ -113,6 +113,6 @@ class TimePeriodPreferenceView : TimePreferenceViewBase {
         /**
          * Tag for log
          */
-        private const val TAG = "TimePeriodPreferenceView"
+        private const val TAG = "TimePeriodPrefView"
     }
 }

@@ -19,6 +19,7 @@ package net.imoya.android.preference.view.list
 import android.content.Context
 import android.content.SharedPreferences
 import android.content.res.TypedArray
+import android.os.Bundle
 import android.os.Parcel
 import android.os.Parcelable
 import android.os.Parcelable.Creator
@@ -68,12 +69,12 @@ open class SingleSelectionIntListPreferenceView : SingleSelectionListPreferenceV
         /**
          * 現在の設定値
          */
-        var currentValue = 0
+        var currentValue = CURRENT_VALUE_DEFAULT
 
         /**
          * デフォルト値
          */
-        var defaultValue = -1
+        var defaultValue = DEFAULT_VALUE_DEFAULT
 
         /**
          * コンストラクタ
@@ -87,7 +88,12 @@ open class SingleSelectionIntListPreferenceView : SingleSelectionListPreferenceV
          *
          * @param parcel [Parcel]
          */
-        protected constructor(parcel: Parcel) : this(parcel, null)
+        protected constructor(parcel: Parcel) : super(parcel) {
+            val bundle = PreferenceViewSavedStateUtil.readBundle(parcel, TAG, javaClass.classLoader)
+            entryValues = bundle.getIntArray(KEY_ENTRY_VALUES) ?: intArrayOf()
+            currentValue = bundle.getInt(KEY_CURRENT_VALUE, CURRENT_VALUE_DEFAULT)
+            defaultValue = bundle.getInt(KEY_DEFAULT_VALUE, DEFAULT_VALUE_DEFAULT)
+        }
 
         /**
          * [Parcel] の内容で初期化するコンストラクタ
@@ -96,19 +102,37 @@ open class SingleSelectionIntListPreferenceView : SingleSelectionListPreferenceV
          * @param loader [ClassLoader]
          */
         protected constructor(parcel: Parcel, loader: ClassLoader?) : super(parcel, loader) {
-            entryValues = PreferenceViewSavedStateUtil.createIntArray(parcel, TAG) ?: intArrayOf()
-            currentValue = PreferenceViewSavedStateUtil.readInt(parcel, TAG)
-            defaultValue = PreferenceViewSavedStateUtil.readInt(parcel, TAG, -1)
+            val bundle = PreferenceViewSavedStateUtil.readBundle(parcel, TAG, loader)
+            entryValues = bundle.getIntArray(KEY_ENTRY_VALUES) ?: intArrayOf()
+            currentValue = bundle.getInt(KEY_CURRENT_VALUE, CURRENT_VALUE_DEFAULT)
+            defaultValue = bundle.getInt(KEY_DEFAULT_VALUE, DEFAULT_VALUE_DEFAULT)
         }
 
-        override fun writeToParcel(out: Parcel, flags: Int) {
-            super.writeToParcel(out, flags)
-            out.writeIntArray(entryValues)
-            out.writeInt(currentValue)
-            out.writeInt(defaultValue)
+        override fun writeToParcel(dest: Parcel, flags: Int) {
+            super.writeToParcel(dest, flags)
+            val bundle = Bundle()
+            bundle.putIntArray(KEY_ENTRY_VALUES, entryValues)
+            bundle.putInt(KEY_CURRENT_VALUE, currentValue)
+            bundle.putInt(KEY_DEFAULT_VALUE, defaultValue)
+            dest.writeBundle(bundle)
         }
 
         companion object {
+            /**
+             * Key at [Bundle] : [entryValues]
+             */
+            const val KEY_ENTRY_VALUES = "values"
+
+            /**
+             * Key at [Bundle] : [currentValue]
+             */
+            const val KEY_CURRENT_VALUE = "cur"
+
+            /**
+             * Key at [Bundle] : [defaultValue]
+             */
+            const val KEY_DEFAULT_VALUE = "def"
+
             /**
              * [Parcelable] 対応用 [Creator]
              */
@@ -134,6 +158,16 @@ open class SingleSelectionIntListPreferenceView : SingleSelectionListPreferenceV
                     return arrayOfNulls(size)
                 }
             }
+
+            /**
+             * Default value of [currentValue]
+             */
+            private const val CURRENT_VALUE_DEFAULT = 0
+
+            /**
+             * Default value of [defaultValue]
+             */
+            private const val DEFAULT_VALUE_DEFAULT = -1
         }
     }
 
@@ -151,10 +185,8 @@ open class SingleSelectionIntListPreferenceView : SingleSelectionListPreferenceV
     /**
      * 現在の設定値
      */
-    @Suppress("unused")
     var currentValue: Int
         get() = mCurrentValue
-        @Suppress("unused")
         set(value) {
             mCurrentValue = value
         }
@@ -168,10 +200,8 @@ open class SingleSelectionIntListPreferenceView : SingleSelectionListPreferenceV
     /**
      * デフォルト値
      */
-    @Suppress("unused")
     var defaultValue: Int
         get() = mDefaultValue
-        @Suppress("unused")
         set(value) {
             mDefaultValue = value
         }
@@ -293,6 +323,6 @@ open class SingleSelectionIntListPreferenceView : SingleSelectionListPreferenceV
         /**
          * Tag for log
          */
-        private const val TAG = "StringListPreferenceView"
+        private const val TAG = "SSelIntListPrefView"
     }
 }

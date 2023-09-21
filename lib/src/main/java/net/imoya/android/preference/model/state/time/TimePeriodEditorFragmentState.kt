@@ -22,6 +22,7 @@ import android.os.Parcelable
 import android.os.Parcelable.Creator
 import androidx.annotation.CallSuper
 import androidx.core.os.BundleCompat
+import net.imoya.android.preference.PreferenceLog
 import net.imoya.android.preference.fragment.editor.time.TimePeriodEditorFragment
 import net.imoya.android.preference.model.TimePeriod
 import net.imoya.android.preference.util.PreferenceViewSavedStateUtil
@@ -72,9 +73,8 @@ open class TimePeriodEditorFragmentState : Parcelable {
      * @param bundle [Bundle]
      */
     constructor(bundle: Bundle) {
-        timePeriod = BundleCompat.getParcelable(bundle, KEY_TIME_PERIOD, TimePeriod::class.java)
-            ?: throw IllegalArgumentException("TimePeriod not found")
-        step = Step.from(bundle.getInt(KEY_STEP))
+        timePeriod = getTimePeriodFrom(bundle)
+        step = Step.from(bundle.getInt(KEY_STEP, Step.START_TIME.value))
     }
 
     /**
@@ -83,15 +83,17 @@ open class TimePeriodEditorFragmentState : Parcelable {
      * @param parcel [Parcel]
      */
     protected constructor(parcel: Parcel) {
-        step = Step.from(PreferenceViewSavedStateUtil.readInt(parcel, TAG))
-        timePeriod = PreferenceViewSavedStateUtil.readParcelable(
-            parcel, TAG, javaClass.classLoader!!, TimePeriod::class.java, TimePeriod())
+        val bundle = PreferenceViewSavedStateUtil.readBundle(parcel, TAG, javaClass.classLoader)
+        step = Step.from(bundle.getInt(KEY_STEP, Step.START_TIME.value))
+        timePeriod = getTimePeriodFrom(bundle)
     }
 
     @CallSuper
     override fun writeToParcel(dest: Parcel, flags: Int) {
-        dest.writeInt(step.value)
-        dest.writeParcelable(timePeriod, 0)
+        val bundle = Bundle()
+        bundle.putInt(KEY_STEP, step.value)
+        bundle.putParcelable(KEY_TIME_PERIOD, timePeriod)
+        dest.writeBundle(bundle)
     }
 
     override fun describeContents(): Int = 0
@@ -108,12 +110,12 @@ open class TimePeriodEditorFragmentState : Parcelable {
         /**
          * Key at [Bundle] : Time
          */
-        const val KEY_TIME_PERIOD = "timePeriod"
+        const val KEY_TIME_PERIOD = "per"
 
         /**
          * Key at [Bundle] : 編集ステップ
          */
-        const val KEY_STEP = "step"
+        const val KEY_STEP = "st"
 
         /**
          * [Parcelable] 対応用 [Creator]
@@ -145,6 +147,22 @@ open class TimePeriodEditorFragmentState : Parcelable {
         /**
          * Tag for log
          */
-        private const val TAG = "TimePeriodEditorFragmentState"
+        private const val TAG = "TPEditFragmentState"
+
+        /**
+         * Get [timePeriod] value from state [Bundle]
+         *
+         * @param bundle [Bundle]
+         * @return [TimePeriod]
+         */
+        private fun getTimePeriodFrom(bundle: Bundle): TimePeriod {
+            return try {
+                BundleCompat.getParcelable(bundle, KEY_TIME_PERIOD, TimePeriod::class.java)
+                    ?: throw IllegalArgumentException("TimePeriod not found")
+            } catch (e: Exception) {
+                PreferenceLog.d(TAG, e)
+                TimePeriod()
+            }
+        }
     }
 }

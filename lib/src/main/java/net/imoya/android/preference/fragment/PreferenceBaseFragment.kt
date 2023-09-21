@@ -114,7 +114,7 @@ abstract class PreferenceBaseFragment : BaseFragment(), DialogListener {
      *            この文字列は、 instanceState の保存キーとしても使用されます。
      * @param editor 使用する [PreferenceEditor]
      */
-    @Suppress("unused", "MemberVisibilityCanBePrivate")
+    @Suppress("MemberVisibilityCanBePrivate")
     protected fun registerEditor(tag: String, editor: PreferenceEditor) =
         pref.registerEditor(tag, editor)
 
@@ -134,7 +134,7 @@ abstract class PreferenceBaseFragment : BaseFragment(), DialogListener {
      *
      * @param view [PreferenceView]
      */
-    @Suppress("unused", "MemberVisibilityCanBePrivate")
+    @Suppress("MemberVisibilityCanBePrivate")
     protected fun setupPreferenceView(view: PreferenceView) =
         pref.setupPreferenceView(view)
 
@@ -149,7 +149,7 @@ abstract class PreferenceBaseFragment : BaseFragment(), DialogListener {
      * @param view [PreferenceView]
      * @param editorTag [registerEditor] メソッドの引数 tag に設定した文字列
      */
-    @Suppress("unused", "MemberVisibilityCanBePrivate")
+    @Suppress("MemberVisibilityCanBePrivate")
     protected fun setupPreferenceView(view: PreferenceView, editorTag: String) =
         pref.setupPreferenceView(view, editorTag)
 

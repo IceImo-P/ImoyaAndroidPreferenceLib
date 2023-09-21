@@ -49,6 +49,6 @@ open class MultiSelectionListPreferenceListAdapter : ListPreferenceListAdapter()
         /**
          * Tag for log
          */
-        private const val TAG = "MultiSelListPrefListAdapter"
+        private const val TAG = "MSelListPrefListAdapter"
     }
 }

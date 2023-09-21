@@ -19,6 +19,7 @@ package net.imoya.android.preference.view
 import android.content.Context
 import android.content.SharedPreferences
 import android.content.res.TypedArray
+import android.os.Bundle
 import android.os.Parcel
 import android.os.Parcelable
 import android.os.Parcelable.Creator
@@ -101,27 +102,42 @@ open class SwitchPreferenceView : SingleValuePreferenceView {
          *
          * @param parcel [Parcel]
          */
-        protected constructor(parcel: Parcel) : this(parcel, null)
+        protected constructor(parcel: Parcel) : super(parcel) {
+            val bundle = PreferenceViewSavedStateUtil.readBundle(parcel, TAG, javaClass.classLoader)
+            currentValue = bundle.getBoolean(KEY_CURRENT_VALUE)
+            defaultValue = bundle.getBoolean(KEY_DEFAULT_VALUE)
+        }
 
         /**
          * [Parcel] の内容で初期化するコンストラクタ
          *
          * @param parcel [Parcel]
          */
-        protected constructor(parcel: Parcel, loader: ClassLoader? = null) : super(parcel, loader) {
-            val booleans = PreferenceViewSavedStateUtil.createBooleanArray(parcel, TAG)
-            if (booleans != null && booleans.size >= 2) {
-                currentValue = booleans[0]
-                defaultValue = booleans[1]
-            }
+        protected constructor(parcel: Parcel, loader: ClassLoader?) : super(parcel, loader) {
+            val bundle = PreferenceViewSavedStateUtil.readBundle(parcel, TAG, loader)
+            currentValue = bundle.getBoolean(KEY_CURRENT_VALUE)
+            defaultValue = bundle.getBoolean(KEY_DEFAULT_VALUE)
         }
 
-        override fun writeToParcel(out: Parcel, flags: Int) {
-            super.writeToParcel(out, flags)
-            out.writeBooleanArray(booleanArrayOf(currentValue, defaultValue))
+        override fun writeToParcel(dest: Parcel, flags: Int) {
+            super.writeToParcel(dest, flags)
+            val bundle = Bundle()
+            bundle.putBoolean(KEY_CURRENT_VALUE, currentValue)
+            bundle.putBoolean(KEY_DEFAULT_VALUE, defaultValue)
+            dest.writeBundle(bundle)
         }
 
         companion object {
+            /**
+             * Key at [Bundle] : [currentValue]
+             */
+            const val KEY_CURRENT_VALUE = "cur"
+
+            /**
+             * Key at [Bundle] : [defaultValue]
+             */
+            const val KEY_DEFAULT_VALUE = "def"
+
             /**
              * [Parcelable] 対応用 [Creator]
              */
@@ -170,10 +186,8 @@ open class SwitchPreferenceView : SingleValuePreferenceView {
     /**
      * 現在のON/OFF状態
      */
-    @Suppress("unused")
     var currentValue: Boolean
         get() = mCurrentValue
-        @Suppress("unused")
         set(value) {
             mCurrentValue = value
         }
@@ -187,10 +201,8 @@ open class SwitchPreferenceView : SingleValuePreferenceView {
     /**
      * デフォルト値
      */
-    @Suppress("unused")
     var defaultValue: Boolean
         get() = mDefaultValue
-        @Suppress("unused")
         set(value) {
             mDefaultValue = value
         }
@@ -198,7 +210,7 @@ open class SwitchPreferenceView : SingleValuePreferenceView {
     /**
      * スイッチのテキスト表示フラグ
      */
-    @Suppress("unused", "MemberVisibilityCanBePrivate")
+    @Suppress("MemberVisibilityCanBePrivate")
     var showText: Boolean
         get() {
             val sw = compoundButton
@@ -218,7 +230,7 @@ open class SwitchPreferenceView : SingleValuePreferenceView {
     /**
      * スイッチ ON 時に [SwitchCompat] へ表示するテキスト
      */
-    @Suppress("unused", "MemberVisibilityCanBePrivate")
+    @Suppress("MemberVisibilityCanBePrivate")
     var textOn: String
         get() {
             val sw = compoundButton
@@ -238,7 +250,7 @@ open class SwitchPreferenceView : SingleValuePreferenceView {
     /**
      * スイッチ OFF 時に [SwitchCompat] へ表示するテキスト
      */
-    @Suppress("unused", "MemberVisibilityCanBePrivate")
+    @Suppress("MemberVisibilityCanBePrivate")
     var textOff: String
         get() {
             val sw = compoundButton
@@ -375,6 +387,6 @@ open class SwitchPreferenceView : SingleValuePreferenceView {
         /**
          * Tag for log
          */
-        private const val TAG = "SwitchPreferenceView"
+        private const val TAG = "SwitchPrefView"
     }
 }

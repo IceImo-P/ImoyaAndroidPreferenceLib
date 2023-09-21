@@ -64,6 +64,6 @@ open class TimePeriodEditorFragmentOnActivity : TimePeriodEditorFragment() {
 //        /**
 //         * Tag for log
 //         */
-//        private const val TAG = "TimePeriodEditorFragmentOA"
+//        private const val TAG = "TPPrefEditFragmentOnA"
 //    }
 }

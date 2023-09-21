@@ -80,6 +80,6 @@ abstract class SingleSelectionListActivityEditor(
 //        /**
 //         * Tag for log
 //         */
-//        private const val TAG = "SSelListAEditor"
+//        private const val TAG = "SSelListAPrefEditor"
     }
 }

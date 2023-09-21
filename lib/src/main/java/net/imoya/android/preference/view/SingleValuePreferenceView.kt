@@ -21,6 +21,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.content.res.TypedArray
 import android.os.Build
+import android.os.Bundle
 import android.os.Parcel
 import android.os.Parcelable
 import android.os.Parcelable.Creator
@@ -63,7 +64,10 @@ abstract class SingleValuePreferenceView : PreferenceView {
          *
          * @param parcel [Parcel]
          */
-        protected constructor(parcel: Parcel) : this(parcel, null)
+        protected constructor(parcel: Parcel) : super(parcel) {
+            val bundle = PreferenceViewSavedStateUtil.readBundle(parcel, TAG, javaClass.classLoader)
+            preferenceKey = bundle.getString(KEY_PREFERENCE_KEY) ?: ""
+        }
 
         /**
          * [Parcel] の内容で初期化するコンストラクタ
@@ -72,10 +76,23 @@ abstract class SingleValuePreferenceView : PreferenceView {
          */
         @TargetApi(Build.VERSION_CODES.N)
         protected constructor(parcel: Parcel, loader: ClassLoader?) : super(parcel, loader) {
-            preferenceKey = PreferenceViewSavedStateUtil.readString(parcel, TAG)
+            val bundle = PreferenceViewSavedStateUtil.readBundle(parcel, TAG, loader)
+            preferenceKey = bundle.getString(KEY_PREFERENCE_KEY) ?: ""
+        }
+
+        override fun writeToParcel(dest: Parcel, flags: Int) {
+            super.writeToParcel(dest, flags)
+            val bundle = Bundle()
+            bundle.putString(KEY_PREFERENCE_KEY, preferenceKey)
+            dest.writeBundle(bundle)
         }
 
         companion object {
+            /**
+             * Key at Bundle : [preferenceKey]
+             */
+            const val KEY_PREFERENCE_KEY = "prefKey"
+
             /**
              * [Parcelable] 対応用 [Creator]
              */
@@ -190,6 +207,6 @@ abstract class SingleValuePreferenceView : PreferenceView {
         /**
          * Tag for log
          */
-        private const val TAG = "SingleValuePreferenceView"
+        private const val TAG = "SingleValuePrefView"
     }
 }

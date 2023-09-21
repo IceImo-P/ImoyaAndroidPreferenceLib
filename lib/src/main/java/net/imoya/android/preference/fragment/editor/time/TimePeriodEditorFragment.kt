@@ -52,17 +52,13 @@ open class TimePeriodEditorFragment : TimeEditorFragmentBase() {
     /**
      * "Host" が指定した、 "client" を表示する領域となる [View] の ID
      */
-    @Suppress("unused")
     open val containerId: Int
-        @Suppress("unused")
         get() = roundTripContainerId
 
     /**
      * 終了時刻入力画面の [androidx.fragment.app.Fragment]
      */
-    @Suppress("unused")
     open val endTimeFragment: TimePeriodEditorFragment
-        @Suppress("unused")
         get() = TimePeriodEditorFragment()
 
     /**
@@ -284,6 +280,6 @@ open class TimePeriodEditorFragment : TimeEditorFragmentBase() {
         /**
          * Tag for log
          */
-        private const val TAG = "PeriodPrefEditorFragment"
+        private const val TAG = "TPPrefEditFragment"
     }
 }

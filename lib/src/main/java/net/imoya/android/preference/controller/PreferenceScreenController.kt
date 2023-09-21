@@ -145,11 +145,14 @@ abstract class PreferenceScreenController : DialogListener {
             editors.entries.forEach {
                 val editor = it.value
                 if (editor is ScreenEditor) {
-                    editor.instanceState = BundleCompat.getParcelable(
-                        savedInstanceState,
-                        it.key,
-                        editor.instanceStateClass
-                    )
+                    editor.instanceState = try {
+                        BundleCompat.getParcelable(
+                            savedInstanceState, it.key, editor.instanceStateClass
+                        )
+                    } catch (e: Exception) {
+                        PreferenceLog.d(TAG, e)
+                        null
+                    }
                 }
             }
         }

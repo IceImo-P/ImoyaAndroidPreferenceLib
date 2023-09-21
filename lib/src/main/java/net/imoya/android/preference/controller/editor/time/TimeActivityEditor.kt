@@ -57,7 +57,6 @@ open class TimeActivityEditor(
          * @param key    Key of [SharedPreferences]
          * @param value  User-input [Time] (or null)
          */
-        @Suppress("unused")
         fun onEdit(editor: TimeActivityEditor, key: String, value: Time?)
     }
 
@@ -109,23 +108,29 @@ open class TimeActivityEditor(
     }
 
     override fun saveInput(resultCode: Int, data: Intent?) {
-        if (data == null) throw IllegalArgumentException("data is null")
-        val key = checkKey()
-        val period = IntentCompat.getParcelableExtra(
-            data, TimeEditorFragmentResult.KEY_SELECTED_TIME, Time::class.java
-        ) ?: throw IllegalArgumentException("time is null")
+        if (data != null) {
+            val key = checkKey()
+            val time = IntentCompat.getParcelableExtra(
+                data, TimeEditorFragmentResult.KEY_SELECTED_TIME, Time::class.java
+            )
 
-        checkPreferences().edit()
-            .putString(key, period.toString())
-            .apply()
+            if (time != null) {
+                val editor = checkPreferences().edit()
+                try {
+                    editor.putString(key, time.toString())
+                } finally {
+                    editor.apply()
+                }
 
-        onEditListener?.onEdit(this, key, period)
+                onEditListener?.onEdit(this, key, time)
+            }
+        }
     }
 
 //    companion object {
 //        /**
 //         * Tag for log
 //         */
-//        private const val TAG = "TimePreferenceEditor"
+//        private const val TAG = "TimeAPrefEditor"
 //    }
 }

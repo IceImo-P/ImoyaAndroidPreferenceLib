@@ -16,6 +16,7 @@
 
 package net.imoya.android.preference.model.state
 
+import android.os.Bundle
 import android.os.Parcel
 import android.os.Parcelable
 import android.os.Parcelable.Creator
@@ -59,23 +60,51 @@ open class NumberAndUnitEditorState : ScreenEditorState {
      * @param parcel [Parcel]
      */
     protected constructor(parcel: Parcel) : super(parcel) {
-        defaultValue = PreferenceViewSavedStateUtil.readInt(parcel, TAG)
-        minValue = PreferenceViewSavedStateUtil.readInt(parcel, TAG, Int.MIN_VALUE)
-        maxValue = PreferenceViewSavedStateUtil.readInt(parcel, TAG, Int.MAX_VALUE)
-        unit = PreferenceViewSavedStateUtil.readStringOrNull(parcel, TAG)
-        hint = PreferenceViewSavedStateUtil.readStringOrNull(parcel, TAG)
+        val bundle = PreferenceViewSavedStateUtil.readBundle(parcel, TAG, javaClass.classLoader)
+        defaultValue = bundle.getInt(KEY_DEFAULT_VALUE, 0)
+        minValue = bundle.getInt(KEY_MIN_VALUE, Int.MIN_VALUE)
+        maxValue = bundle.getInt(KEY_MAX_VALUE, Int.MAX_VALUE)
+        unit = bundle.getString(KEY_UNIT)
+        hint = bundle.getString(KEY_HINT)
     }
 
     override fun writeToParcel(dest: Parcel, flags: Int) {
         super.writeToParcel(dest, flags)
-        dest.writeInt(defaultValue)
-        dest.writeInt(minValue)
-        dest.writeInt(maxValue)
-        dest.writeString(unit)
-        dest.writeString(hint)
+        val bundle = Bundle()
+        bundle.putInt(KEY_DEFAULT_VALUE, defaultValue)
+        bundle.putInt(KEY_MIN_VALUE, minValue)
+        bundle.putInt(KEY_MAX_VALUE, maxValue)
+        bundle.putString(KEY_UNIT, unit)
+        bundle.putString(KEY_HINT, hint)
+        dest.writeBundle(bundle)
     }
 
     companion object {
+        /**
+         * Key at [Bundle] : [defaultValue]
+         */
+        const val KEY_DEFAULT_VALUE = "def"
+
+        /**
+         * Key at [Bundle] : [minValue]
+         */
+        const val KEY_MIN_VALUE = "min"
+
+        /**
+         * Key at [Bundle] : [maxValue]
+         */
+        const val KEY_MAX_VALUE = "max"
+
+        /**
+         * Key at [Bundle] : [unit]
+         */
+        const val KEY_UNIT = "unit"
+
+        /**
+         * Key at [Bundle] : [hint]
+         */
+        const val KEY_HINT = "hint"
+
         /**
          * [Parcelable] 対応用 [Creator]
          */

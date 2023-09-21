@@ -32,9 +32,9 @@ import net.imoya.android.preference.util.PreferenceViewSavedStateUtil
  */
 open class SingleSelectionListEditorState : ListEditorState {
     /**
-     * 選択済みのインデックス位置, 未選択の場合は -1
+     * 選択済みのインデックス位置, 未選択の場合は [NO_SELECTION] (-1)
      */
-    var selectedIndex: Int = -1
+    var selectedIndex: Int = NO_SELECTION
 
     /**
      * 単一項目選択時の操作方法
@@ -49,7 +49,7 @@ open class SingleSelectionListEditorState : ListEditorState {
      * @param bundle [Bundle]
      */
     constructor(bundle: Bundle) : super(bundle) {
-        selectedIndex = bundle.getInt(KEY_SELECTED_INDEX, -1)
+        selectedIndex = bundle.getInt(KEY_SELECTED_INDEX, NO_SELECTION)
         singleSelectionType = SingleSelectionType.from(bundle.getInt(KEY_SINGLE_SELECTION_TYPE))
     }
 
@@ -59,21 +59,20 @@ open class SingleSelectionListEditorState : ListEditorState {
      * @param parcel [Parcel]
      */
     protected constructor(parcel: Parcel) : super(parcel) {
-        selectedIndex = PreferenceViewSavedStateUtil.readInt(parcel, TAG, -1)
+        val bundle = PreferenceViewSavedStateUtil.readBundle(parcel, TAG, javaClass.classLoader)
+        selectedIndex = bundle.getInt(KEY_SELECTED_INDEX, NO_SELECTION)
         singleSelectionType = SingleSelectionType.from(
-            PreferenceViewSavedStateUtil.readInt(
-                parcel,
-                TAG,
-                SingleSelectionType.OK_CANCEL.id
-            )
+            bundle.getInt(KEY_SINGLE_SELECTION_TYPE, SingleSelectionType.OK_CANCEL.id)
         )
     }
 
     @CallSuper
     override fun writeToParcel(dest: Parcel, flags: Int) {
         super.writeToParcel(dest, flags)
-        dest.writeInt(selectedIndex)
-        dest.writeInt(singleSelectionType.id)
+        val bundle = Bundle()
+        bundle.putInt(KEY_SELECTED_INDEX, selectedIndex)
+        bundle.putInt(KEY_SINGLE_SELECTION_TYPE, singleSelectionType.id)
+        dest.writeBundle(bundle)
     }
 
     @CallSuper
@@ -88,12 +87,17 @@ open class SingleSelectionListEditorState : ListEditorState {
         /**
          * Key at [Bundle] : Selected index
          */
-        const val KEY_SELECTED_INDEX = "selectedIndex"
+        const val KEY_SELECTED_INDEX = "selIdx"
 
         /**
          * Key at [Bundle] : 単一項目選択時の操作方法
          */
-        const val KEY_SINGLE_SELECTION_TYPE = "singleSelectionType"
+        const val KEY_SINGLE_SELECTION_TYPE = "singleSelType"
+
+        /**
+         * [selectedIndex] value for no selection
+         */
+        const val NO_SELECTION = -1
 
         /**
          * [Parcelable] 対応用 [Creator]
@@ -125,6 +129,6 @@ open class SingleSelectionListEditorState : ListEditorState {
         /**
          * Tag for log
          */
-        private const val TAG = "SSelListEditorState"
+        private const val TAG = "SSelListEditState"
     }
 }

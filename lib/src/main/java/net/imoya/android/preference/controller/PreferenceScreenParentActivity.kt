@@ -92,7 +92,6 @@ open class PreferenceScreenParentActivity(
         return requireActivity().registerForActivityResult(contract, callback)
     }
 
-    @Suppress("unused")
     override fun <I : Any, O : Any> registerForActivityResult(
         contract: ActivityResultContract<I, O>,
         registry: ActivityResultRegistry,

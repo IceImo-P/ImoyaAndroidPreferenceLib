@@ -33,7 +33,6 @@ open class MultiSelectionStringListEditorState : MultiSelectionListEditorState {
      */
     var entryValues: Array<String> = arrayOf()
 
-    @Suppress("unused")
     constructor() : super()
 
     /**
@@ -51,16 +50,17 @@ open class MultiSelectionStringListEditorState : MultiSelectionListEditorState {
      *
      * @param parcel [Parcel]
      */
-    @Suppress("unused")
     protected constructor(parcel: Parcel) : super(parcel) {
-        entryValues =
-            PreferenceViewSavedStateUtil.createStringArray(parcel, TAG) ?: arrayOf()
+        val bundle = PreferenceViewSavedStateUtil.readBundle(parcel, TAG, javaClass.classLoader)
+        entryValues = bundle.getStringArray(KEY_ENTRY_VALUES) ?: arrayOf()
     }
 
     @CallSuper
     override fun writeToParcel(dest: Parcel, flags: Int) {
         super.writeToParcel(dest, flags)
-        dest.writeStringArray(entryValues)
+        val bundle = Bundle()
+        bundle.putStringArray(KEY_ENTRY_VALUES, entryValues)
+        dest.writeBundle(bundle)
     }
 
     @CallSuper
@@ -79,7 +79,6 @@ open class MultiSelectionStringListEditorState : MultiSelectionListEditorState {
         /**
          * [Parcelable] 対応用 [Creator]
          */
-        @Suppress("unused")
         @JvmField
         val CREATOR: Creator<MultiSelectionStringListEditorState> = object : Creator<MultiSelectionStringListEditorState> {
             /**
@@ -106,6 +105,6 @@ open class MultiSelectionStringListEditorState : MultiSelectionListEditorState {
         /**
          * Tag for log
          */
-        private const val TAG = "MSelStringListEditorState"
+        private const val TAG = "MSelStrListEditState"
     }
 }

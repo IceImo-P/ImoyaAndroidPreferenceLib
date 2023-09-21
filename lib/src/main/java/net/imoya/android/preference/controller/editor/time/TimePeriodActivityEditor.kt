@@ -109,23 +109,31 @@ open class TimePeriodActivityEditor(
     }
 
     override fun saveInput(resultCode: Int, data: Intent?) {
-        if (data == null) throw IllegalArgumentException("data is null")
-        val key = checkKey()
-        val period = IntentCompat.getParcelableExtra(
-            data, TimePeriodEditorFragmentResult.KEY_SELECTED_TIME_PERIOD, TimePeriod::class.java
-        ) ?: throw IllegalArgumentException("timePeriod is null")
+        if (data != null) {
+            val key = checkKey()
+            val period = IntentCompat.getParcelableExtra(
+                data,
+                TimePeriodEditorFragmentResult.KEY_SELECTED_TIME_PERIOD,
+                TimePeriod::class.java
+            )
 
-        checkPreferences().edit()
-            .putString(key, period.toString())
-            .apply()
+            if (period != null) {
+                val editor = checkPreferences().edit()
+                try {
+                    editor.putString(key, period.toString())
+                } finally {
+                    editor.apply()
+                }
 
-        listener?.onEdit(this, key, period)
+                listener?.onEdit(this, key, period)
+            }
+        }
     }
 
 //    companion object {
 //        /**
 //         * Tag for log
 //         */
-//        private const val TAG = "TimePeriodPreferenceEditor"
+//        private const val TAG = "TimePeriodAPrefEditor"
 //    }
 }

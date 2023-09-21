@@ -102,6 +102,6 @@ abstract class ListPreferenceListAdapter : BaseAdapter() {
 //        /**
 //         * Tag for log
 //         */
-//        private const val TAG = "ListPreferenceListAdapter"
+//        private const val TAG = "ListPrefListAdapter"
     }
 }

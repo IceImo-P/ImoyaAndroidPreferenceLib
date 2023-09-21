@@ -61,6 +61,6 @@ abstract class ListDialogEditor(
 //        /**
 //         * Tag for log
 //         */
-//        private const val TAG = "ListPreferenceEditor"
+//        private const val TAG = "ListDPrefEditor"
 //    }
 }

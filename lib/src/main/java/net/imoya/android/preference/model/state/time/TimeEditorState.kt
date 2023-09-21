@@ -22,6 +22,7 @@ import android.os.Parcelable
 import android.os.Parcelable.Creator
 import androidx.annotation.CallSuper
 import androidx.core.os.BundleCompat
+import net.imoya.android.preference.PreferenceLog
 import net.imoya.android.preference.controller.editor.time.TimeDialogEditor
 import net.imoya.android.preference.model.state.ScreenEditorState
 import net.imoya.android.preference.model.Time
@@ -54,9 +55,18 @@ open class TimeEditorState : ScreenEditorState {
      * @param bundle [Bundle]
      */
     constructor(bundle: Bundle) : super(bundle) {
-        time = BundleCompat.getParcelable(bundle, KEY_TIME, Time::class.java)
-        timeForNull = BundleCompat.getParcelable(bundle, KEY_TIME_FOR_NULL, Time::class.java)
-            ?: Time(0, 0, 0)
+        time = try {
+            BundleCompat.getParcelable(bundle, KEY_TIME, Time::class.java)
+        } catch (e: Exception) {
+            PreferenceLog.d(TAG, e)
+            null
+        }
+        timeForNull = try {
+            BundleCompat.getParcelable(bundle, KEY_TIME_FOR_NULL, Time::class.java) ?: Time()
+        } catch (e: Exception) {
+            PreferenceLog.d(TAG, e)
+            Time()
+        }
         is24hourView = bundle.getBoolean(KEY_IS_24_HOUR_VIEW)
     }
 
@@ -66,34 +76,30 @@ open class TimeEditorState : ScreenEditorState {
      * @param parcel [Parcel]
      */
     protected constructor(parcel: Parcel) : super(parcel) {
-        val hour = PreferenceViewSavedStateUtil.readByte(parcel, TAG)
-        val minute = PreferenceViewSavedStateUtil.readByte(parcel, TAG)
-        val second = PreferenceViewSavedStateUtil.readByte(parcel, TAG)
-        time = if (hour >= 0) Time(hour.toInt(), minute.toInt(), second.toInt()) else null
-        val hourForNull = PreferenceViewSavedStateUtil.readByte(parcel, TAG)
-        val minuteForNull = PreferenceViewSavedStateUtil.readByte(parcel, TAG)
-        val secondForNull = PreferenceViewSavedStateUtil.readByte(parcel, TAG)
-        timeForNull = Time(hourForNull.toInt(), minuteForNull.toInt(), secondForNull.toInt())
-        is24hourView = PreferenceViewSavedStateUtil.readByte(parcel, TAG).toInt() == 1
+        val bundle = PreferenceViewSavedStateUtil.readBundle(parcel, TAG, javaClass.classLoader)
+        time = try {
+            BundleCompat.getParcelable(bundle, KEY_TIME, Time::class.java)
+        } catch (e: Exception) {
+            PreferenceLog.d(TAG, e)
+            null
+        }
+        timeForNull = try {
+            BundleCompat.getParcelable(bundle, KEY_TIME_FOR_NULL, Time::class.java) ?: Time()
+        } catch (e: Exception) {
+            PreferenceLog.d(TAG, e)
+            Time()
+        }
+        is24hourView = bundle.getBoolean(KEY_IS_24_HOUR_VIEW)
     }
 
     @CallSuper
     override fun writeToParcel(dest: Parcel, flags: Int) {
         super.writeToParcel(dest, flags)
-        val currentTime = time
-        if (currentTime != null) {
-            dest.writeByte(currentTime.hour.toByte())
-            dest.writeByte(currentTime.minute.toByte())
-            dest.writeByte(currentTime.second.toByte())
-        } else {
-            dest.writeByte(-1)
-            dest.writeByte(-1)
-            dest.writeByte(-1)
-        }
-        dest.writeByte(timeForNull.hour.toByte())
-        dest.writeByte(timeForNull.minute.toByte())
-        dest.writeByte(timeForNull.second.toByte())
-        dest.writeByte(if (is24hourView) 1 else 0)
+        val bundle = Bundle()
+        bundle.putParcelable(KEY_TIME, time)
+        bundle.putParcelable(KEY_TIME_FOR_NULL, timeForNull)
+        bundle.putBoolean(KEY_IS_24_HOUR_VIEW, is24hourView)
+        dest.writeBundle(bundle)
     }
 
     @CallSuper
@@ -151,6 +157,6 @@ open class TimeEditorState : ScreenEditorState {
         /**
          * Tag for log
          */
-        private const val TAG = "TimeEditorState"
+        private const val TAG = "TimeEditState"
     }
 }

@@ -122,6 +122,6 @@ open class MultiSelectionListEditorFragment : ListEditorFragment(),
 //        /**
 //         * Tag for log
 //         */
-//        private const val TAG = "MSelListEditorFragment"
+//        private const val TAG = "MSelListEditFragment"
     }
 }

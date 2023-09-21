@@ -100,6 +100,6 @@ open class MultiSelectionIntListActivityEditor(
 //        /**
 //         * Tag for log
 //         */
-//        private const val TAG = "MSelIntListFPrefEditor"
+//        private const val TAG = "MSelIntListAPrefEditor"
     }
 }

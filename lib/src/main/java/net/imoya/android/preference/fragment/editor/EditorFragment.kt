@@ -246,6 +246,6 @@ abstract class EditorFragment : RoundTripClientFragment() {
         /**
          * Tag for log
          */
-        private const val TAG = "ListPreferenceEditorFragment"
+        private const val TAG = "ListPrefEditorFragment"
     }
 }

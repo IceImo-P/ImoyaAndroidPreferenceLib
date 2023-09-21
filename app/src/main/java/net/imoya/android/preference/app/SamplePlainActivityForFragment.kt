@@ -48,5 +48,5 @@ class SamplePlainActivityForFragment : AppCompatActivity() {
         /**
          * Tag for log
          */
-        const val TAG = "SampleActivityAndFragment"
+        const val TAG = "SamplePlainAct4Fragment"
     }}

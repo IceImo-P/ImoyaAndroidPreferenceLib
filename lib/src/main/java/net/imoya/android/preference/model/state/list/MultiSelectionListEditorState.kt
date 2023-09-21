@@ -21,6 +21,7 @@ import android.os.Parcel
 import android.os.Parcelable
 import android.os.Parcelable.Creator
 import androidx.annotation.CallSuper
+import net.imoya.android.preference.PreferenceLog
 import net.imoya.android.preference.controller.editor.list.MultiSelectionListActivityEditor
 import net.imoya.android.preference.controller.editor.list.MultiSelectionListDialogEditor
 import net.imoya.android.preference.controller.editor.list.MultiSelectionListFragmentEditor
@@ -36,7 +37,6 @@ open class MultiSelectionListEditorState : ListEditorState {
      */
     var checkedList: BooleanArray = BooleanArray(0)
 
-    @Suppress("unused")
     constructor() : super()
 
     /**
@@ -44,10 +44,14 @@ open class MultiSelectionListEditorState : ListEditorState {
      *
      * @param bundle [Bundle]
      */
-    @Suppress("unused")
     constructor(bundle: Bundle) : super(bundle) {
-        checkedList = bundle.getBooleanArray(KEY_SELECTED_INDICES)
-            ?: throw IllegalArgumentException("SelectedIndices not found")
+        checkedList = try {
+            bundle.getBooleanArray(KEY_SELECTED_INDICES)
+                ?: throw IllegalArgumentException("SelectedIndices not found")
+        } catch (e: Exception) {
+            PreferenceLog.d(TAG, e)
+            BooleanArray(0)
+        }
     }
 
     /**
@@ -55,16 +59,17 @@ open class MultiSelectionListEditorState : ListEditorState {
      *
      * @param parcel [Parcel]
      */
-    @Suppress("unused")
     protected constructor(parcel: Parcel) : super(parcel) {
-        checkedList = PreferenceViewSavedStateUtil.createBooleanArray(parcel, TAG)
-            ?: BooleanArray(0)
+        val bundle = PreferenceViewSavedStateUtil.readBundle(parcel, TAG, javaClass.classLoader)
+        checkedList = bundle.getBooleanArray(KEY_SELECTED_INDICES) ?: BooleanArray(0)
     }
 
     @CallSuper
     override fun writeToParcel(dest: Parcel, flags: Int) {
         super.writeToParcel(dest, flags)
-        dest.writeBooleanArray(checkedList)
+        val bundle = Bundle()
+        bundle.putBooleanArray(KEY_SELECTED_INDICES, checkedList)
+        dest.writeBundle(bundle)
     }
 
     @CallSuper
@@ -76,14 +81,13 @@ open class MultiSelectionListEditorState : ListEditorState {
 
     companion object {
         /**
-         * Key at [Bundle] : Selected indices
+         * Key at [Bundle] : [checkedList]
          */
         const val KEY_SELECTED_INDICES = "selectedIndices"
 
         /**
          * [Parcelable] 対応用 [Creator]
          */
-        @Suppress("unused")
         @JvmField
         val CREATOR: Creator<MultiSelectionListEditorState> = object :
             Creator<MultiSelectionListEditorState> {
@@ -111,6 +115,6 @@ open class MultiSelectionListEditorState : ListEditorState {
         /**
          * Tag for log
          */
-        private const val TAG = "MSelListEditorState"
+        private const val TAG = "MSelListEditState"
     }
 }

@@ -49,6 +49,6 @@ open class MultiSelectionListEditorFragmentOnActivity :
 //        /**
 //         * Tag for log
 //         */
-//        private const val TAG = "MSelListEditFragmentOA"
+//        private const val TAG = "MSelListEditFragmentOnA"
 //    }
 }
