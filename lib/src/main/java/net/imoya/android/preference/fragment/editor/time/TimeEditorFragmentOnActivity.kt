@@ -44,6 +44,6 @@ open class TimeEditorFragmentOnActivity : TimeEditorFragment() {
 //        /**
 //         * Tag for log
 //         */
-//        private const val TAG = "TimePrefEditorFragmentOA"
+//        private const val TAG = "TimePrefEditFragmentOnA"
 //    }
 }

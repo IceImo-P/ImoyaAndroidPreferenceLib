@@ -20,6 +20,8 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.content.res.TypedArray
 import android.graphics.drawable.Drawable
+import android.os.Build
+import android.os.Bundle
 import android.os.Parcel
 import android.os.Parcelable
 import android.os.Parcelable.Creator
@@ -30,6 +32,7 @@ import android.widget.FrameLayout
 import android.widget.TextView
 import androidx.annotation.CallSuper
 import androidx.annotation.LayoutRes
+import androidx.annotation.RequiresApi
 import androidx.core.widget.TextViewCompat
 import net.imoya.android.preference.PreferenceLog
 import net.imoya.android.preference.R
@@ -91,18 +94,32 @@ open class PreferenceCategoryView : FrameLayout, PreferenceItemView {
          * @param parcel [Parcel]
          */
         constructor(parcel: Parcel) : super(parcel) {
-            title = PreferenceViewSavedStateUtil.readString(parcel, TAG)
+            val bundle = PreferenceViewSavedStateUtil.readBundle(parcel, TAG, javaClass.classLoader)
+            title = bundle.getString(KEY_TITLE) ?: ""
+        }
+
+        /**
+         * [Parcel] の内容で初期化するコンストラクタ
+         *
+         * @param parcel [Parcel]
+         */
+        @RequiresApi(Build.VERSION_CODES.N)
+        constructor(parcel: Parcel, loader: ClassLoader?) : super(parcel, loader) {
+            val bundle = PreferenceViewSavedStateUtil.readBundle(parcel, TAG, loader)
+            title = bundle.getString(KEY_TITLE) ?: ""
         }
 
         /**
          * 指定の [Parcel] へ、このオブジェクトの内容を保存します。
          *
-         * @param out [Parcel]
+         * @param dest [Parcel]
          * @param flags  フラグ
          */
-        override fun writeToParcel(out: Parcel, flags: Int) {
-            super.writeToParcel(out, flags)
-            out.writeString(title)
+        override fun writeToParcel(dest: Parcel, flags: Int) {
+            super.writeToParcel(dest, flags)
+            val bundle = Bundle()
+            bundle.putString(KEY_TITLE, title)
+            dest.writeBundle(bundle)
         }
 
         /**
@@ -113,6 +130,11 @@ open class PreferenceCategoryView : FrameLayout, PreferenceItemView {
         override fun describeContents() = 0
 
         companion object {
+            /**
+             * Key at [Bundle] : [title]
+             */
+            const val KEY_TITLE = "title"
+
             /**
              * [Parcelable] 対応用 [Creator]
              */
@@ -156,7 +178,6 @@ open class PreferenceCategoryView : FrameLayout, PreferenceItemView {
     /**
      * ビューの有効、無効を連動させる、[SharedPreferences] のキー
      */
-    @Suppress("MemberVisibilityCanBePrivate")
     var dependency: String?
         get() = mDependency
         set(value) {
@@ -419,6 +440,6 @@ open class PreferenceCategoryView : FrameLayout, PreferenceItemView {
         /**
          * Tag for log
          */
-        private const val TAG = "PreferenceCategoryView"
+        private const val TAG = "PrefCategoryView"
     }
 }

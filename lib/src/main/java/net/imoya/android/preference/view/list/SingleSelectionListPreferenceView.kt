@@ -19,6 +19,7 @@ package net.imoya.android.preference.view.list
 import android.content.Context
 import android.content.SharedPreferences
 import android.content.res.TypedArray
+import android.os.Bundle
 import android.os.Parcel
 import android.os.Parcelable
 import android.os.Parcelable.Creator
@@ -80,7 +81,12 @@ abstract class SingleSelectionListPreferenceView : ListPreferenceView {
          *
          * @param parcel [Parcel]
          */
-        constructor(parcel: Parcel) : this(parcel, null)
+        constructor(parcel: Parcel) : super(parcel) {
+            val bundle = PreferenceViewSavedStateUtil.readBundle(parcel, TAG, javaClass.classLoader)
+            singleSelectionType = SingleSelectionType.from(
+                bundle.getInt(KEY_SINGLE_SELECTION_TYPE, SingleSelectionType.ITEM_CLICK.id)
+            )
+        }
 
         /**
          * [Parcel] の内容で初期化するコンストラクタ
@@ -89,16 +95,25 @@ abstract class SingleSelectionListPreferenceView : ListPreferenceView {
          * @param loader [ClassLoader]
          */
         constructor(parcel: Parcel, loader: ClassLoader?) : super(parcel, loader) {
-            singleSelectionType =
-                SingleSelectionType.from(PreferenceViewSavedStateUtil.readInt(parcel, TAG, 1))
+            val bundle = PreferenceViewSavedStateUtil.readBundle(parcel, TAG, loader)
+            singleSelectionType = SingleSelectionType.from(
+                bundle.getInt(KEY_SINGLE_SELECTION_TYPE, SingleSelectionType.ITEM_CLICK.id)
+            )
         }
 
-        override fun writeToParcel(out: Parcel, flags: Int) {
-            super.writeToParcel(out, flags)
-            out.writeInt(singleSelectionType.id)
+        override fun writeToParcel(dest: Parcel, flags: Int) {
+            super.writeToParcel(dest, flags)
+            val bundle = Bundle()
+            bundle.putInt(KEY_SINGLE_SELECTION_TYPE, singleSelectionType.id)
+            dest.writeBundle(bundle)
         }
 
         companion object {
+            /**
+             * Key at [Bundle] : [singleSelectionType]
+             */
+            const val KEY_SINGLE_SELECTION_TYPE = "selType"
+
             /**
              * [Parcelable] 対応用 [Creator]
              */
@@ -278,6 +293,6 @@ abstract class SingleSelectionListPreferenceView : ListPreferenceView {
         /**
          * Tag for log
          */
-        private const val TAG = "ListPreferenceView"
+        private const val TAG = "SSelListPrefView"
     }
 }

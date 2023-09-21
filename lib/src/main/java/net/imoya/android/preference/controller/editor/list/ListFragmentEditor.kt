@@ -65,6 +65,6 @@ abstract class ListFragmentEditor(
 //        /**
 //         * Tag for log
 //         */
-//        private const val TAG = "ListFragmentEditor"
+//        private const val TAG = "ListFPrefEditor"
 //    }
 }

@@ -49,6 +49,6 @@ open class SingleSelectionListEditorFragmentOnActivity :
 //        /**
 //         * Tag for log
 //         */
-//        private const val TAG = "SSelListEditFragmentOA"
+//        private const val TAG = "SSelListEditFragmentOnA"
 //    }
 }

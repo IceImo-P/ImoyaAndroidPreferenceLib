@@ -19,6 +19,7 @@ package net.imoya.android.preference.view.list
 import android.content.Context
 import android.content.SharedPreferences
 import android.content.res.TypedArray
+import android.os.Bundle
 import android.os.Parcel
 import android.os.Parcelable
 import android.os.Parcelable.Creator
@@ -79,7 +80,11 @@ open class MultiSelectionStringListPreferenceView : MultiSelectionListPreference
          *
          * @param parcel [Parcel]
          */
-        protected constructor(parcel: Parcel) : this(parcel, null)
+        protected constructor(parcel: Parcel) : super(parcel) {
+            val bundle = PreferenceViewSavedStateUtil.readBundle(parcel, TAG, javaClass.classLoader)
+            entryValues = bundle.getStringArray(KEY_ENTRY_VALUES) ?: arrayOf()
+            currentSelection = bundle.getBooleanArray(KEY_CURRENT_SELECTION) ?: booleanArrayOf()
+        }
 
         /**
          * [Parcel] の内容で初期化するコンストラクタ
@@ -88,17 +93,30 @@ open class MultiSelectionStringListPreferenceView : MultiSelectionListPreference
          * @param loader [ClassLoader]
          */
         protected constructor(parcel: Parcel, loader: ClassLoader?) : super(parcel, loader) {
-            entryValues = PreferenceViewSavedStateUtil.createStringArray(parcel, TAG) ?: arrayOf()
-            currentSelection = PreferenceViewSavedStateUtil.createBooleanArray(parcel, TAG) ?: booleanArrayOf()
+            val bundle = PreferenceViewSavedStateUtil.readBundle(parcel, TAG, loader)
+            entryValues = bundle.getStringArray(KEY_ENTRY_VALUES) ?: arrayOf()
+            currentSelection = bundle.getBooleanArray(KEY_CURRENT_SELECTION) ?: booleanArrayOf()
         }
 
-        override fun writeToParcel(out: Parcel, flags: Int) {
-            super.writeToParcel(out, flags)
-            out.writeStringArray(entryValues)
-            out.writeBooleanArray(currentSelection)
+        override fun writeToParcel(dest: Parcel, flags: Int) {
+            super.writeToParcel(dest, flags)
+            val bundle = Bundle()
+            bundle.putStringArray(KEY_ENTRY_VALUES, entryValues)
+            bundle.putBooleanArray(KEY_CURRENT_SELECTION, currentSelection)
+            dest.writeBundle(bundle)
         }
 
         companion object {
+            /**
+             * Key at [Bundle] : [entryValues]
+             */
+            const val KEY_ENTRY_VALUES = "values"
+
+            /**
+             * Key at [Bundle] : [currentSelection]
+             */
+            const val KEY_CURRENT_SELECTION = "selection"
+
             /**
              * [Parcelable] 対応用 [Creator]
              */
@@ -141,10 +159,8 @@ open class MultiSelectionStringListPreferenceView : MultiSelectionListPreference
     /**
      * 現在の選択状態
      */
-    @Suppress("unused")
     var currentSelection: BooleanArray
         get() = mCurrentSelection
-        @Suppress("unused")
         set(value) {
             mCurrentSelection = value
         }
@@ -271,6 +287,6 @@ open class MultiSelectionStringListPreferenceView : MultiSelectionListPreference
         /**
          * Tag for log
          */
-        private const val TAG = "StringListPreferenceView"
+        private const val TAG = "MSelStringListPrefView"
     }
 }

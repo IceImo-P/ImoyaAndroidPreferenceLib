@@ -16,9 +16,8 @@
 
 package net.imoya.android.preference.util
 
+import android.os.Bundle
 import android.os.Parcel
-import android.os.Parcelable
-import androidx.core.os.ParcelCompat
 import net.imoya.android.preference.PreferenceLog
 
 /**
@@ -30,97 +29,23 @@ import net.imoya.android.preference.PreferenceLog
  */
 object PreferenceViewSavedStateUtil {
     @JvmStatic
-    fun createBooleanArray(parcel: Parcel, tag: String): BooleanArray? {
+    fun readBundle(parcel: Parcel, tag: String, classLoader: ClassLoader?): Bundle {
         return try {
-            if (parcel.dataAvail() > 0) {
-                parcel.createBooleanArray()
-                    ?: throw IllegalStateException("parcel.createBooleanArray returns null")
-            } else throw IllegalStateException("parcel is empty")
+            parcel.readBundle(classLoader)
+                ?: throw IllegalStateException("parcel.readBundle returns null")
         } catch (e: Exception) {
             PreferenceLog.d(tag, e)
-            null
-        }
-    }
-
-    @JvmStatic
-    fun createIntArray(parcel: Parcel, tag: String): IntArray? {
-        return try {
-            if (parcel.dataAvail() > 0) {
-                parcel.createIntArray()
-                    ?: throw IllegalStateException("parcel.createBooleanArray returns null")
-            } else throw IllegalStateException("parcel is empty")
-        } catch (e: Exception) {
-            PreferenceLog.d(tag, e)
-            null
-        }
-    }
-
-    @JvmStatic
-    fun createStringArray(parcel: Parcel, tag: String): Array<String>? {
-        return try {
-            if (parcel.dataAvail() > 0) {
-                parcel.createStringArray()
-                    ?: throw IllegalStateException("parcel.createStringArray returns null")
-            } else throw IllegalStateException("parcel is empty")
-        } catch (e: Exception) {
-            PreferenceLog.d(tag, e)
-            null
+            Bundle()
         }
     }
 
     @JvmStatic
     fun readByte(parcel: Parcel, tag: String, defaultValue: Byte = 0): Byte {
         return try {
-            if (parcel.dataAvail() > 0) parcel.readByte() else throw IllegalStateException("parcel is empty")
+            parcel.readByte()
         } catch (e: Exception) {
             PreferenceLog.d(tag, e)
             defaultValue
-        }
-    }
-
-    @JvmStatic
-    fun readInt(parcel: Parcel, tag: String, defaultValue: Int = 0): Int {
-        return try {
-            if (parcel.dataAvail() > 0) parcel.readInt() else throw IllegalStateException("parcel is empty")
-        } catch (e: Exception) {
-            PreferenceLog.d(tag, e)
-            defaultValue
-        }
-    }
-
-    @JvmStatic
-    fun <T: Parcelable> readParcelable(parcel: Parcel, tag: String, classLoader: ClassLoader, clazz: Class<out T>, defaultValue: T): T {
-        return try {
-            if (parcel.dataAvail() > 0) {
-                ParcelCompat.readParcelable(parcel, classLoader, clazz)
-                    ?: throw IllegalArgumentException("TimePeriod not found")
-            } else throw IllegalStateException("parcel is empty")
-        } catch (e: Exception) {
-            PreferenceLog.d(tag, e)
-            defaultValue
-        }
-    }
-
-    @JvmStatic
-    fun readString(parcel: Parcel, tag: String): String {
-        return try {
-            if (parcel.dataAvail() > 0) {
-                parcel.readString()
-                    ?: throw IllegalStateException("parcel.readString returns null")
-            } else throw IllegalStateException("parcel is empty")
-        } catch (e: Exception) {
-            PreferenceLog.d(tag, e)
-            ""
-        }
-    }
-
-    @JvmStatic
-    fun readStringOrNull(parcel: Parcel, tag: String): String? {
-        return try {
-            if (parcel.dataAvail() > 0) parcel.readString() else throw IllegalStateException("parcel is empty")
-        } catch (e: Exception) {
-            PreferenceLog.d(tag, e)
-            null
         }
     }
 }

@@ -19,6 +19,7 @@ package net.imoya.android.preference.view.list
 import android.content.Context
 import android.content.SharedPreferences
 import android.content.res.TypedArray
+import android.os.Bundle
 import android.os.Parcel
 import android.os.Parcelable
 import android.os.Parcelable.Creator
@@ -72,7 +73,6 @@ open class MultiSelectionIntListPreferenceView : MultiSelectionListPreferenceVie
          *
          * @param superState [View] の状態
          */
-        @Suppress("unused")
         constructor(superState: Parcelable?) : super(superState)
 
         /**
@@ -80,8 +80,11 @@ open class MultiSelectionIntListPreferenceView : MultiSelectionListPreferenceVie
          *
          * @param parcel [Parcel]
          */
-        @Suppress("unused")
-        protected constructor(parcel: Parcel) : this(parcel, null)
+        protected constructor(parcel: Parcel) : super(parcel) {
+            val bundle = PreferenceViewSavedStateUtil.readBundle(parcel, TAG, javaClass.classLoader)
+            entryValues = bundle.getIntArray(KEY_ENTRY_VALUES) ?: intArrayOf()
+            currentSelection = bundle.getBooleanArray(KEY_CURRENT_SELECTION) ?: booleanArrayOf()
+        }
 
         /**
          * [Parcel] の内容で初期化するコンストラクタ
@@ -89,24 +92,34 @@ open class MultiSelectionIntListPreferenceView : MultiSelectionListPreferenceVie
          * @param parcel [Parcel]
          * @param loader [ClassLoader]
          */
-        @Suppress("unused")
         protected constructor(parcel: Parcel, loader: ClassLoader?) : super(parcel, loader) {
-            entryValues = PreferenceViewSavedStateUtil.createIntArray(parcel, TAG) ?: intArrayOf()
-            currentSelection =
-                PreferenceViewSavedStateUtil.createBooleanArray(parcel, TAG) ?: booleanArrayOf()
+            val bundle = PreferenceViewSavedStateUtil.readBundle(parcel, TAG, loader)
+            entryValues = bundle.getIntArray(KEY_ENTRY_VALUES) ?: intArrayOf()
+            currentSelection = bundle.getBooleanArray(KEY_CURRENT_SELECTION) ?: booleanArrayOf()
         }
 
-        override fun writeToParcel(out: Parcel, flags: Int) {
-            super.writeToParcel(out, flags)
-            out.writeIntArray(entryValues)
-            out.writeBooleanArray(currentSelection)
+        override fun writeToParcel(dest: Parcel, flags: Int) {
+            super.writeToParcel(dest, flags)
+            val bundle = Bundle()
+            bundle.putIntArray(KEY_ENTRY_VALUES, entryValues)
+            bundle.putBooleanArray(KEY_CURRENT_SELECTION, currentSelection)
+            dest.writeBundle(bundle)
         }
 
         companion object {
             /**
+             * Key at [Bundle] : [entryValues]
+             */
+            const val KEY_ENTRY_VALUES = "values"
+
+            /**
+             * Key at [Bundle] : [currentSelection]
+             */
+            const val KEY_CURRENT_SELECTION = "selection"
+
+            /**
              * [Parcelable] 対応用 [Creator]
              */
-            @Suppress("unused")
             @JvmField
             val CREATOR: Creator<SavedState> = object : Creator<SavedState> {
                 /**
@@ -146,10 +159,8 @@ open class MultiSelectionIntListPreferenceView : MultiSelectionListPreferenceVie
     /**
      * 現在の選択状態
      */
-    @Suppress("unused")
     var currentSelection: BooleanArray
         get() = mCurrentSelection
-        @Suppress("unused")
         set(value) {
             mCurrentSelection = value
         }
@@ -159,7 +170,6 @@ open class MultiSelectionIntListPreferenceView : MultiSelectionListPreferenceVie
      *
      * @param context [Context]
      */
-    @Suppress("unused")
     constructor(context: Context) : this(context, null)
 
     /**
@@ -168,7 +178,6 @@ open class MultiSelectionIntListPreferenceView : MultiSelectionListPreferenceVie
      * @param context [Context]
      * @param attrs [AttributeSet]
      */
-    @Suppress("unused")
     constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, 0)
 
     /**
@@ -178,7 +187,6 @@ open class MultiSelectionIntListPreferenceView : MultiSelectionListPreferenceVie
      * @param attrs [AttributeSet]
      * @param defStyleAttr 適用するスタイル属性値
      */
-    @Suppress("unused")
     constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int)
             : super(context, attrs, defStyleAttr)
 
@@ -281,6 +289,6 @@ open class MultiSelectionIntListPreferenceView : MultiSelectionListPreferenceVie
         /**
          * Tag for log
          */
-        private const val TAG = "StringListPreferenceView"
+        private const val TAG = "MSelIntListPrefView"
     }
 }

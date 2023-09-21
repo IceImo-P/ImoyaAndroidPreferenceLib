@@ -18,11 +18,13 @@ package net.imoya.android.preference.view.time
 
 import android.content.Context
 import android.content.res.TypedArray
+import android.os.Bundle
 import android.os.Parcel
 import android.os.Parcelable
 import android.os.Parcelable.Creator
 import android.util.AttributeSet
 import android.view.View
+import androidx.core.os.BundleCompat
 import net.imoya.android.preference.PreferenceLog
 import net.imoya.android.preference.R
 import net.imoya.android.preference.model.Time
@@ -65,7 +67,17 @@ abstract class TimePreferenceViewBase : StringPreferenceViewBase {
          *
          * @param parcel [Parcel]
          */
-        protected constructor(parcel: Parcel) : this(parcel, null)
+        protected constructor(parcel: Parcel) : super(parcel) {
+            val bundle = PreferenceViewSavedStateUtil.readBundle(parcel, TAG, javaClass.classLoader)
+            is24HourView = bundle.getBoolean(KEY_IS_24_HOUR_VIEW)
+            timeForNull = try {
+                BundleCompat.getParcelable(bundle, KEY_TIME_FOR_NULL, Time::class.java) ?: Time()
+            } catch (e: Exception) {
+                PreferenceLog.d(TAG, e)
+                Time()
+            }
+            defaultLabel = bundle.getString(KEY_DEFAULT_LABEL) ?: ""
+        }
 
         /**
          * [Parcel] の内容で初期化するコンストラクタ
@@ -73,24 +85,42 @@ abstract class TimePreferenceViewBase : StringPreferenceViewBase {
          * @param parcel [Parcel]
          */
         protected constructor(parcel: Parcel, loader: ClassLoader?) : super(parcel, loader) {
-            val flags = PreferenceViewSavedStateUtil.createBooleanArray(parcel, TAG)
-            is24HourView = if (flags != null && flags.isNotEmpty()) flags[0] else false
+            val bundle = PreferenceViewSavedStateUtil.readBundle(parcel, TAG, loader)
+            is24HourView = bundle.getBoolean(KEY_IS_24_HOUR_VIEW)
             timeForNull = try {
-                Time.parse(PreferenceViewSavedStateUtil.readStringOrNull(parcel, TAG) ?: "0:00")
+                BundleCompat.getParcelable(bundle, KEY_TIME_FOR_NULL, Time::class.java) ?: Time()
             } catch (e: Exception) {
-                Time(0, 0, 0)
+                PreferenceLog.d(TAG, e)
+                Time()
             }
-            defaultLabel = PreferenceViewSavedStateUtil.readString(parcel, TAG)
+            defaultLabel = bundle.getString(KEY_DEFAULT_LABEL) ?: ""
         }
 
-        override fun writeToParcel(out: Parcel, flags: Int) {
-            super.writeToParcel(out, flags)
-            out.writeBooleanArray(booleanArrayOf(is24HourView))
-            out.writeString(timeForNull.toString())
-            out.writeString(defaultLabel)
+        override fun writeToParcel(dest: Parcel, flags: Int) {
+            super.writeToParcel(dest, flags)
+            val bundle = Bundle()
+            bundle.putBoolean(KEY_IS_24_HOUR_VIEW, is24HourView)
+            bundle.putParcelable(KEY_TIME_FOR_NULL, timeForNull)
+            bundle.putString(KEY_DEFAULT_LABEL, defaultLabel)
+            dest.writeBundle(bundle)
         }
 
         companion object {
+            /**
+             * Key at [Bundle] : [is24hourView]
+             */
+            const val KEY_IS_24_HOUR_VIEW = "is24HourView"
+
+            /**
+             * Key at [Bundle] : [timeForNull]
+             */
+            const val KEY_TIME_FOR_NULL = "forNull"
+
+            /**
+             * Key at [Bundle] : [defaultLabel]
+             */
+            const val KEY_DEFAULT_LABEL = "defLbl"
+
             /**
              * [Parcelable] 対応用 [Creator]
              */
@@ -142,7 +172,6 @@ abstract class TimePreferenceViewBase : StringPreferenceViewBase {
     /**
      * 未選択時に表示する文字列
      */
-    @Suppress("MemberVisibilityCanBePrivate")
     lateinit var defaultLabel: String
 
     /**
@@ -237,6 +266,6 @@ abstract class TimePreferenceViewBase : StringPreferenceViewBase {
         /**
          * Tag for log
          */
-        private const val TAG = "TimePreferenceView"
+        private const val TAG = "TimePrefView"
     }
 }

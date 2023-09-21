@@ -97,6 +97,6 @@ open class TimeDialogEditor(
         /**
          * Tag for log
          */
-        private const val TAG = "TimePreferenceEditor"
+        private const val TAG = "TimeDPrefEditor"
     }
 }

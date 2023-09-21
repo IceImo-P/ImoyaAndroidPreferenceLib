@@ -35,6 +35,6 @@ class SamplePlainFragmentOnSamplePlainActivity : SamplePlainFragment() {
 //        /**
 //         * Tag for log
 //         */
-//        const val TAG = "SamplePlainFragmentForAct"
+//        const val TAG = "SamplePlainFragment4Act"
 //    }
 }

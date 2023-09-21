@@ -51,13 +51,15 @@ open class SingleSelectionIntListEditorState : SingleSelectionListEditorState {
      * @param parcel [Parcel]
      */
     protected constructor(parcel: Parcel) : super(parcel) {
-        entryValues =
-            PreferenceViewSavedStateUtil.createIntArray(parcel, TAG) ?: intArrayOf()
+        val bundle = PreferenceViewSavedStateUtil.readBundle(parcel, TAG, javaClass.classLoader)
+        entryValues = bundle.getIntArray(KEY_ENTRY_VALUES) ?: intArrayOf()
     }
 
     override fun writeToParcel(dest: Parcel, flags: Int) {
         super.writeToParcel(dest, flags)
-        dest.writeIntArray(entryValues)
+        val bundle = Bundle()
+        bundle.putIntArray(KEY_ENTRY_VALUES, entryValues)
+        dest.writeBundle(bundle)
     }
 
     @CallSuper
@@ -102,6 +104,6 @@ open class SingleSelectionIntListEditorState : SingleSelectionListEditorState {
         /**
          * Tag for log
          */
-        private const val TAG = "SSelIntListEditorState"
+        private const val TAG = "SSelIntListEditState"
     }
 }

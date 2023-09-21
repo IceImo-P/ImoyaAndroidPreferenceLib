@@ -64,6 +64,6 @@ abstract class MultiSelectionListFragmentEditor(
 //        /**
 //         * Tag for log
 //         */
-//        private const val TAG = "MSelListFragmentPrefEditor"
+//        private const val TAG = "MSelListFPrefEditor"
 //    }
 }

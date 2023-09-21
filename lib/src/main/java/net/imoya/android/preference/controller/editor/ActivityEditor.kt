@@ -102,6 +102,6 @@ abstract class ActivityEditor(
 //        /**
 //         * Tag for log
 //         */
-//        private const val TAG = "ActivityPreferenceEditor"
+//        private const val TAG = "ActivityPrefEditor"
 //    }
 }

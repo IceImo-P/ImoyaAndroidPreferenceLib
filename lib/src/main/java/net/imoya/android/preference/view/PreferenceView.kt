@@ -22,6 +22,7 @@ import android.content.SharedPreferences
 import android.content.res.TypedArray
 import android.graphics.drawable.Drawable
 import android.os.Build
+import android.os.Bundle
 import android.os.Parcel
 import android.os.Parcelable
 import android.os.Parcelable.Creator
@@ -101,7 +102,12 @@ open class PreferenceView : LinearLayout, PreferenceItemView {
          * @param parcel [Parcel]
          */
         @SuppressLint("NewApi")
-        protected constructor(parcel: Parcel) : this(parcel, null)
+        protected constructor(parcel: Parcel) : super(parcel) {
+            val bundle = PreferenceViewSavedStateUtil.readBundle(parcel, TAG, javaClass.classLoader)
+            title = bundle.getString(KEY_TITLE) ?: ""
+            summary = bundle.getString(KEY_SUMMARY) ?: ""
+            note = bundle.getString(KEY_NOTE) ?: ""
+        }
 
         /**
          * [Parcel] の内容で初期化するコンストラクタ
@@ -110,9 +116,10 @@ open class PreferenceView : LinearLayout, PreferenceItemView {
          */
         @RequiresApi(Build.VERSION_CODES.N)
         protected constructor(parcel: Parcel, loader: ClassLoader?) : super(parcel, loader) {
-            title = PreferenceViewSavedStateUtil.readString(parcel, TAG)
-            summary = PreferenceViewSavedStateUtil.readString(parcel, TAG)
-            note = PreferenceViewSavedStateUtil.readString(parcel, TAG)
+            val bundle = PreferenceViewSavedStateUtil.readBundle(parcel, TAG, loader)
+            title = bundle.getString(KEY_TITLE) ?: ""
+            summary = bundle.getString(KEY_SUMMARY) ?: ""
+            note = bundle.getString(KEY_NOTE) ?: ""
         }
 
         /**
@@ -125,14 +132,16 @@ open class PreferenceView : LinearLayout, PreferenceItemView {
         /**
          * 指定の [Parcel] へ、このオブジェクトの内容を保存します。
          *
-         * @param out [Parcel]
+         * @param dest [Parcel]
          * @param flags  フラグ
          */
-        override fun writeToParcel(out: Parcel, flags: Int) {
-            super.writeToParcel(out, flags)
-            out.writeString(title)
-            out.writeString(summary)
-            out.writeString(note)
+        override fun writeToParcel(dest: Parcel, flags: Int) {
+            super.writeToParcel(dest, flags)
+            val bundle = Bundle()
+            bundle.putString(KEY_TITLE, title)
+            bundle.putString(KEY_SUMMARY, summary)
+            bundle.putString(KEY_NOTE, note)
+            dest.writeBundle(bundle)
         }
 
         /**
@@ -143,6 +152,21 @@ open class PreferenceView : LinearLayout, PreferenceItemView {
         override fun describeContents() = 0
 
         companion object {
+            /**
+             * Key at [Bundle] : [title]
+             */
+            const val KEY_TITLE = "title"
+
+            /**
+             * Key at [Bundle] : [summary]
+             */
+            const val KEY_SUMMARY = "summary"
+
+            /**
+             * Key at [Bundle] : [note]
+             */
+            const val KEY_NOTE = "note"
+
             /**
              * [Parcelable] 対応用 [Creator]
              */
@@ -265,10 +289,8 @@ open class PreferenceView : LinearLayout, PreferenceItemView {
      *
      * @return レイアウトリソースID
      */
-    @Suppress("unused")
     @get:LayoutRes
     protected open val defaultLayout: Int
-        @Suppress("unused")
         get() = R.layout.imoya_preference
 
     /**
@@ -478,7 +500,6 @@ open class PreferenceView : LinearLayout, PreferenceItemView {
      *
      * @param icon [Drawable] 又はnull
      */
-    @Suppress("unused")
     fun setTitleIcon(icon: Drawable?) {
         TextViewCompat.setCompoundDrawablesRelativeWithIntrinsicBounds(
             titleView, icon, null, null, null
@@ -488,7 +509,6 @@ open class PreferenceView : LinearLayout, PreferenceItemView {
     /**
      * summary 文言
      */
-    @Suppress("MemberVisibilityCanBePrivate")
     var summary: String?
         get() = summaryView.text?.toString()
         set(value) {
@@ -503,7 +523,6 @@ open class PreferenceView : LinearLayout, PreferenceItemView {
      *
      * @param icon [Drawable] 又はnull
      */
-    @Suppress("unused")
     fun setSummaryIcon(icon: Drawable?) {
         TextViewCompat.setCompoundDrawablesRelativeWithIntrinsicBounds(
             summaryView, icon, null, null, null
@@ -513,7 +532,6 @@ open class PreferenceView : LinearLayout, PreferenceItemView {
     /**
      * note 文言
      */
-    @Suppress("MemberVisibilityCanBePrivate")
     var note: String?
         get() = noteView.text?.toString()
         set(value) {
@@ -528,7 +546,6 @@ open class PreferenceView : LinearLayout, PreferenceItemView {
      *
      * @param icon [Drawable] 又はnull
      */
-    @Suppress("unused")
     fun setNoteIcon(icon: Drawable?) {
         TextViewCompat.setCompoundDrawablesRelativeWithIntrinsicBounds(
             noteView, icon, null, null, null
@@ -575,6 +592,6 @@ open class PreferenceView : LinearLayout, PreferenceItemView {
         /**
          * Tag for log
          */
-        private const val TAG = "PreferenceView"
+        private const val TAG = "PrefView"
     }
 }

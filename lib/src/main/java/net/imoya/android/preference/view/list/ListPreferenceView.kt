@@ -19,6 +19,7 @@ package net.imoya.android.preference.view.list
 import android.content.Context
 import android.content.SharedPreferences
 import android.content.res.TypedArray
+import android.os.Bundle
 import android.os.Parcel
 import android.os.Parcelable
 import android.os.Parcelable.Creator
@@ -74,7 +75,6 @@ abstract class ListPreferenceView : SingleValuePreferenceView {
          *
          * @param superState [View] の状態
          */
-        @Suppress("unused")
         constructor(superState: Parcelable?) : super(superState) {
             entries = arrayOf()
             defaultLabel = ""
@@ -85,8 +85,11 @@ abstract class ListPreferenceView : SingleValuePreferenceView {
          *
          * @param parcel [Parcel]
          */
-        @Suppress("unused")
-        constructor(parcel: Parcel) : this(parcel, null)
+        constructor(parcel: Parcel) : super(parcel) {
+            val bundle = PreferenceViewSavedStateUtil.readBundle(parcel, TAG, javaClass.classLoader)
+            entries = bundle.getStringArray(KEY_ENTRIES) ?: arrayOf()
+            defaultLabel = bundle.getString(KEY_DEFAULT_LABEL, "")
+        }
 
         /**
          * [Parcel] の内容で初期化するコンストラクタ
@@ -94,23 +97,34 @@ abstract class ListPreferenceView : SingleValuePreferenceView {
          * @param parcel [Parcel]
          * @param loader [ClassLoader]
          */
-        @Suppress("unused")
         constructor(parcel: Parcel, loader: ClassLoader?) : super(parcel, loader) {
-            entries = PreferenceViewSavedStateUtil.createStringArray(parcel, TAG) ?: arrayOf()
-            defaultLabel = PreferenceViewSavedStateUtil.readString(parcel, TAG)
+            val bundle = PreferenceViewSavedStateUtil.readBundle(parcel, TAG, loader)
+            entries = bundle.getStringArray(KEY_ENTRIES) ?: arrayOf()
+            defaultLabel = bundle.getString(KEY_DEFAULT_LABEL, "")
         }
 
-        override fun writeToParcel(out: Parcel, flags: Int) {
-            super.writeToParcel(out, flags)
-            out.writeStringArray(entries)
-            out.writeString(defaultLabel)
+        override fun writeToParcel(dest: Parcel, flags: Int) {
+            super.writeToParcel(dest, flags)
+            val bundle = Bundle()
+            bundle.putStringArray(KEY_ENTRIES, entries)
+            bundle.putString(KEY_DEFAULT_LABEL, defaultLabel)
+            dest.writeBundle(bundle)
         }
 
         companion object {
             /**
+             * Key at [Bundle] : [entries]
+             */
+            const val KEY_ENTRIES = "labels"
+
+            /**
+             * Key at [Bundle] : [defaultLabel]
+             */
+            const val KEY_DEFAULT_LABEL = "defLbl"
+
+            /**
              * [Parcelable] 対応用 [Creator]
              */
-            @Suppress("unused")
             @JvmField
             val CREATOR: Creator<SavedState> = object : Creator<SavedState> {
                 /**
@@ -156,7 +170,6 @@ abstract class ListPreferenceView : SingleValuePreferenceView {
      *
      * @param context [Context]
      */
-    @Suppress("unused")
     constructor(context: Context) : this(context, null)
 
     /**
@@ -165,7 +178,6 @@ abstract class ListPreferenceView : SingleValuePreferenceView {
      * @param context [Context]
      * @param attrs [AttributeSet]
      */
-    @Suppress("unused")
     constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, 0)
 
     /**
@@ -175,7 +187,6 @@ abstract class ListPreferenceView : SingleValuePreferenceView {
      * @param attrs [AttributeSet]
      * @param defStyleAttr 適用するスタイル属性値
      */
-    @Suppress("unused")
     constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int)
             : super(context, attrs, defStyleAttr)
 
@@ -188,7 +199,6 @@ abstract class ListPreferenceView : SingleValuePreferenceView {
      * @param defStyleRes 適用するスタイルのリソースID
      */
 //    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    @Suppress("unused")
     constructor(
         context: Context, attrs: AttributeSet?, defStyleAttr: Int, defStyleRes: Int
     ) : super(context, attrs, defStyleAttr, defStyleRes)
@@ -281,6 +291,6 @@ abstract class ListPreferenceView : SingleValuePreferenceView {
         /**
          * Tag for log
          */
-        private const val TAG = "ListPreferenceView"
+        private const val TAG = "ListPrefView"
     }
 }

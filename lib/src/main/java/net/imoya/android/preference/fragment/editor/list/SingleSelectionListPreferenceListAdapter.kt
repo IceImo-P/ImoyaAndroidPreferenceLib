@@ -49,6 +49,6 @@ open class SingleSelectionListPreferenceListAdapter : ListPreferenceListAdapter(
         /**
          * Tag for log
          */
-        private const val TAG = "SingleSelListPrefListAdapter"
+        private const val TAG = "SSelListPrefListAdapter"
     }
 }

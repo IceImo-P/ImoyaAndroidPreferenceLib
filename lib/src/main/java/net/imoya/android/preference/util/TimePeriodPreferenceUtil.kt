@@ -67,5 +67,5 @@ object TimePeriodPreferenceUtil {
     /**
      * Tag for log
      */
-    private const val TAG = "TimePeriodPreferenceUtil"
+    private const val TAG = "TimePeriodPrefUtil"
 }

@@ -146,6 +146,6 @@ open class SingleSelectionListEditorFragment : ListEditorFragment(),
         /**
          * Tag for log
          */
-        private const val TAG = "SSelListEditorFragment"
+        private const val TAG = "SSelListEditFragment"
     }
 }

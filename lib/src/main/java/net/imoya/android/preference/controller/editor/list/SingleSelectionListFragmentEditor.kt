@@ -65,6 +65,6 @@ abstract class SingleSelectionListFragmentEditor(
 //        /**
 //         * Tag for log
 //         */
-//        private const val TAG = "SSelListFragmentPrefEditor"
+//        private const val TAG = "SSelListFPrefEditor"
 //    }
 }

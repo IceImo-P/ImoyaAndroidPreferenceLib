@@ -19,6 +19,7 @@ package net.imoya.android.preference.view
 import android.content.Context
 import android.content.SharedPreferences
 import android.content.res.TypedArray
+import android.os.Bundle
 import android.os.Parcel
 import android.os.Parcelable
 import android.os.Parcelable.Creator
@@ -59,7 +60,7 @@ open class StringPreferenceView : StringPreferenceViewBase {
         /**
          * 最大入力可能文字数
          */
-        var maxLength = 0
+        var maxLength = Integer.MAX_VALUE
 
         /**
          * コンストラクタ
@@ -73,7 +74,10 @@ open class StringPreferenceView : StringPreferenceViewBase {
          *
          * @param parcel [Parcel]
          */
-        protected constructor(parcel: Parcel) : this(parcel, null)
+        protected constructor(parcel: Parcel) : super(parcel) {
+            val bundle = PreferenceViewSavedStateUtil.readBundle(parcel, TAG, javaClass.classLoader)
+            maxLength = bundle.getInt(KEY_MAX_LENGTH, Integer.MAX_VALUE)
+        }
 
         /**
          * [Parcel] の内容で初期化するコンストラクタ
@@ -82,10 +86,23 @@ open class StringPreferenceView : StringPreferenceViewBase {
          * @param loader [ClassLoader]
          */
         protected constructor(parcel: Parcel, loader: ClassLoader?) : super(parcel, loader) {
-            maxLength = PreferenceViewSavedStateUtil.readInt(parcel, TAG)
+            val bundle = PreferenceViewSavedStateUtil.readBundle(parcel, TAG, loader)
+            maxLength = bundle.getInt(KEY_MAX_LENGTH, Integer.MAX_VALUE)
+        }
+
+        override fun writeToParcel(dest: Parcel, flags: Int) {
+            super.writeToParcel(dest, flags)
+            val bundle = Bundle()
+            bundle.putInt(KEY_MAX_LENGTH, maxLength)
+            dest.writeBundle(bundle)
         }
 
         companion object {
+            /**
+             * Key at Bundle : [maxLength]
+             */
+            const val KEY_MAX_LENGTH = "maxLen"
+
             /**
              * [Parcelable] 対応用 [Creator]
              */
@@ -125,7 +142,6 @@ open class StringPreferenceView : StringPreferenceViewBase {
      */
     var maxLength: Int
         get() = mMaxLength
-        @Suppress("unused")
         set(value) {
             mMaxLength = value
         }
@@ -209,6 +225,6 @@ open class StringPreferenceView : StringPreferenceViewBase {
         /**
          * Tag for log
          */
-        private const val TAG = "StringPreferenceView"
+        private const val TAG = "StringPrefView"
     }
 }

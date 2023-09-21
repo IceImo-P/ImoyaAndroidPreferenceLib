@@ -22,6 +22,7 @@ import android.os.Parcelable
 import android.os.Parcelable.Creator
 import androidx.annotation.CallSuper
 import androidx.core.os.BundleCompat
+import net.imoya.android.preference.PreferenceLog
 import net.imoya.android.preference.controller.editor.time.TimePeriodActivityEditor
 import net.imoya.android.preference.model.state.ScreenEditorState
 import net.imoya.android.preference.model.Time
@@ -57,10 +58,9 @@ open class TimePeriodEditorState : ScreenEditorState {
      * @param bundle [Bundle]
      */
     constructor(bundle: Bundle) : super(bundle) {
-        timePeriod = BundleCompat.getParcelable(bundle, KEY_TIME_PERIOD, TimePeriod::class.java)
-        timePeriodForNull =
-            BundleCompat.getParcelable(bundle, KEY_TIME_PERIOD_FOR_NULL, TimePeriod::class.java)
-                ?: TimePeriod(Time(0, 0, 0), Time(0, 0, 0))
+        timePeriod = getTimePeriodFrom(bundle, KEY_TIME_PERIOD)
+        timePeriodForNull = getTimePeriodFrom(bundle, KEY_TIME_PERIOD_FOR_NULL)
+            ?: TimePeriod(Time(0, 0, 0), Time(0, 0, 0))
         is24hourView = bundle.getBoolean(KEY_IS_24_HOUR_VIEW)
     }
 
@@ -70,57 +70,21 @@ open class TimePeriodEditorState : ScreenEditorState {
      * @param parcel [Parcel]
      */
     protected constructor(parcel: Parcel) : super(parcel) {
-        val startHour = PreferenceViewSavedStateUtil.readByte(parcel, TAG)
-        val startMinute = PreferenceViewSavedStateUtil.readByte(parcel, TAG)
-        val startSecond = PreferenceViewSavedStateUtil.readByte(parcel, TAG)
-        val endHour = PreferenceViewSavedStateUtil.readByte(parcel, TAG)
-        val endMinute = PreferenceViewSavedStateUtil.readByte(parcel, TAG)
-        val endSecond = PreferenceViewSavedStateUtil.readByte(parcel, TAG)
-        timePeriod = if (startHour >= 0) TimePeriod(
-            Time(startHour.toInt(), startMinute.toInt(), startSecond.toInt()),
-            Time(endHour.toInt(), endMinute.toInt(), endSecond.toInt()),
-        ) else null
-        timePeriodForNull = TimePeriod(
-            Time(
-                PreferenceViewSavedStateUtil.readByte(parcel, TAG).toInt(),
-                PreferenceViewSavedStateUtil.readByte(parcel, TAG).toInt(),
-                PreferenceViewSavedStateUtil.readByte(parcel, TAG).toInt()
-            ),
-            Time(
-                PreferenceViewSavedStateUtil.readByte(parcel, TAG).toInt(),
-                PreferenceViewSavedStateUtil.readByte(parcel, TAG).toInt(),
-                PreferenceViewSavedStateUtil.readByte(parcel, TAG).toInt()
-            ),
-        )
-        is24hourView = PreferenceViewSavedStateUtil.readByte(parcel, TAG).toInt() == 1
+        val bundle = PreferenceViewSavedStateUtil.readBundle(parcel, TAG, javaClass.classLoader)
+        timePeriod = getTimePeriodFrom(bundle, KEY_TIME_PERIOD)
+        timePeriodForNull = getTimePeriodFrom(bundle, KEY_TIME_PERIOD_FOR_NULL)
+            ?: TimePeriod(Time(0, 0, 0), Time(0, 0, 0))
+        is24hourView = bundle.getBoolean(KEY_IS_24_HOUR_VIEW)
     }
 
     @CallSuper
     override fun writeToParcel(dest: Parcel, flags: Int) {
         super.writeToParcel(dest, flags)
-        val currentTime = timePeriod
-        if (currentTime != null) {
-            dest.writeByte(currentTime.start.hour.toByte())
-            dest.writeByte(currentTime.start.minute.toByte())
-            dest.writeByte(currentTime.start.second.toByte())
-            dest.writeByte(currentTime.end.hour.toByte())
-            dest.writeByte(currentTime.end.minute.toByte())
-            dest.writeByte(currentTime.end.second.toByte())
-        } else {
-            dest.writeByte(-1)
-            dest.writeByte(-1)
-            dest.writeByte(-1)
-            dest.writeByte(-1)
-            dest.writeByte(-1)
-            dest.writeByte(-1)
-        }
-        dest.writeByte(timePeriodForNull.start.hour.toByte())
-        dest.writeByte(timePeriodForNull.start.minute.toByte())
-        dest.writeByte(timePeriodForNull.start.second.toByte())
-        dest.writeByte(timePeriodForNull.end.hour.toByte())
-        dest.writeByte(timePeriodForNull.end.minute.toByte())
-        dest.writeByte(timePeriodForNull.end.second.toByte())
-        dest.writeByte(if (is24hourView) 1 else 0)
+        val bundle = Bundle()
+        bundle.putParcelable(KEY_TIME_PERIOD, timePeriod)
+        bundle.putParcelable(KEY_TIME_PERIOD_FOR_NULL, timePeriodForNull)
+        bundle.putBoolean(KEY_IS_24_HOUR_VIEW, is24hourView)
+        dest.writeBundle(bundle)
     }
 
     @CallSuper
@@ -176,8 +140,24 @@ open class TimePeriodEditorState : ScreenEditorState {
         }
 
         /**
+         * Get [TimePeriod] value from state [Bundle]
+         *
+         * @param bundle [Bundle]
+         * @param key key at [Bundle]
+         * @return [TimePeriod]
+         */
+        private fun getTimePeriodFrom(bundle: Bundle, key: String): TimePeriod? {
+            return try {
+                BundleCompat.getParcelable(bundle, key, TimePeriod::class.java)
+            } catch (e: Exception) {
+                PreferenceLog.d(TAG, e)
+                null
+            }
+        }
+
+        /**
          * Tag for log
          */
-        private const val TAG = "TimePeriodEditorState"
+        private const val TAG = "TPEditState"
     }
 }

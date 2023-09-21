@@ -112,6 +112,6 @@ open class TimeEditorFragment : TimeEditorFragmentBase() {
         /**
          * Tag for log
          */
-        private const val TAG = "TimePrefEditorFragment"
+        private const val TAG = "TimePrefEditFragment"
     }
 }

@@ -61,6 +61,6 @@ abstract class ListActivityEditor(
 //        /**
 //         * Tag for log
 //         */
-//        private const val TAG = "ListActivityEditor"
+//        private const val TAG = "ListAPrefEditor"
 //    }
 }

@@ -19,6 +19,7 @@ package net.imoya.android.preference.model.result.time
 import android.os.Bundle
 import androidx.annotation.CallSuper
 import androidx.core.os.BundleCompat
+import net.imoya.android.preference.PreferenceLog
 import net.imoya.android.preference.fragment.editor.time.TimePeriodEditorFragment
 import net.imoya.android.preference.model.result.EditorFragmentResult
 import net.imoya.android.preference.model.TimePeriod
@@ -48,8 +49,12 @@ class TimePeriodEditorFragmentResult : EditorFragmentResult {
      * @param bundle [Bundle]
      */
     constructor(bundle: Bundle) : super(bundle) {
-        selectedTimePeriod =
+        selectedTimePeriod = try {
             BundleCompat.getParcelable(bundle, KEY_SELECTED_TIME_PERIOD, TimePeriod::class.java)
+        } catch (e: Exception) {
+            PreferenceLog.d(TAG, e)
+            null
+        }
     }
 
     @CallSuper
@@ -66,5 +71,10 @@ class TimePeriodEditorFragmentResult : EditorFragmentResult {
          * Key at [Bundle] : Selected index
          */
         const val KEY_SELECTED_TIME_PERIOD = "selectedTimePeriod"
+
+        /**
+         * Tag for log
+         */
+        private const val TAG = "TPEditFragmentResult"
     }
 }

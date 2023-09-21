@@ -90,6 +90,6 @@ abstract class SingleSelectionListDialogEditor(
         /**
          * Tag for log
          */
-        private const val TAG = "SingleSelListPrefEditor"
+        private const val TAG = "SSelListDPrefEditor"
     }
 }

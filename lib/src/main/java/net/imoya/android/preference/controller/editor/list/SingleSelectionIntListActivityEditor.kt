@@ -84,6 +84,6 @@ open class SingleSelectionIntListActivityEditor(
 //        /**
 //         * Tag for log
 //         */
-//        private const val TAG = "SSelIntListAEditor"
+//        private const val TAG = "SSelIntListAPrefEditor"
     }
 }

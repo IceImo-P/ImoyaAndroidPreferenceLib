@@ -82,7 +82,6 @@ abstract class FragmentEditor(
      * @param tag      最初の "client" への画面遷移に設定するタグ。
      *                 Round-trip (往復)ナビゲーション中に発生する画面遷移の中で、重複しない文字列を指定します。
      */
-    @Suppress("unused")
     protected open fun startPreferenceFragment(
         fragment: RoundTripClientFragment,
         tag: String = Constants.TAG_FIRST_CLIENT
