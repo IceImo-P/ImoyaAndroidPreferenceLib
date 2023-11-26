@@ -79,8 +79,8 @@
         implementation 'net.imoya.android.dialog:imoya-android-dialog:2.2.5'
         implementation 'net.imoya.android.fragment:imoya-android-fragment:1.6.3'
         implementation 'net.imoya.android.log:imoya-android-log:1.3.4'
-        implementation 'net.imoya.android.preference:imoya-android-preference:2.4.6'
-        implementation 'net.imoya.android.util:imoya-android-util:1.15.1'
+        implementation 'net.imoya.android.preference:imoya-android-preference:2.4.7'
+        implementation 'net.imoya.android.util:imoya-android-util:1.15.2'
         // (other dependencies)
     }
     ```
