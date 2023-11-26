@@ -16,6 +16,9 @@
 
 package net.imoya.android.preference.util
 
+import android.app.Activity
+import android.os.Build
+import androidx.annotation.RequiresApi
 import net.imoya.android.preference.controller.editor.DialogEditor
 import net.imoya.android.preference.controller.editor.PreferenceEditor
 import net.imoya.android.preference.view.PreferenceView
@@ -40,5 +43,49 @@ object PreferenceViewUtil {
         }
         editor.attach(view)
         outViews.add(view)
+    }
+
+    /**
+     * Call [Activity.overrideActivityTransition] or [Activity.overridePendingTransition]
+     *
+     * @param activity [Activity]
+     * @param isForClose true for OVERRIDE_TRANSITION_CLOSE, otherwise OVERRIDE_TRANSITION_OPEN. See [Activity.overrideActivityTransition]
+     * @param enterAnim See [Activity.overrideActivityTransition] or [Activity.overridePendingTransition]
+     * @param exitAnim See [Activity.overrideActivityTransition] or [Activity.overridePendingTransition]
+     */
+    @JvmStatic
+    fun overrideActivityTransition(
+        activity: Activity,
+        isForClose: Boolean,
+        enterAnim: Int,
+        exitAnim: Int
+    ) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+            overrideActivityTransitionU(activity, isForClose, enterAnim, exitAnim)
+        } else {
+            overrideActivityTransitionLegacy(activity, enterAnim, exitAnim)
+        }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
+    private fun overrideActivityTransitionU(
+        activity: Activity,
+        isForClose: Boolean,
+        enterAnim: Int,
+        exitAnim: Int
+    ) {
+        val overrideType: Int =
+            if (isForClose) Activity.OVERRIDE_TRANSITION_CLOSE
+            else Activity.OVERRIDE_TRANSITION_OPEN
+        activity.overrideActivityTransition(overrideType, enterAnim, exitAnim)
+    }
+
+    @Suppress("DEPRECATION")
+    private fun overrideActivityTransitionLegacy(
+        activity: Activity,
+        enterAnim: Int,
+        exitAnim: Int
+    ) {
+        activity.overridePendingTransition(enterAnim, exitAnim)
     }
 }

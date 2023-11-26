@@ -24,6 +24,7 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import net.imoya.android.preference.R
 import net.imoya.android.preference.controller.PreferenceScreenParent
+import net.imoya.android.preference.util.PreferenceViewUtil
 import net.imoya.android.preference.view.PreferenceView
 
 /**
@@ -82,7 +83,7 @@ abstract class ActivityEditor(
         // Start editor Activity
         editorLauncher.launch(createEditorIntent(view))
 
-        // Call AfterLaunchListener
+        // Call afterLaunchListener
         afterStartEditorUI(view)
     }
 
@@ -92,7 +93,9 @@ abstract class ActivityEditor(
      * @param view [PreferenceView] which has been tapped by user
      */
     protected open fun afterStartEditorUI(view: PreferenceView) {
-        parent.activity.overridePendingTransition(
+        PreferenceViewUtil.overrideActivityTransition(
+            parent.activity,
+            false,
             R.anim.imoya_preference_activity_start_enter,
             R.anim.imoya_preference_activity_start_exit
         )
