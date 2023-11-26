@@ -74,11 +74,13 @@ open class PreferenceViewUpdater : OnSharedPreferenceChangeListener {
         }
     }
 
-    override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String) {
+    override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
         PreferenceLog.v(TAG, "onSharedPreferenceChanged")
         try {
-            for (view in views) {
-                view.onPreferenceChange(sharedPreferences, key)
+            if (sharedPreferences != null && key != null) {
+                for (view in views) {
+                    view.onPreferenceChange(sharedPreferences, key)
+                }
             }
         } catch (e: Exception) {
             PreferenceLog.w(TAG, "onSharedPreferenceChanged: Exception", e)

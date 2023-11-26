@@ -25,6 +25,7 @@ import net.imoya.android.fragment.ArgumentsUtil
 import net.imoya.android.preference.Constants
 import net.imoya.android.preference.PreferenceLog
 import net.imoya.android.preference.R
+import net.imoya.android.preference.util.PreferenceViewUtil
 
 /**
  * 設定画面の [Fragment] を表示する [AppCompatActivity] の abstract
@@ -72,6 +73,14 @@ abstract class PreferenceEditorActivityWithFragment : AppCompatActivity() {
                 .add(R.id.content_frame, fragment, "Fragment")
                 .commit()
         }
+
+        // 画面遷移時アニメーションを設定
+        PreferenceViewUtil.overrideActivityTransition(
+            this,
+            false,
+            R.anim.imoya_preference_activity_start_enter,
+            R.anim.imoya_preference_activity_start_exit
+        )
     }
 
     override fun finish() {
@@ -87,7 +96,9 @@ abstract class PreferenceEditorActivityWithFragment : AppCompatActivity() {
      */
     protected open fun afterFinish() {
         // 画面遷移時アニメーションを設定
-        overridePendingTransition(
+        PreferenceViewUtil.overrideActivityTransition(
+            this,
+            true,
             R.anim.imoya_preference_activity_finish_enter,
             R.anim.imoya_preference_activity_finish_exit
         )
